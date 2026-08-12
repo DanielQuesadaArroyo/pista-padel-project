@@ -220,6 +220,12 @@ Debe cumplirse:
 profiles.active = true
 ```
 
+## Fecha y temporada válidas
+
+La fecha solicitada debe pertenecer a los siete días reservables calculados en `Europe/Madrid`, aplicando el rollover de las 22:01 en invierno o de las 23:01 en verano.
+
+El slot solicitado debe pertenecer a la temporada aplicable a esa fecha.
+
 ---
 
 ## Máximo de reservas activas
@@ -299,13 +305,7 @@ El primero que complete correctamente la función RPC create_booking obtiene la 
 
 ## Implementación
 
-La función RPC `create_booking` se ejecuta de forma atómica en PostgreSQL y la restricción:
-
-```sql
-UNIQUE(booking_date, slot_id)
-```
-
-garantiza la integridad física contra condiciones de carrera.
+La función RPC `create_booking` se ejecuta de forma atómica en PostgreSQL. Un índice único parcial sobre `(booking_date, slot_id)` para estados `active` y `maintenance` garantiza la integridad física contra condiciones de carrera sin impedir que una reserva cancelada libere la franja.
 
 ---
 
@@ -364,6 +364,8 @@ Cancelar
 
 Al confirmar:
 
+- La aplicación invoca la función RPC `cancel_booking(p_booking_id)`.
+- La función valida en backend que la reserva existe, pertenece al usuario autenticado y está en estado `active`.
 - La reserva cambia a estado `cancelled_by_user`.
 - La aplicación inserta una notificación en `notifications` con su `event_date`.
 - La interfaz se actualiza.

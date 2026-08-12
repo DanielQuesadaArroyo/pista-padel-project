@@ -235,25 +235,29 @@ supabase.rpc('create_booking', {
 - Máximo 3 reservas activas.
 - Máximo 1 reserva por día.
 - Horario (`slot_id`) no repetido.
+- Fecha dentro de la ventana reservable y conforme al rollover de `Europe/Madrid`.
+- Slot correspondiente a la temporada de la fecha solicitada.
 - Slot libre.
 
 ---
 
 ## Cancelar reserva
 
-### Tabla
+### Operación
 
-```text
-bookings
+Llamada a la función RPC de Supabase:
+
+```ts
+supabase.rpc('cancel_booking', {
+  p_booking_id: bookingId
+})
 ```
 
-### Acción
+### Validaciones Backend (RPC)
 
-Actualizar:
-
-```text
-status = cancelled_by_user
-```
+- La reserva existe.
+- La reserva pertenece al usuario autenticado.
+- La reserva tiene estado `active`.
 
 ### Resultado
 
@@ -338,10 +342,10 @@ Cada usuario podrá:
 ```text
 Leer reservas visibles
 Crear reservas vía RPC create_booking
-Cancelar reservas propias
+Cancelar reservas propias vía RPC cancel_booking
 ```
 
-No podrá modificar reservas ajenas.
+No podrá insertar, modificar ni eliminar reservas directamente.
 
 ---
 

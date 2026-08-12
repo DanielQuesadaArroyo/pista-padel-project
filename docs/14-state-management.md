@@ -275,7 +275,9 @@ Actualizar interfaz
 ## Cancelar reserva
 
 ```text
-Cancelar reserva
+Llamar RPC cancel_booking()
+↓
+Cancelar reserva correctamente
 ↓
 Actualizar store
 ↓

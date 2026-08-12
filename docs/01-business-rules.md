@@ -151,6 +151,12 @@ Si varios usuarios intentan reservar el mismo slot:
 
 Todas las validaciones críticas (usuario activo, máximo 3 reservas, máximo 1 al día, horario no repetido y slot libre) se realizan atómicamente en el backend mediante la función RPC `create_booking()`.
 
+### Cancelación vía RPC
+
+Las cancelaciones se realizan mediante la función RPC `cancel_booking(p_booking_id)`.
+
+La función valida atómicamente que la reserva existe, pertenece al usuario autenticado y tiene estado `active` antes de cambiar su estado a `cancelled_by_user`.
+
 ---
 
 ## Estados visuales del calendario

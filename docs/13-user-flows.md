@@ -261,7 +261,9 @@ Mostrar modal cancelar
 ↓
 Confirmar
 ↓
-Cancelar reserva
+Llamar RPC cancel_booking()
+↓
+Validaciones atómicas backend
 ↓
 Generar notificación
 ↓
@@ -287,7 +289,9 @@ Mostrar modal cancelar
 ↓
 Confirmar
 ↓
-Cancelar reserva
+Llamar RPC cancel_booking()
+↓
+Validaciones atómicas backend
 ↓
 Generar notificación
 ```

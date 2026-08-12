@@ -195,6 +195,18 @@ No se crea la reserva.
 
 No se crea la reserva.
 
+## Fecha fuera de la ventana visible
+
+### Resultado esperado
+
+No se crea la reserva.
+
+## Slot de temporada incorrecta
+
+### Resultado esperado
+
+No se crea la reserva.
+
 ---
 
 # Pruebas de Concurrencia
@@ -220,6 +232,33 @@ Dos usuarios intentan reservar el mismo slot.
 
 - Reserva cancelada.
 - Notificación creada.
+
+## Reserva inexistente
+
+### Resultado esperado
+
+- La RPC de cancelación devuelve un error.
+- No se modifica ninguna reserva ni se crea una notificación.
+
+## Reserva ajena
+
+### Resultado esperado
+
+- La RPC de cancelación devuelve un error.
+- No se modifica la reserva ajena ni se crea una notificación.
+
+## Reserva no activa o doble confirmación
+
+### Resultado esperado
+
+- La RPC de cancelación devuelve un error.
+- No se crea una segunda notificación.
+
+## Slot liberado tras cancelar
+
+### Resultado esperado
+
+- Una reserva cancelada no impide que otro usuario reserve la misma fecha y franja.
 
 ---
 
@@ -398,7 +437,7 @@ Un usuario no puede acceder a perfiles ajenos.
 
 ## Reservas
 
-Un usuario no puede modificar reservas ajenas.
+Un usuario no puede modificar reservas ajenas ni actualizar `bookings` directamente; solo puede crear y cancelar mediante las RPC autorizadas.
 
 ---
 

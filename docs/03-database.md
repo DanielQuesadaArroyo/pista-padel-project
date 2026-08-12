@@ -174,13 +174,11 @@ slot_id -> slots.id
 
 ## Restricciones y Función RPC `create_booking`
 
-### Reserva única por slot
+### Ocupación única por slot
 
-```sql
-UNIQUE(booking_date, slot_id)
-```
+Solo puede existir una ocupación vigente por fecha y franja. La restricción se implementará mediante un índice único parcial sobre `(booking_date, slot_id)` para los estados `active` y `maintenance`.
 
-Evita reservas duplicadas para una misma franja.
+Las reservas canceladas permanecen como histórico técnico y no bloquean una nueva reserva de la misma franja.
 
 ### Creación de reservas vía RPC
 
@@ -189,7 +187,19 @@ La creación de reservas no se realiza por `INSERT` directo desde la aplicación
 - Máximo 3 reservas activas por usuario.
 - Máximo 1 reserva por día por usuario.
 - Horario no repetido (`slot_id` no repetido entre reservas activas).
+- Fecha dentro de la ventana reservable de siete días y conforme al rollover de `Europe/Madrid`.
+- Slot perteneciente a la temporada aplicable a la fecha de reserva.
 - Disponibilidad del slot.
+
+### Cancelación de reservas vía RPC
+
+La cancelación no se realiza mediante `UPDATE` directo desde la aplicación. Se invoca `cancel_booking(p_booking_id)`, que valida atómicamente:
+
+- Existencia de la reserva.
+- Propiedad por el usuario autenticado.
+- Estado `active`.
+
+Si las validaciones son correctas, cambia el estado a `cancelled_by_user`.
 
 ### Mantenimiento y Usuario Técnico
 
