@@ -1,235 +1,351 @@
-# Jardines de hercules Pista Padel
+# 09 - Components
 
-## 09 - Components
+## Objetivo
 
-**Versión:** 1.0
+Este documento define los componentes reutilizables de la aplicación Jardines de Hércules II - Pista de Pádel.
 
-Este documento define los componentes reutilizables de la aplicación.
+Las referencias visuales oficiales se encuentran en:
 
----
-
-# 1. Principios
-
-- Componentes pequeños.
-- Responsabilidad única.
-- Reutilizables.
-- Tipados con TypeScript.
-- Sin lógica de negocio.
+```text
+/Docs/design
+```
 
 ---
 
-# 2. AppHeader
+# Component: SideMenu
 
-Responsabilidad:
+## Referencia
 
-- Mostrar título.
-- Abrir Drawer.
+```text
+Menu.png
+```
 
-Props:
+## Descripción
 
-- title
+Menú lateral principal de navegación.
 
-Eventos:
-
-- menuClick
-
----
-
-# 3. AppDrawer
-
-Contiene toda la navegación.
-
-Opciones:
+## Opciones
 
 - Notificaciones
 - Reservas
-- Cambiar alias
 - Mis reservas
-- Normas
+- Cambiar alias
+- Normas de uso
 - Acerca de
 - Salir
 
----
+## Disponibilidad
 
-# 4. ReservationGrid
-
-Componente principal.
-
-Responsabilidad:
-
-Mostrar los 7 días visibles y todos los slots.
-
-Props:
-
-- days
-- slots
-- bookings
-- blockedDays
-
-Eventos:
-
-- reserve
-- cancel
-
-Nunca contendrá lógica de negocio.
+Visible en todas las páginas autenticadas.
 
 ---
 
-# 5. ReservationSlot
+# Component: NotificationList
 
-Representa una única celda del calendario.
+## Referencia
 
-Estados:
+```text
+Notificaciones.png
+```
 
-- libre
-- ocupado
-- propia
-- bloqueado
+## Descripción
 
-Props:
+Listado de notificaciones compartidas para toda la comunidad.
 
-- state
-- label
+## Características
 
-Eventos:
+- Orden descendente.
+- Más recientes primero.
+- Scroll vertical.
+- Actualización Realtime.
 
-- click
+## Estado vacío
 
----
-
-# 6. ReservationCard
-
-Utilizado en:
-
-Mis reservas.
-
-Muestra:
-
-- fecha
-- horario
-- botón cancelar
+```text
+No existen notificaciones para los próximos días.
+```
 
 ---
 
-# 7. AliasForm
+# Component: ReservationCalendar
 
-Formulario para modificar alias.
+## Referencias
 
-Props:
+```text
+Calendario.png
+Calendario-full.png
+```
 
-- currentAlias
+## Descripción
 
-Eventos:
+Componente principal para visualizar y gestionar reservas.
 
-- save
+## Características
 
----
-
-# 8. NotificationItem
-
-Muestra:
-
-- icono
-- texto
-- fecha
-- hora
+- 7 días visibles.
+- Día actual + 6 días.
+- Horarios dinámicos según temporada.
+- Actualización Realtime.
 
 ---
 
-# 9. Toast
+# Component: ReservationSlot
 
-Tipos:
+## Descripción
 
-- success
-- warning
-- error
-- info
+Representa una franja horaria individual.
 
-Duración:
+## Estados
 
-2 segundos.
+### Libre
 
----
+Color:
 
-# 10. ConfirmationModal
+```text
+Gris
+```
 
-Utilizado únicamente para cancelar reservas.
+Acción:
 
-Botones:
-
-- Continuar
-- Anular reserva
+```text
+Reservar
+```
 
 ---
 
-# 11. LoadingSkeleton
+### Ocupado
 
-Todos los listados deberán disponer de Skeleton.
+Color:
 
----
+```text
+Negro
+```
 
-# 12. EmptyState
+Acción:
 
-Componente reutilizable para:
-
-- Sin reservas.
-- Sin notificaciones.
-- Sin normas.
-
----
-
-# 13. ErrorState
-
-Componente reutilizable.
-
-Incluye:
-
-- Icono.
-- Mensaje.
-- Botón reintentar.
+```text
+Ninguna
+```
 
 ---
 
-# 14. FormInput
+### Mantenimiento
 
-Input reutilizable.
+Color:
 
-Soporta:
+```text
+Negro
+```
 
-- texto
-- email
-- password
+Acción:
 
----
-
-# 15. PrimaryButton
-
-Botón principal.
-
-Variantes:
-
-- primary
-- secondary
-- danger
+```text
+Ninguna
+```
 
 ---
 
-# 16. Reglas
+### Reserva propia
 
-Los componentes:
+Color:
 
-- No accederán directamente a Supabase.
-- No realizarán consultas.
-- No implementarán reglas de negocio.
-- Emitirán eventos al componente padre.
+```text
+Rojo
+```
+
+Acción:
+
+```text
+Abrir modal cancelar
+```
 
 ---
 
-# 17. Checklist
+# Component: MyReservationsList
 
-- Componentes reutilizables.
-- Sin lógica de negocio.
-- Props tipadas.
-- Eventos tipados.
-- Accesibles.
-- Responsabilidad única.
+## Referencia
+
+```text
+My-reservas.png
+```
+
+## Descripción
+
+Listado de reservas activas del usuario.
+
+## Características
+
+- Solo reservas activas.
+- Orden ascendente.
+- La más próxima primero.
+
+## Estado vacío
+
+```text
+No dispone de reservas activas.
+```
+
+---
+
+# Component: AliasForm
+
+## Referencia
+
+```text
+Cambio-Alias.png
+```
+
+## Descripción
+
+Formulario de modificación de alias.
+
+## Elementos
+
+- Campo alias.
+- Botón Guardar.
+
+## Validaciones
+
+- Obligatorio.
+- Entre 3 y 20 caracteres.
+- Único.
+- Alias reservado no permitido.
+- Comparación case-insensitive.
+
+---
+
+# Component: ConfirmCancelModal
+
+## Referencia
+
+```text
+Modal-Cancelar.png
+```
+
+## Descripción
+
+Modal de confirmación de cancelación de reserva.
+
+## Texto
+
+```text
+¿Está seguro de que desea cancelar esta reserva?
+```
+
+## Botones
+
+### Confirmar
+
+Cancela la reserva.
+
+### Cancelar
+
+Cierra la modal.
+
+---
+
+# Component: LoginForm
+
+## Referencia
+
+```text
+Login.png
+```
+
+## Descripción
+
+Formulario de autenticación.
+
+## Elementos
+
+- Email.
+- Contraseña.
+- Botón Iniciar sesión.
+- Enlace recuperación.
+
+---
+
+# Component: ForgotPasswordModal
+
+## Descripción
+
+Mensaje informativo mostrado desde Login.
+
+## Texto
+
+```text
+Contacte con el presidente de la comunidad para recuperar su acceso.
+```
+
+---
+
+# Component: StaticContentView
+
+## Referencias
+
+```text
+Normas-Uso.png
+Acerca-de.png
+```
+
+## Descripción
+
+Componente reutilizable para mostrar contenido estático.
+
+## Uso
+
+- Normas de uso.
+- Acerca de.
+
+## Fuente de datos
+
+```text
+JSON
+TypeScript
+```
+
+---
+
+# Component: ToastMessage
+
+## Descripción
+
+Mensajes breves mostrados al usuario.
+
+## Casos de uso
+
+- Alias actualizado.
+- Reserva creada.
+- Reserva cancelada.
+- Error de validación.
+- Máximo de reservas alcanzado.
+
+---
+
+# Component: LoadingIndicator
+
+## Descripción
+
+Indicador de carga.
+
+## Uso
+
+- Inicio de sesión.
+- Obtención de reservas.
+- Obtención de notificaciones.
+- Cambio de alias.
+
+---
+
+# Componentes No Necesarios
+
+No se implementarán componentes para:
+
+- Administración.
+- Gestión de usuarios.
+- Estadísticas.
+- Históricos.
+- Incidencias.
+- Sanciones.
+- Chat.
+- Notificaciones push.

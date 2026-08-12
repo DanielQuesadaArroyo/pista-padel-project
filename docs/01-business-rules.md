@@ -1,439 +1,281 @@
-# Jardines de hercules Pista Padel
+# 01 - Business Rules
 
-## 01 - Business Rules
+## Objetivo
 
-**Versión:** 1.0
-
-Este documento define todas las reglas de negocio de la aplicación.
-
-Estas reglas tienen prioridad sobre cualquier implementación técnica.
-
-**Todas las validaciones deberán realizarse en el backend.**
+Este documento define las reglas de negocio que rigen el funcionamiento de la aplicación Jardines de Hércules II - Pista de Pádel.
 
 ---
 
-# 1. Viviendas
+## Usuarios
 
-La comunidad está formada por aproximadamente **220 viviendas**.
+### Un usuario por vivienda
 
-Cada vivienda puede disponer de **un único usuario**.
+Solo puede existir un usuario asociado a cada vivienda.
 
-No está permitido que una misma vivienda tenga varias cuentas.
-
-La vivienda queda identificada por:
+Una vivienda queda identificada por:
 
 - Escalera
-- Piso
+- Planta
 - Puerta
 
-Debe existir una restricción de unicidad sobre estos tres campos.
+La validación se realizará tanto a nivel de aplicación como mediante restricciones en base de datos.
 
 ---
 
-# 2. Solicitud de acceso
+## Alias
 
-No existe registro libre ni tampoco pantalla de registro en la aplicación.
+### Reglas generales
 
-El flujo será:
+- El alias es obligatorio.
+- Debe tener entre 3 y 20 caracteres.
+- Se eliminarán automáticamente los espacios al inicio y al final.
+- La comparación será case-insensitive.
+- El alias debe ser único.
 
-1. El vecino solicita acceso a través de un correo electronico.
-2. En el correo electrónico indicará:
-   - Escalera
-   - Piso
-   - Puerta
-3. La solicitud queda pendiente.
-4. El administrador crea el usuario desde la base de datos.
+### Alias reservados
 
-Es por ello que el registro queda fuera del ambito de la aplicación. Se crea directamente en la base de datos de forma manual.
+No podrán utilizarse los siguientes alias:
 
----
-
-# 3. Alias
-
-El usuario podrá modificar posteriormente su alias a través de la pantalla de cambio de alias.
-
-El alias debe ser único.
+- admin
+- administrador
+- presidente
+- system
+- sistema
 
 ---
 
-# 4. Estado del usuario
+## Autenticación
 
-Cada usuario tiene un estado.
+### Acceso
 
-Estados permitidos:
+El acceso se realizará mediante:
 
-- active
-- disabled
+- Email
+- Contraseña
 
----
+### Persistencia de sesión
 
-## Usuario activo
+La sesión permanecerá abierta hasta que el usuario pulse la opción "Salir".
 
-Puede utilizar toda la aplicación.
+### Recuperación de contraseña
 
----
+No existe recuperación automática de contraseña.
 
-## Usuario deshabilitado
+Si el usuario olvida la contraseña deberá contactar con el presidente de la comunidad.
 
-No puede:
+### Cambio de contraseña
 
-- iniciar sesión
-- reservar
-- cancelar reservas
+No existe funcionalidad de cambio de contraseña.
 
 ---
 
-# 5. Pista
+## Usuarios deshabilitados
 
-La aplicación gestiona **una única pista de pádel**.
+Los usuarios pueden ser deshabilitados por el administrador.
 
-No existe soporte para:
+Si un usuario deshabilitado intenta utilizar la aplicación:
 
-- varias pistas
-- pistas simultáneas
-
-Toda la lógica se desarrolla sobre una única pista.
-
----
-
-# 6. Ventana de reservas
-
-Solo podrán visualizarse el día actual y los próximos **6 días**. En total apareceran 7 días.
-
-No podrán visualizarse fechas posteriores.
+1. Se cerrará automáticamente la sesión.
+2. Será redirigido a Login.
+3. Se mostrará un mensaje informativo.
 
 ---
 
-# 7. Día actual
+## Calendario de reservas
 
-Se puede reservar el mismo día si la hora de inicio de la pista aún no ha pasado. Por ejemplo:
+### Ventana visible
 
-- no se podrá reservar si la hora de la reserva es de 10:00 a 11:30 horas y son las 10:01 horas. Esa franja horaria queda bloqueada.
-- se puede reservar si la reserva es de 11:30 a 13:00 horas y son las 11:29.
+El calendario mostrará siempre:
 
----
+- Día actual.
+- Seis días adicionales.
 
-# 8. Ventana de reservas y límite de reservas activas
+Total:
 
-La aplicación mostrará siempre una ventana móvil de **7 días naturales**, compuesta por:
+- 7 días visibles.
 
-- El día actual.
-- Los 6 días naturales siguientes.
+### Navegación
 
-Ejemplo:
+No existe navegación a semanas futuras ni pasadas.
 
-Si hoy es martes 10, el calendario mostrará:
+Solo se muestran los días reservables.
 
-- Martes 10
-- Miércoles 11
-- Jueves 12
-- Viernes 13
-- Sábado 14
-- Domingo 15
-- Lunes 16
+### Actualización automática
 
-No se mostrarán fechas posteriores a esta ventana.
+Invierno:
 
----
+- 22:01
 
-## Reserva del día actual
+Verano:
 
-El día actual será visible, pero únicamente podrán reservarse las franjas horarias que todavía no hayan comenzado.
-
-Ejemplo:
-
-Si son las **18:15**, ya no podrán reservarse:
-
-- 10:00–11:30
-- 11:30–13:00
-- 13:00–14:30
-- 17:00–18:00
-- 18:00–19:00 _(ya iniciada)_
-
-Sí podrán reservarse:
-
-- 19:00–20:30
-- 20:30–22:00
-
----
-
-## Límite de reservas
-
-Cada usuario podrá tener un máximo de **3 reservas activas** dentro de la ventana visible de 7 días.
-
-No podrá realizar una nueva reserva mientras ya tenga 3 reservas activas dentro de dicha ventana.
-
-Cuando una reserva deje de pertenecer a la ventana visible, dejará de contabilizar para este límite.
-
----
-
-## Diversidad horaria
-
-Las 3 reservas activas deberán realizarse en franjas horarias distintas.
-No se puede repetir la misma franja horaria dentro de la ventana visible de 7 días.
-
-Ejemplo permitido:
-
-- Martes 18:00
-- Jueves 19:00
-- Domingo 20:30
-
-Ejemplo NO permitido:
-
-- Martes 19:00
-- Jueves 19:00
-- Lunes 19:00
-
-## El objetivo es repartir equitativamente las franjas más demandadas.
-
-## Actualización automática del calendario
-
-La ventana de reservas no cambia a las 00:00.
-
-Se actualizará automáticamente cuando finalice completamente la jornada deportiva.
-
-### Horario de invierno
-
-La actualización se realizará todos los días a las **22:01**.
-
-### Horario de verano
-
-La actualización se realizará todos los días a las **23:01**.
+- 23:01
 
 En ese momento:
 
-- desaparecerá el día actual,
-- aparecerá un nuevo día al final del calendario,
-- las reservas que hayan salido de la ventana dejarán de contabilizar para el límite de 3 reservas activas.
+- Se elimina el día actual.
+- Se añade un nuevo día al final.
 
-Este proceso deberá realizarse automáticamente sin intervención del usuario.
-
----
-
-# 9. Límite diario
-
-Solo puede existir una reserva por usuario y día.
-
-Ejemplo válido:
-
-Lunes 18:00
-
-Martes 19:00
-
-Miércoles 20:00
-
-Ejemplo NO válido:
-
-Lunes 10:00
-
-Lunes 19:00
+Todas las fechas y cálculos de rollover se rigen por la zona horaria `Europe/Madrid`.
 
 ---
 
----
+## Reglas de reserva
 
-# 10. Horarios oficiales
+### Máximo de reservas activas
 
-## Invierno
+Cada usuario podrá tener:
 
-- 10:00–11:30
-- 11:30–13:00
-- 13:00–14:30
-- 17:00–18:00
-- 18:00–19:00
-- 19:00–20:30
-- 20:30–22:00
+- Máximo 3 reservas activas.
 
----
+### Máximo de reservas por día
 
-## Verano
+Cada usuario podrá tener:
 
-- 10:00–11:30
-- 11:30–13:00
-- 13:00–14:30
-- 18:00–19:00
-- 19:00–20:00
-- 20:00–21:30
-- 21:30–23:00
+- Máximo 1 reserva por día.
 
----
+### Horarios repetidos
 
-Los horarios son fijos.
+Un usuario no podrá repetir el mismo slot horario (`slot_id`) entre sus reservas activas, independientemente del día de la semana.
 
-No existen franjas dinámicas.
+### Reserva directa vía RPC
 
-Solo podrán existir reservas en estas franjas.
+Las reservas se realizan al pulsar un slot libre invocando la función RPC `create_booking()`.
+
+No existe confirmación previa.
+
+### Concurrencia y Validaciones
+
+Si varios usuarios intentan reservar el mismo slot:
+
+- El primero que complete correctamente la operación atómica obtiene la reserva.
+
+Todas las validaciones críticas (usuario activo, máximo 3 reservas, máximo 1 al día, horario no repetido y slot libre) se realizan atómicamente en el backend mediante la función RPC `create_booking()`.
 
 ---
 
-# 11. Temporada
+## Estados visuales del calendario
 
-Existen dos temporadas.
+### Gris
 
-- Invierno
-- Verano
+Slot libre y reservable.
 
-La temporada activa se define desde la base de datos.
+### Negro
 
-Todos los usuarios utilizan siempre la misma temporada.
+Slot no disponible.
 
----
+Incluye:
 
-# 12. Reserva
+- Reservas de otros vecinos.
+- Mantenimiento.
 
-Una reserva se realiza pulsando directamente sobre una franja libre.
+### Rojo
 
-No existe pantalla de confirmación.
-
-La reserva debe realizarse inmediatamente.
+Reserva propia.
 
 ---
 
-# 13. Cancelación
+## Mis reservas
 
-La cancelación requiere confirmación.
+### Contenido
 
-Solo podrá cancelarse hasta **5 minutos antes** del inicio.
+Solo se mostrarán reservas activas.
 
-Una vez superado ese tiempo:
+No existe histórico.
 
-La reserva ya no podrá cancelarse.
+### Orden
 
----
+Las reservas se mostrarán ordenadas por fecha ascendente.
 
-# 14. Disponibilidad
+La más próxima aparecerá primero.
 
-Un horario puede encontrarse en uno de estos estados.
+### Cancelación
 
-## Libre
+Al pulsar una reserva:
 
-Color gris.
-
-Puede reservarse.
-
----
-
-## Ocupado
-
-Color negro.
-
-No puede seleccionarse.
+- Se mostrará una ventana de confirmación.
+- El usuario podrá cancelar la reserva.
+- Tras la cancelación, la aplicación insertará la notificación correspondiente.
 
 ---
 
-## Reserva propia
+## Notificaciones
 
-Color rojo.
+### Alcance
 
-Al pulsarlo se abre el diálogo de cancelación.
+Las notificaciones son comunes para todos los vecinos.
 
----
+### Creación
 
-## Día bloqueado
+Tras una reserva o cancelación con éxito, la propia aplicación realizará el `INSERT` de la notificación asociada. Los usuarios autenticados disponen de permisos para consultar e insertar notificaciones.
 
-Todos los horarios aparecerán ocupados.
+### Orden
 
-No podrán realizarse reservas.
+Se mostrarán por fecha descendente.
 
----
+Las más recientes aparecerán primero.
 
-# 15. Mantenimiento
+### Límite
 
-El administrador puede bloquear:
+No existe límite de notificaciones.
 
-- un día
-- varios días consecutivos
+### Lectura
 
-Mientras un día permanezca bloqueado:
+No existe sistema de leídas o no leídas.
 
-- nadie podrá reservar
-- nadie podrá cancelar reservas de ese día
+### Visibilidad
 
----
-
-# 16. Concurrencia
-
-Nunca podrán existir dos reservas para el mismo horario.
-
-Si dos usuarios reservan simultáneamente:
-
-- el primero obtiene la reserva
-- el segundo recibe un error indicando que la franja ya no está disponible
+Solo se mostrarán notificaciones cuyo campo `event_date` corresponda a los 7 días visibles en el calendario.
 
 ---
 
-# 17. Privacidad
+## Mantenimiento
 
-Los vecinos conocerán quién el álias de quien ha reservado una pista sólo en la pantalla de notificaciones.
+### Gestión
 
-En el calendario únicamente se visualizarán colores.
+La gestión del mantenimiento será completamente manual desde Supabase.
 
-Nunca se mostrará:
+### Procedimiento
 
-- nombre
-- alias
-- email
-- vivienda
+El administrador:
 
----
+1. Elimina manualmente las reservas afectadas.
+2. Crea manualmente registros de mantenimiento en `bookings` asignando el ID del usuario técnico permanente `"Sistema"` (`user_id NOT NULL`).
+3. Crea manualmente las notificaciones necesarias.
 
-# 18. Realtime
+### Alcance
 
-Todas las reservas deberán actualizarse automáticamente.
+El mantenimiento se gestiona exclusivamente por franjas horarias.
 
-No será necesario refrescar la página.
-
-El cambio deberá reflejarse en todos los dispositivos conectados.
+Para bloquear un día completo se crearán registros de mantenimiento para todas las franjas de ese día.
 
 ---
 
-# 19. Notificaciones
+## Normas de uso
 
-Cada usuario recibirá un recordatorio el mismo día de su reserva.
+Las normas de uso son contenido estático.
 
-Hora de envío:
-
-09:00
-
-Ejemplo:
-
-> Hoy tienes una reserva de pista a las 19:00.
+Se almacenarán en ficheros JSON o TypeScript.
 
 ---
 
-# 20. Normas
+## Acerca de
 
-Las normas de uso son editables desde la base de datos.
+La información de la pantalla Acerca de es contenido estático.
 
-No requieren desplegar una nueva versión de la aplicación.
-
----
-
-# 21. Acerca de
-
-El contenido de la pantalla "Acerca de" también será editable desde la base de datos.
+Se almacenará en ficheros JSON o TypeScript.
 
 ---
 
-# 22. Acciones NO permitidas
+## Funcionalidades excluidas
 
-No está permitido:
+No forman parte del proyecto:
 
-- editar reservas
-- crear reservas manuales
-- modificar reservas de otros usuarios
-- superar el límite semanal
-- tener dos reservas el mismo día
-- repetir horario dentro de los días mostrados en el calendario
-- reservar un día bloqueado
-- crear varios usuarios para una misma vivienda
-
----
-
-# 23. Fuente de verdad
-
-Las reglas definidas en este documento representan la lógica oficial del negocio.
-
-El frontend únicamente mostrará la información al usuario.
-
-Todas las decisiones deberán validarse siempre en el backend antes de guardar cualquier dato.
+- Panel de administración.
+- Recuperación automática de contraseña.
+- Cambio de contraseña.
+- Registro automático.
+- Sistema de incidencias.
+- Sistema de sanciones.
+- Histórico de reservas.
+- Gestión de múltiples pistas.
+- Navegación por semanas futuras.

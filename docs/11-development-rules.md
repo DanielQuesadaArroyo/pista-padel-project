@@ -1,208 +1,330 @@
-# Jardines de hercules Pista Padel
+# 11 - Development Rules
 
-## 11 - Development Rules
+## Objetivo
 
-**Versión:** 1.0
+Este documento define las normas de desarrollo que deberán seguirse durante la implementación de la aplicación Jardines de Hércules II - Pista de Pádel.
 
-Este documento define las normas obligatorias de desarrollo del proyecto.
-
----
-
-# 1. Principios
-
-- Código limpio.
-- Simplicidad.
-- Legibilidad.
-- Componentes reutilizables.
-- TypeScript estricto.
+Su objetivo es garantizar consistencia, simplicidad y mantenibilidad.
 
 ---
 
-# 2. Stack
+# Principio Fundamental
 
-- Nuxt 4
+Ante varias soluciones válidas:
+
+```text
+Siempre se elegirá la solución más simple.
+```
+
+---
+
+# Filosofía del Proyecto
+
+## Simplicidad
+
+La aplicación está diseñada para una comunidad con aproximadamente 220 viviendas y unos 20 usuarios habituales.
+
+No se implementarán soluciones complejas para resolver problemas poco probables.
+
+---
+
+## Administración Manual
+
+Si una tarea ocurre pocas veces:
+
+```text
+Se realizará manualmente desde Supabase.
+```
+
+Antes de automatizar cualquier proceso deberá justificarse claramente su necesidad.
+
+---
+
+## Mobile First
+
+Todas las decisiones de diseño y desarrollo deberán priorizar:
+
+```text
+Teléfono móvil
+```
+
+sobre escritorio.
+
+---
+
+# Tecnologías Obligatorias
+
+## Frontend
+
+- Nuxt 3
 - Vue 3
 - TypeScript
-- Pinia
-- Tailwind CSS
+
+## Backend
+
 - Supabase
 
-No incorporar librerías sin una necesidad justificada.
+## Base de Datos
+
+- PostgreSQL (Supabase)
+
+## Realtime
+
+- Supabase Realtime
 
 ---
 
-# 3. Estructura del proyecto
+# Tecnologías No Permitidas
 
+No se implementarán:
+
+- Backend Node.js propio.
+- API REST personalizada.
+- Microservicios.
+- GraphQL.
+- Redux.
+- Vuex.
+- Sistemas de caché complejos.
+- Librerías innecesarias.
+
+---
+
+# Organización del Proyecto
+
+## Estructura recomendada
+
+```text
+/pages
+/components
+/composables
+/services
+/types
+/assets
+/public
 ```
-components/
-composables/
-layouts/
-middleware/
-pages/
-plugins/
-server/
-stores/
-types/
-utils/
+
+---
+
+# Tipado
+
+## Regla
+
+Todo el código deberá estar tipado mediante:
+
+```text
+TypeScript
 ```
 
-Mantener responsabilidades separadas.
+Evitar:
+
+```ts
+any
+```
+
+salvo casos excepcionales.
 
 ---
 
-# 4. Convenciones
+# Componentes
 
-- Componentes: PascalCase
-- Composables: useXxx
-- Stores: useXxxStore
-- Utilidades: camelCase
-- Tipos: PascalCase
+## Reutilización
 
----
+Todo elemento repetido deberá convertirse en componente reutilizable.
 
-# 5. Componentes
+Ejemplos:
 
-Los componentes:
-
-- No accederán directamente a la base de datos.
-- No contendrán reglas de negocio.
-- Emitirán eventos al padre.
-- Recibirán datos mediante props.
+- Menú.
+- Modal cancelar.
+- Slot de reserva.
+- Listados.
 
 ---
 
-# 6. Composables
+## Responsabilidad Única
 
-Toda comunicación con Supabase deberá centralizarse en composables reutilizables.
-
-No duplicar consultas.
+Cada componente deberá tener una única responsabilidad.
 
 ---
 
-# 7. Stores
+# Base de Datos
 
-Pinia almacenará únicamente estado compartido.
+## Consultas
 
-No guardar datos derivados que puedan calcularse.
-
----
-
-# 8. Backend
-
-Toda regla crítica deberá ejecutarse en backend.
-
-Nunca confiar en validaciones del frontend.
+Las consultas deberán ser simples y fáciles de mantener.
 
 ---
 
-# 9. Base de datos
+## Validaciones Críticas
 
-Las modificaciones del esquema se realizarán exclusivamente mediante migraciones.
+Las reglas de negocio importantes deberán validarse siempre en backend.
 
-No modificar tablas manualmente en producción.
+Ejemplos:
 
----
+- Máximo 3 reservas.
+- Máximo 1 reserva por día.
+- Horario no repetido.
+- Usuario activo.
 
-# 10. Seguridad
-
-- RLS obligatoria.
-- auth.uid() como única fuente de identidad.
-- No confiar en parámetros enviados por el cliente.
-
----
-
-# 11. Estilo
-
-- Funciones pequeñas.
-- Un único propósito por función.
-- Evitar anidamientos profundos.
-- Retornos tempranos.
-- Código autodocumentado.
+Nunca confiar exclusivamente en validaciones frontend.
 
 ---
 
-# 12. Comentarios
+# Seguridad
 
-Comentar únicamente decisiones complejas.
+## RLS
 
-No comentar código evidente.
-
----
-
-# 13. Manejo de errores
-
-Todos los errores deberán controlarse.
-
-Nunca mostrar errores internos al usuario.
-
-Registrar errores para depuración.
+Se utilizarán políticas RLS en Supabase.
 
 ---
 
-# 14. Rendimiento
+## Acceso a Datos
 
-- Evitar consultas repetidas.
-- Reutilizar resultados.
-- Lazy loading cuando proceda.
-- Mantener el número de renders al mínimo.
+Un usuario únicamente podrá:
 
----
-
-# 15. Accesibilidad
-
-Todos los elementos interactivos deberán ser accesibles mediante teclado y disponer de etiquetas apropiadas.
+- Acceder a su perfil.
+- Gestionar sus reservas.
 
 ---
 
-# 16. Git
+# Realtime
 
-Commits pequeños y descriptivos.
+## Uso
 
-No mezclar cambios funcionales con refactorizaciones.
+Realtime se utilizará únicamente para:
 
----
-
-# 17. Calidad
-
-Antes de considerar una tarea finalizada:
-
-- Sin errores de TypeScript.
-- Sin errores de lint.
-- Sin warnings importantes.
-- Pruebas superadas.
+- Reservas.
+- Notificaciones.
+- Estado del usuario.
 
 ---
 
-# 18. Prohibiciones
+## Prohibido
 
-No:
-
-- Duplicar lógica.
-- Hardcodear reglas de negocio.
-- Acceder directamente a tablas desde componentes.
-- Ignorar errores.
-- Crear código muerto.
+- Polling constante.
+- WebSockets personalizados.
+- Sistemas de presencia.
 
 ---
 
-# 19. Reglas para IA
+# Gestión de Errores
 
-Claude/Codex deberán:
+## Regla
 
-- Respetar toda la documentación de `/docs`.
-- No inventar funcionalidades.
-- Reutilizar código existente.
-- Mantener coherencia con la arquitectura.
-- Solicitar aclaraciones si existe ambigüedad.
+Los errores deben mostrarse al usuario mediante mensajes claros.
+
+Evitar mensajes técnicos.
 
 ---
 
-# 20. Checklist
+## Ejemplo
 
-- Arquitectura respetada.
-- Código modular.
-- Tipado completo.
-- Reglas de negocio en backend.
-- Componentes reutilizables.
-- Sin duplicación.
-- Documentación actualizada.
+Correcto:
+
+```text
+Ha alcanzado el máximo de 3 reservas activas.
+```
+
+Incorrecto:
+
+```text
+Database constraint violation.
+```
+
+---
+
+# Rendimiento
+
+## Prioridad
+
+La aplicación debe sentirse rápida.
+
+---
+
+## Evitar
+
+- Consultas innecesarias.
+- Componentes excesivamente complejos.
+- Recargas completas de página.
+
+---
+
+# Contenido Estático
+
+## Normas de uso
+
+Se almacenarán en:
+
+```text
+JSON o TypeScript
+```
+
+---
+
+## Acerca de
+
+Se almacenará en:
+
+```text
+JSON o TypeScript
+```
+
+---
+
+# Mantenimiento
+
+## Gestión
+
+Todo el mantenimiento de la pista será manual.
+
+No deben desarrollarse automatismos adicionales.
+
+---
+
+# Funcionalidades Fuera de Alcance
+
+No se desarrollarán:
+
+- Panel de administración.
+- Recuperación automática de contraseña.
+- Cambio de contraseña.
+- Sistema de incidencias.
+- Sistema de sanciones.
+- Históricos complejos.
+- Estadísticas.
+- Reservas recurrentes.
+- Listas de espera.
+- Notificaciones push.
+- Chats.
+- Integraciones externas.
+
+---
+
+# Referencia Funcional
+
+La implementación deberá respetar obligatoriamente:
+
+```text
+00-project-overview.md
+01-business-rules.md
+02-ui-ux.md
+03-database.md
+04-authentication.md
+05-reservations.md
+06-realtime.md
+07-api.md
+08-pages.md
+09-components.md
+10-testing.md
+```
+
+---
+
+# Referencia Visual
+
+La implementación deberá utilizar como referencia visual oficial los diseños ubicados en:
+
+```text
+/docs/design
+```
+
+Cualquier diferencia entre implementación y diseño deberá justificarse explícitamente.

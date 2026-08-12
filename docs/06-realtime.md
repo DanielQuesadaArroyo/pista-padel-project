@@ -1,97 +1,281 @@
-# Jardines de hercules Pista Padel
+# 06 - Realtime
 
-## 06 - Realtime
+## Objetivo
 
-**Versión:** 1.0
+Este documento define el uso de funcionalidades Realtime dentro de la aplicación Jardines de Hércules II - Pista de Pádel.
 
-Este documento define el comportamiento en tiempo real de la aplicación mediante Supabase Realtime.
-
----
-
-# 1. Objetivo
-
-Todos los usuarios deben visualizar el mismo estado de la pista sin recargar la página.
+El objetivo es garantizar que los usuarios visualicen los cambios importantes sin necesidad de recargar manualmente la aplicación.
 
 ---
 
-# 2. Tecnología
+# Tecnología
 
-- Supabase Realtime
-- PostgreSQL Changes
+Se utilizará:
 
-No se utilizarán WebSockets personalizados.
+```text
+Supabase Realtime
+```
 
----
-
-# 3. Eventos
-
-La aplicación reaccionará a:
-
-- Nueva reserva.
-- Cancelación de reserva.
-- Bloqueo de un día.
-- Desbloqueo de un día.
-- Cambio de temporada.
-- Cambio de estado del usuario (active/disabled).
+para escuchar cambios en determinadas tablas.
 
 ---
 
-# 4. Flujo
+# Alcance
 
-1. Backend confirma la operación.
-2. PostgreSQL persiste los datos.
-3. Supabase Realtime publica el evento.
-4. Todos los clientes reciben el cambio.
-5. La interfaz se actualiza automáticamente.
+Realtime se utilizará únicamente donde aporte valor real a los usuarios.
+
+No se utilizará para funcionalidades innecesarias.
 
 ---
 
-# 5. Suscripciones
+# Tabla Bookings
 
-El calendario deberá permanecer suscrito mientras la pantalla esté abierta.
+## Objetivo
 
-Las suscripciones deberán cerrarse al abandonar la pantalla.
-
----
-
-# 6. Sincronización
-
-Nunca modificar el estado únicamente desde el frontend.
-
-Toda actualización deberá provenir del backend y de Realtime.
+Actualizar automáticamente las pantallas relacionadas con reservas.
 
 ---
 
-# 7. Reconexión
+## Eventos escuchados
 
-Si se pierde la conexión:
-
-- intentar reconectar automáticamente;
-- al recuperar la conexión, refrescar el estado completo.
-
----
-
-# 8. Conflictos
-
-Si un usuario intenta reservar una franja ya ocupada debido a un cambio recibido por Realtime:
-
-- cancelar la operación;
-- mostrar un Toast indicando que la franja ya no está disponible.
+```text
+INSERT
+UPDATE
+DELETE
+```
 
 ---
 
-# 9. Rendimiento
+## Comportamiento
 
-Solo actualizar los elementos afectados.
+Cuando se produzca un cambio en:
 
-No recargar toda la aplicación.
+```text
+bookings
+```
+
+la aplicación actualizará automáticamente:
+
+- Reservas
+- Mis reservas
+
+sin necesidad de recargar la página.
 
 ---
 
-# 10. Checklist
+## Casos cubiertos
 
-- Actualización automática.
-- Sin recargar la página.
-- Reconexión automática.
-- Limpieza de suscripciones.
-- Estado consistente entre todos los clientes.
+### Nueva reserva
+
+Un usuario reserva una pista.
+
+Resultado:
+
+- El slot cambia automáticamente.
+- El resto de usuarios visualizan la ocupación.
+
+---
+
+### Cancelación
+
+Un usuario cancela una reserva.
+
+Resultado:
+
+- El slot vuelve a estar disponible.
+- El resto de usuarios visualizan el cambio.
+
+---
+
+### Mantenimiento
+
+El administrador crea un registro:
+
+```text
+maintenance
+```
+
+Resultado:
+
+- El slot queda bloqueado automáticamente.
+
+---
+
+# Tabla Notifications
+
+## Objetivo
+
+Actualizar automáticamente el panel de notificaciones.
+
+---
+
+## Eventos escuchados
+
+```text
+INSERT
+DELETE
+UPDATE
+```
+
+---
+
+## Comportamiento
+
+Cuando cambie una notificación:
+
+- Se actualizará automáticamente la pantalla de Notificaciones.
+
+---
+
+## Casos cubiertos
+
+### Nueva notificación
+
+Se añade una nueva notificación.
+
+Resultado:
+
+- Aparece automáticamente en pantalla.
+
+---
+
+### Eliminación
+
+Se elimina una notificación.
+
+Resultado:
+
+- Desaparece automáticamente.
+
+---
+
+# Tabla Profiles
+
+## Objetivo
+
+Detectar cambios relevantes sobre el usuario autenticado.
+
+---
+
+## Evento principal
+
+```text
+UPDATE
+```
+
+---
+
+## Usuario deshabilitado
+
+Si:
+
+```text
+active = false
+```
+
+la aplicación:
+
+1. Cerrará la sesión.
+2. Ejecutará signOut().
+3. Redirigirá al Login.
+4. Mostrará un mensaje informativo.
+
+---
+
+## Cambio de alias
+
+Si el alias del usuario cambia desde otra sesión:
+
+- La interfaz actualizará automáticamente el nuevo valor.
+
+---
+
+# Estrategia de Actualización
+
+## Preferencia
+
+Se priorizará:
+
+```text
+Realtime
+```
+
+antes que:
+
+```text
+Polling
+```
+
+---
+
+## Polling
+
+No se implementarán procesos periódicos de consulta.
+
+Ejemplo:
+
+```text
+Cada 5 segundos
+Cada 10 segundos
+Cada 30 segundos
+```
+
+No permitidos.
+
+---
+
+# Reconexión
+
+## Pérdida de conexión
+
+Si el usuario pierde temporalmente la conexión:
+
+- Supabase Realtime gestionará la reconexión automáticamente.
+
+---
+
+## Recuperación
+
+Una vez recuperada la conexión:
+
+- La información volverá a sincronizarse automáticamente.
+
+---
+
+# Rendimiento
+
+## Volumen esperado
+
+La comunidad tiene aproximadamente:
+
+```text
+220 viviendas
+```
+
+y un número reducido de usuarios concurrentes.
+
+---
+
+## Impacto
+
+El uso de Realtime tendrá un coste muy bajo y será suficiente para el tamaño de la comunidad.
+
+---
+
+# Funcionalidades Excluidas
+
+No se implementarán:
+
+- Chats.
+- Mensajería instantánea.
+- Indicadores de usuario conectado.
+- Presencia.
+- Escritura en tiempo real.
+- Contadores de usuarios online.
+- WebSockets personalizados.
+
+La funcionalidad Realtime queda limitada exclusivamente a:
+
+- Reservas.
+- Notificaciones.
+- Estado del usuario.

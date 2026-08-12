@@ -1,39 +1,44 @@
+# Nuxt 4 & Nitro build outputs
+.nuxt/
+.output/
+.nitro/
+dist/
+.cache/
+
+# Dependencies
+node_modules/
+
+# Environment variables & secrets (¡Crucial para no subir claves privadas!)
+.env
+.env.*
+!.env.example
+
+# Supabase CLI / Local development
+.supabase/
+
 # Logs
-logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-.DS_Store
-dist
-dist-ssr
-coverage
-*.local
-
-# Editor directories and files
+# Editor & IDE settings
 .vscode/*
 !.vscode/extensions.json
-.idea
+!.vscode/settings.json
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-*.tsbuildinfo
-
-.eslintcache
-
-# Cypress
-/cypress/videos/
-/cypress/screenshots/
-
-# Vitest
-__screenshots__/
-
-# Vite
-*.timestamp-*-*.mjs
+# System & OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

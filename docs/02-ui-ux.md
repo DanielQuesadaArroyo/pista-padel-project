@@ -1,475 +1,189 @@
-# Jardines de hercules Pista Padel
+# 02 - UI / UX
 
-## 02 - UI & UX
+## Principios de Diseño
 
-**Versión:** 1.0
-
-Este documento define el comportamiento visual de toda la aplicación.
-
-El objetivo principal es conseguir una aplicación extremadamente sencilla, rápida y fácil de utilizar desde un teléfono móvil.
-
----
-
-# 1. Filosofía de diseño
-
-La interfaz debe transmitir:
-
-- simplicidad
-- limpieza
-- rapidez
-- confianza
-
-Nunca deberá parecer una aplicación empresarial.
-
-Debe sentirse como una pequeña aplicación creada exclusivamente para la comunidad.
+- Mobile First.
+- Máxima simplicidad.
+- Navegación clara.
+- Acciones mínimas para reservar.
+- Interfaz optimizada para usuarios no técnicos.
 
 ---
 
-# 2. Mobile First
+## Paleta Funcional
 
-Toda la interfaz se diseña primero para móvil.
+### Reservas
 
-Posteriormente se adaptará a tablet y escritorio.
+- Gris: slot libre.
+- Negro: slot no disponible (ocupado o mantenimiento).
+- Rojo: reserva propia.
 
-No se crearán pantallas independientes para escritorio.
-
----
-
-# 3. Estilo visual
-
-Inspiración:
-
-- Material Design
-- iOS
-- Interfaces minimalistas
-
-Eliminar cualquier elemento decorativo innecesario.
+No se mostrarán alias de otros vecinos en el calendario.
 
 ---
 
-# 4. Grid
+## Navegación Principal
 
-Todo el diseño utiliza una cuadrícula basada en múltiplos de 4 px.
+El menú lateral mostrará:
 
-Espaciados habituales:
-
-- 4 px
-- 8 px
-- 12 px
-- 16 px
-- 24 px
-- 32 px
-
-Nunca utilizar medidas arbitrarias.
+1. Notificaciones
+2. Reservas
+3. Mis reservas
+4. Cambiar alias
+5. Normas de uso
+6. Acerca de
+7. Salir
 
 ---
 
-# 5. Bordes
-
-Cards
-
-16 px
-
-Botones
-
-8 px
-
-Inputs
-
-8 px
-
-Modales
-
-16 px
-
----
-
-# 6. Sombras
-
-Muy suaves.
-
-Nunca utilizar sombras agresivas.
-
-El protagonismo debe recaer sobre el color de los botones y de los slots.
-
----
-
-# 7. Colores
-
-## Color principal
-
-Verde esmeralda.
-
-Se utilizará para:
-
-- cabecera
-- botones principales
-- enlaces importantes
-
----
-
-## Gris claro
-
-Representa:
-
-Franja libre.
-
-Debe transmitir disponibilidad.
-
----
-
-## Negro
-
-Representa:
-
-- ocupado
-- mantenimiento
-
-Nunca será clickable.
-
----
-
-## Rojo
-
-Representa:
-
-Reserva propia.
-
-También se utiliza para:
-
-- botón cancelar
-- acciones destructivas
-
----
-
-## Blanco
-
-Fondo principal de toda la aplicación.
-
----
-
-# 8. Tipografía
-
-Fuente:
-
-Inter
-
-Pesos recomendados:
-
-- 400
-- 500
-- 600
-- 700
-
-No utilizar más pesos.
-
----
-
-# 9. Iconografía
-
-Utilizar exclusivamente iconos outline.
-
-Estilo:
-
-Heroicons o Lucide.
-
-Todos los iconos deberán tener el mismo estilo.
-
----
-
-# 10. Navegación
-
-Toda la aplicación utiliza un Drawer lateral.
-
-No existen pestañas inferiores.
-
-No existen múltiples menús.
-
----
-
-## Menú
-
-Opciones:
-
-- Notificaciones
-- Reservas
-- Cambiar alias
-- Mis reservas
-- Normas de uso
-- Acerca de
-- Salir
-
-En la parte superior aparece el alias del usuario.
-
-Ejemplo:
-
-JH12B
-
----
-
-# 11. Pantalla Login
+## Pantalla Login
 
 Elementos:
 
-- Logo de la comunidad
-- Usuario
-- Contraseña
-- Botón iniciar sesión
-- Recuperar contraseña (este botón lo que hará es abrir el correo electrónico de la persona para enviar un correo a la dirección xxxxxx@gmail.com con el asunto Recuperar contraseña)
+- Logo / título de la comunidad.
+- Campo email.
+- Campo contraseña.
+- Botón Iniciar sesión.
+- Enlace "¿Olvidaste tu contraseña?"
 
-Debe ser la pantalla más limpia de toda la aplicación.
+Comportamiento:
 
----
-
-# 12. Pantalla Reservas
-
-Es la pantalla principal.
-
-Debe ocupar la mayor parte del desarrollo.
-
-Contiene:
-
-- título
-- nombre comunidad
-- calendario
-
-No existen filtros.
-
-No existen búsquedas.
+- No existe recuperación automática.
+- Al pulsar el enlace se mostrará un mensaje indicando que contacte con el presidente.
 
 ---
 
-## Calendario
+## Pantalla Notificaciones
 
-Cada fila representa un día.
+Características:
 
-Cada columna representa una franja horaria.
+- Pantalla principal de la aplicación.
+- Lista cronológica.
+- Más recientes primero.
+- Sin estados leído/no leído.
+- Scroll vertical.
 
-Los slots tienen exactamente el mismo tamaño.
+Si no existen notificaciones:
 
----
-
-## Estados
-
-Libre
-
-Gris.
-
-Clickable.
+"No existen notificaciones para los próximos días."
 
 ---
 
-Reserva propia
+## Pantalla Reservas
 
-Rojo.
+Características:
 
-Clickable.
+- Vista principal de disponibilidad.
+- Calendario limitado a 7 días.
+- Día actual + 6 días.
+- Sin navegación a semanas futuras.
 
-Abre modal cancelar.
+Estados:
 
----
+- Gris → libre.
+- Negro → ocupado o mantenimiento.
+- Rojo → reserva propia.
 
-Ocupado
+Reserva:
 
-Negro.
+- Pulsar slot gris.
+- Reserva inmediata.
+- Sin confirmación previa.
 
-No clickable.
+Errores:
 
----
+- Máximo 3 reservas activas.
+- Máximo 1 reserva por día.
+- Horario repetido.
 
-Día bloqueado
-
-Todos los slots aparecen ocupados.
-
----
-
-# 13. Comportamiento de los slots
-
-Al pulsar un slot libre:
-
-- animación rápida
-- llamada backend
-- actualización realtime
-- toast éxito
-
-No existe pantalla de confirmación.
+Los mensajes se mostrarán mediante modal o aviso visual.
 
 ---
 
-# 14. Modal Cancelación
+## Modal Cancelar Reserva
 
-Overlay oscuro con blur.
+Texto:
 
-Card centrada.
+¿Está seguro de que desea cancelar esta reserva?
 
-Contiene:
+Botones:
 
-- icono
-- texto
-- botón rojo
-- botón verde
-
-Cerrar pulsando:
-
-- Continuar
-- fuera del modal
+- Confirmar
+- Cancelar
 
 ---
 
-# 15. Mis reservas
+## Pantalla Mis Reservas
 
-Lista vertical.
+Características:
 
-Cada card contiene:
+- Solo reservas activas.
+- Orden ascendente.
+- La más próxima primero.
 
-- fecha
-- horario
-- botón Anular
+Cada reserva permite:
 
-No existen acciones adicionales.
+- Pulsar sobre ella.
+- Mostrar modal de cancelación.
+
+Estado vacío:
+
+"No dispone de reservas activas."
 
 ---
 
-# 16. Cambiar alias
-
-Formulario muy simple.
+## Pantalla Cambiar Alias
 
 Elementos:
 
-- explicación
-- input
-- botón Guardar
+- Campo alias.
+- Botón Guardar.
 
-Nada más.
+Validaciones:
 
----
+- Entre 3 y 20 caracteres.
+- Obligatorio.
+- Único.
+- Sin distinguir mayúsculas/minúsculas.
+- Alias reservados bloqueados.
 
-# 17. Normas
-
-Pantalla únicamente de lectura.
-
-Permitir scroll.
-
-No existen acciones.
-
-El texto se recupera desde la base de datos.
+El botón Guardar permanecerá deshabilitado mientras los datos no sean válidos.
 
 ---
 
-# 18. Acerca de
+## Pantalla Normas de Uso
 
-Pantalla muy sencilla.
+Contenido estático.
 
-Contiene únicamente el texto configurado desde la base de datos.
+Scroll vertical.
 
----
-
-# 19. Notificaciones
-
-Lista cronológica.
-
-Orden descendente.
-
-Más recientes arriba.
-
-Cada elemento contiene:
-
-- icono
-- texto
-- fecha
-- hora
-
-No existen filtros.
+Diseño de lectura simple.
 
 ---
 
-# 20. Estados de carga
+## Pantalla Acerca de
 
-Todas las pantallas deberán tener Skeleton.
+Contenido estático.
 
-Nunca mostrar pantalla vacía mientras se carga.
+Información sobre:
 
----
+- Comunidad.
+- Aplicación.
+- Versión.
 
-# 21. Estados vacíos
-
-Ejemplos:
-
-"No tienes reservas."
-
-"No existen notificaciones."
-
-"No hay normas disponibles."
-
-Siempre acompañados de un icono.
+Scroll vertical.
 
 ---
 
-# 22. Errores
+## Responsive
 
-Los errores se mostrarán mediante Toast.
+La aplicación está diseñada prioritariamente para móviles.
 
-Nunca mediante alertas del navegador.
+Debe funcionar correctamente en:
 
----
+- Android.
+- iPhone.
+- Tablets.
+- Navegadores de escritorio.
 
-# 23. Confirmaciones
-
-Solo existe una confirmación en toda la aplicación.
-
-Cancelar una reserva.
-
-Reservar nunca requiere confirmación.
-
----
-
-# 24. Responsive
-
-Anchura máxima recomendada:
-
-480 px
-
-En escritorio la aplicación permanecerá centrada.
-
-No ocupará toda la pantalla.
-
-La sensación debe ser la de utilizar una aplicación móvil.
-
----
-
-# 25. Animaciones
-
-Todas las animaciones deberán durar entre:
-
-150 ms
-
-y
-
-250 ms.
-
-Nunca utilizar animaciones largas.
-
----
-
-# 26. Accesibilidad
-
-Todo elemento clickable deberá tener:
-
-- cursor adecuado
-- estados hover
-- estados focus
-- navegación mediante teclado
-
----
-
-# 27. Consistencia
-
-Todas las pantallas deberán mantener:
-
-- misma cabecera
-- mismos márgenes
-- mismos botones
-- misma tipografía
-- mismo estilo de tarjetas
-
-El usuario nunca debe percibir cambios de estilo entre pantallas.
+No se requieren diseños específicos para escritorio.

@@ -1,184 +1,397 @@
-# Jardines de hercules Pista Padel
+# 08 - Pages
 
-## 08 - Pages
+## Objetivo
 
-**Versión:** 1.0
+Este documento define las páginas de la aplicación Jardines de Hércules II - Pista de Pádel.
 
-Este documento describe todas las páginas de la aplicación.
+Las referencias visuales oficiales se encuentran en:
 
----
+```text
+/docs/design
+```
 
-# 1. Login
-
-Objetivo: autenticar al usuario.
-
-Componentes:
-
-- Logo
-- Email
-- Contraseña
-- Botón iniciar sesión
-- Recuperar contraseña
-- Acceso a solicitud de alta
+Los PNGs incluidos en dicha carpeta constituyen la referencia de diseño para la implementación.
 
 ---
 
-# 2. Solicitud de acceso
+# Estructura de Navegación
 
-Campos:
-
-- Escalera
-- Planta
-- Puerta
-- Email
-
-Botón:
-
-- Solicitar acceso
-
-Estados:
-
-- Formulario
-- Enviado
-- Error
+```text
+Login
+   │
+   ▼
+Notificaciones
+   │
+   ├── Reservas
+   ├── Mis reservas
+   ├── Cambiar alias
+   ├── Normas de uso
+   ├── Acerca de
+   └── Salir
+```
 
 ---
 
-# 3. Reservas
+# Página: Login
 
-Página principal.
+## Referencia
 
-Elementos:
+```text
+Login.png
+```
 
-- Cabecera
-- Calendario de 7 días
-- Slots
-- Toast
-- Realtime
+## Objetivo
 
-Acciones:
+Permitir la autenticación del usuario.
 
-- Reservar
-- Cancelar (si es propia)
+## Elementos
 
----
+- Campo email.
+- Campo contraseña.
+- Botón Iniciar sesión.
+- Enlace ¿Olvidaste tu contraseña?.
 
-# 4. Mis reservas
+## Comportamiento
 
-Lista cronológica de reservas futuras.
+Si las credenciales son válidas:
 
-Cada tarjeta muestra:
-
-- Fecha
-- Horario
-- Estado
-- Botón cancelar
-
----
-
-# 5. Cambiar alias
-
-Componentes:
-
-- Alias actual
-- Nuevo alias
-- Guardar
-
-Validar alias único.
+```text
+Login
+↓
+Notificaciones
+```
 
 ---
 
-# 6. Notificaciones
+## Olvidé mi contraseña
 
-Lista descendente por fecha.
+Al pulsar:
 
-Cada elemento:
+```text
+¿Olvidaste tu contraseña?
+```
 
-- Icono
-- Texto
-- Fecha
-- Hora
+Se mostrará un mensaje:
 
----
-
-# 7. Normas
-
-Contenido obtenido desde la base de datos.
-
-Solo lectura.
+```text
+Contacte con el presidente de la comunidad para recuperar su acceso.
+```
 
 ---
 
-# 8. Acerca de
+# Página: Notificaciones
 
-Contenido editable desde la base de datos.
+## Referencia
 
-Solo lectura.
+```text
+Notificaciones.png
+```
 
----
+## Objetivo
 
-# 9. Drawer
+Pantalla principal de la aplicación.
 
-Opciones:
+## Acceso
 
-- Notificaciones
-- Reservas
-- Cambiar alias
-- Mis reservas
-- Normas
-- Acerca de
-- Salir
+Primera pantalla tras autenticarse.
 
-Cabecera:
+## Contenido
 
-- Alias
+Lista de notificaciones.
 
----
+## Orden
 
-# 10. Página 404
+```text
+created_at DESC
+```
 
-Mensaje amigable.
+Más recientes primero.
 
-Botón:
+## Estado vacío
 
-- Volver a reservas.
+Mostrar:
 
----
-
-# 11. Página de error
-
-Mostrar error controlado.
-
-Permitir reintentar.
-
-Nunca mostrar trazas técnicas.
+```text
+No existen notificaciones para los próximos días.
+```
 
 ---
 
-# 12. Estados comunes
+# Página: Reservas
 
-Cada página deberá contemplar:
+## Referencias
 
-- Loading
-- Empty
-- Error
-- Success
+```text
+Calendario.png
+Calendario-full.png
+```
+
+## Objetivo
+
+Mostrar disponibilidad y permitir reservas.
+
+## Días visibles
+
+Siempre:
+
+```text
+Día actual + 6 días
+```
+
+Total:
+
+```text
+7 días
+```
 
 ---
 
-# 13. Responsive
+## Estados visuales
 
-Diseño Mobile First.
+### Gris
 
-Anchura máxima recomendada: 480 px.
+Slot libre.
+
+### Negro
+
+Slot ocupado o mantenimiento.
+
+### Rojo
+
+Reserva propia.
 
 ---
 
-# 14. Checklist
+## Reserva
 
-- Navegación consistente.
-- Cabecera homogénea.
-- Drawer único.
-- Skeletons.
-- Toasts.
-- Sin alertas del navegador.
+Al pulsar un slot gris:
+
+```text
+Reserva inmediata
+```
+
+No existe confirmación previa.
+
+---
+
+## Reserva propia
+
+Al pulsar un slot rojo:
+
+```text
+Mostrar modal cancelar reserva
+```
+
+---
+
+# Página: Mis reservas
+
+## Referencia
+
+```text
+My-reservas.png
+```
+
+## Objetivo
+
+Mostrar reservas activas del usuario.
+
+## Contenido
+
+Solo reservas activas.
+
+## Orden
+
+```text
+Fecha ascendente
+```
+
+La más próxima aparece primero.
+
+## Estado vacío
+
+Mostrar:
+
+```text
+No dispone de reservas activas.
+```
+
+---
+
+## Cancelación
+
+Al pulsar una reserva:
+
+```text
+Modal cancelar reserva
+```
+
+---
+
+# Página: Cambiar alias
+
+## Referencia
+
+```text
+Cambio-Alias.png
+```
+
+## Objetivo
+
+Modificar el alias visible del usuario.
+
+## Elementos
+
+- Campo alias.
+- Botón Guardar.
+
+---
+
+## Validaciones
+
+- Obligatorio.
+- Entre 3 y 20 caracteres.
+- Único.
+- Sin distinguir mayúsculas/minúsculas.
+- Alias reservado no permitido.
+
+---
+
+## Guardado
+
+Al guardar correctamente:
+
+```text
+Alias actualizado
+```
+
+---
+
+# Página: Normas de uso
+
+## Referencia
+
+```text
+Normas-Uso.png
+```
+
+## Objetivo
+
+Mostrar las normas de utilización de la pista.
+
+## Contenido
+
+Información estática cargada desde:
+
+```text
+JSON / TypeScript
+```
+
+## Navegación
+
+Scroll vertical.
+
+---
+
+# Página: Acerca de
+
+## Referencia
+
+```text
+Acerca-de.png
+```
+
+## Objetivo
+
+Mostrar información general de la aplicación.
+
+## Contenido
+
+Información estática cargada desde:
+
+```text
+JSON / TypeScript
+```
+
+## Navegación
+
+Scroll vertical.
+
+---
+
+# Página inexistente
+
+No existirán páginas para:
+
+- Administración.
+- Gestión de usuarios.
+- Configuración.
+- Estadísticas.
+- Históricos.
+- Incidencias.
+- Sanciones.
+
+Todas las tareas administrativas se realizarán directamente desde Supabase.
+
+---
+
+# Menú Lateral
+
+## Referencia
+
+```text
+Menu.png
+```
+
+## Opciones
+
+1. Notificaciones
+2. Reservas
+3. Mis reservas
+4. Cambiar alias
+5. Normas de uso
+6. Acerca de
+7. Salir
+
+---
+
+## Comportamiento
+
+El menú estará disponible desde todas las páginas autenticadas.
+
+---
+
+# Modal Cancelar Reserva
+
+## Referencia
+
+```text
+Modal-Cancelar.png
+```
+
+## Uso
+
+Se utilizará:
+
+- Desde Reservas.
+- Desde Mis reservas.
+
+---
+
+## Texto
+
+```text
+¿Está seguro de que desea cancelar esta reserva?
+```
+
+---
+
+## Acciones
+
+### Confirmar
+
+Cancela la reserva.
+
+### Cancelar
+
+Cierra la modal.

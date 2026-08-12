@@ -1,203 +1,455 @@
-# Jardines de hercules Pista Padel
+# 13 - User Flows
 
-## 13 - User Flows
+## Objetivo
 
-**Versión:** 1.0
+Este documento describe los flujos funcionales principales de la aplicación Jardines de Hércules II - Pista de Pádel.
 
-Este documento define los flujos funcionales completos de la aplicación.
-
----
-
-# 1. Objetivo
-
-Todos los flujos descritos aquí son la referencia funcional para la implementación.
-
-La IA no deberá modificar estos flujos ni añadir pasos adicionales.
+Su objetivo es servir como referencia para la implementación y validación del comportamiento esperado.
 
 ---
 
-# 2. Inicio de sesión
+# Flujo 1 - Inicio de Sesión
+
+## Escenario
+
+Usuario accede a la aplicación sin sesión activa.
+
+## Flujo
 
 ```text
-Usuario
-   │
-   ▼
+Abrir aplicación
+↓
 Pantalla Login
-   │
-Introduce email y contraseña
-   │
-   ▼
-Supabase Auth
-   │
-¿Credenciales válidas?
- ├── No → Mostrar error
- └── Sí
-      │
-      ▼
-¿status = active?
- ├── No → Cerrar sesión y mostrar mensaje
- └── Sí
-      │
-      ▼
-Pantalla de Reservas
-```
-
----
-
-# 3. Alta de usuario
-
-```text
-Vecino
-   │
-   ▼
-Envía email al administrador
-   │
-   ▼
-Administrador revisa solicitud
-   │
-¿Aprobada?
- ├── No → No se crea usuario
- └── Sí
-      │
-      ▼
-Crear usuario en Supabase Auth
-      │
-Crear registro en profiles
-      │
-Generar contraseña aleatoria
-      │
-Comunicar credenciales
-```
-
----
-
-# 4. Crear reserva
-
-```text
-Seleccionar slot libre
-      │
-      ▼
-Validaciones backend
-      │
-¿Todas correctas?
- ├── No → Mostrar error
- └── Sí
-      │
-      ▼
-Insertar reserva
-      │
-Evento Realtime
-      │
-Actualizar todos los clientes
-```
-
-Validaciones:
-
-- Usuario activo.
-- Día visible.
-- Máximo 3 reservas.
-- Horario distinto.
-- Una reserva por día.
-- Slot libre.
-- Día no bloqueado.
-
----
-
-# 5. Cancelar reserva
-
-```text
-Reserva propia
-      │
-      ▼
-Modal confirmación
-      │
-¿Confirmar?
- ├── No → Cancelar acción
- └── Sí
-      │
-      ▼
-¿Faltan más de 5 minutos?
- ├── No → Error
- └── Sí
-      │
-      ▼
-Eliminar reserva
-      │
-Realtime
-```
-
----
-
-# 6. Cambio de alias
-
-```text
-Abrir pantalla
-      │
-Introducir alias
-      │
-Validar unicidad
-      │
-Guardar
-      │
-Actualizar interfaz
-```
-
----
-
-# 7. Recuperar contraseña
-
-```text
-Login
-   │
-¿Olvidaste tu contraseña?
-   │
+↓
 Introducir email
-   │
-Supabase envía correo
-   │
-Nueva contraseña
+↓
+Introducir contraseña
+↓
+Pulsar Iniciar sesión
+↓
+Validación Supabase Auth
+↓
+Carga perfil usuario
+↓
+Comprobar active = true
+↓
+Acceso concedido
+↓
+Pantalla Notificaciones
 ```
 
 ---
 
-# 8. Logout
+# Flujo 2 - Usuario Deshabilitado
+
+## Escenario
+
+Usuario autenticado cuyo perfil ha sido desactivado.
+
+## Flujo
 
 ```text
-Drawer
-   │
-Salir
-   │
-Supabase SignOut
-   │
-Eliminar sesión
-   │
-Volver a Login
+Usuario autenticado
+↓
+profiles.active = false
+↓
+Cerrar sesión automáticamente
+↓
+Redirigir a Login
+↓
+Mostrar mensaje:
+
+"Su acceso ha sido deshabilitado.
+Contacte con el presidente de la comunidad."
 ```
 
 ---
 
-# 9. Cambio de ventana
+# Flujo 3 - Recuperación de Contraseña
 
-A las:
+## Escenario
 
-- 22:01 (invierno)
-- 23:01 (verano)
+Usuario olvida su contraseña.
 
-Se elimina el día expirado y se añade un nuevo día al final de la ventana.
+## Flujo
+
+```text
+Pantalla Login
+↓
+Pulsar "¿Olvidaste tu contraseña?"
+↓
+Mostrar mensaje:
+
+"Contacte con el presidente de la comunidad para recuperar su acceso."
+```
 
 ---
 
-# 10. Diagramas de decisión
+# Flujo 4 - Consultar Notificaciones
 
-Si cualquier validación falla, nunca se modificará la base de datos.
+## Escenario
 
-Toda decisión funcional corresponde al backend.
+Usuario autenticado.
+
+## Flujo
+
+```text
+Login correcto
+↓
+Pantalla Notificaciones
+↓
+Visualizar listado
+↓
+Scroll vertical
+```
 
 ---
 
-# 11. Checklist
+# Flujo 5 - Abrir Menú
 
-- Flujos implementados sin modificaciones.
-- Validaciones centralizadas.
-- Realtime en reservas y cancelaciones.
-- Sin pasos adicionales no documentados.
+## Escenario
+
+Usuario autenticado.
+
+## Flujo
+
+```text
+Pulsar icono menú
+↓
+Abrir menú lateral
+↓
+Seleccionar opción
+↓
+Navegar a pantalla correspondiente
+```
+
+---
+
+# Flujo 6 - Reservar Pista
+
+## Escenario
+
+Usuario realiza una reserva válida.
+
+## Flujo
+
+```text
+Pantalla Reservas
+↓
+Seleccionar slot gris
+↓
+Llamar RPC create_booking()
+↓
+Validaciones atómicas backend
+↓
+Reserva creada
+↓
+App inserta notificación (with event_date)
+↓
+Actualizar calendario
+↓
+Slot rojo
+```
+
+---
+
+# Flujo 7 - Máximo de Reservas Alcanzado
+
+## Escenario
+
+Usuario posee 3 reservas activas.
+
+## Flujo
+
+```text
+Pantalla Reservas
+↓
+Pulsar slot libre
+↓
+Llamar RPC create_booking()
+↓
+Validación backend
+↓
+Error
+
+"Ha alcanzado el máximo de 3 reservas activas."
+```
+
+---
+
+# Flujo 8 - Segunda Reserva el Mismo Día
+
+## Escenario
+
+Usuario intenta reservar dos veces el mismo día.
+
+## Flujo
+
+```text
+Pulsar slot libre
+↓
+Llamar RPC create_booking()
+↓
+Validación backend
+↓
+Error
+
+"Ya dispone de una reserva para ese día."
+```
+
+---
+
+# Flujo 9 - Horario Repetido
+
+## Escenario
+
+Usuario intenta reservar una franja horaria (`slot_id`) ya utilizada en otra reserva activa.
+
+## Flujo
+
+```text
+Pulsar slot libre
+↓
+Llamar RPC create_booking()
+↓
+Validación backend
+↓
+Error
+
+"Ya dispone de una reserva en esa franja horaria."
+```
+
+---
+
+# Flujo 10 - Concurrencia
+
+## Escenario
+
+Dos usuarios intentan reservar el mismo slot.
+
+## Flujo
+
+```text
+Usuario A pulsa reservar
+Usuario B pulsa reservar
+↓
+Llamada a RPC create_booking()
+↓
+Validaciones atómicas en PostgreSQL (bloqueo atómico / UNIQUE)
+↓
+Usuario A obtiene reserva
+↓
+Usuario B recibe error
+```
+
+---
+
+# Flujo 11 - Cancelar Reserva desde Reservas
+
+## Escenario
+
+Usuario pulsa una reserva propia.
+
+## Flujo
+
+```text
+Pantalla Reservas
+↓
+Pulsar slot rojo
+↓
+Mostrar modal cancelar
+↓
+Confirmar
+↓
+Cancelar reserva
+↓
+Generar notificación
+↓
+Actualizar calendario
+```
+
+---
+
+# Flujo 12 - Cancelar Reserva desde Mis Reservas
+
+## Escenario
+
+Usuario cancela una reserva desde su listado.
+
+## Flujo
+
+```text
+Mis reservas
+↓
+Seleccionar reserva
+↓
+Mostrar modal cancelar
+↓
+Confirmar
+↓
+Cancelar reserva
+↓
+Generar notificación
+```
+
+---
+
+# Flujo 13 - Cancelación Abortada
+
+## Escenario
+
+Usuario cierra la modal.
+
+## Flujo
+
+```text
+Modal cancelar
+↓
+Pulsar Cancelar
+↓
+Cerrar modal
+↓
+Sin cambios
+```
+
+---
+
+# Flujo 14 - Cambiar Alias
+
+## Escenario
+
+Usuario modifica su alias.
+
+## Flujo
+
+```text
+Pantalla Cambiar alias
+↓
+Introducir nuevo alias
+↓
+Validaciones
+↓
+Guardar
+↓
+Actualizar perfil
+↓
+Mostrar confirmación
+```
+
+---
+
+# Flujo 15 - Alias Duplicado
+
+## Escenario
+
+Alias ya utilizado.
+
+## Flujo
+
+```text
+Guardar alias
+↓
+Validación backend
+↓
+Error
+```
+
+---
+
+# Flujo 16 - Consultar Normas de Uso
+
+## Escenario
+
+Usuario desea consultar las normas.
+
+## Flujo
+
+```text
+Menú
+↓
+Normas de uso
+↓
+Carga contenido estático
+↓
+Scroll lectura
+```
+
+---
+
+# Flujo 17 - Consultar Acerca de
+
+## Escenario
+
+Usuario desea consultar información de la aplicación.
+
+## Flujo
+
+```text
+Menú
+↓
+Acerca de
+↓
+Carga contenido estático
+↓
+Scroll lectura
+```
+
+---
+
+# Flujo 18 - Cerrar Sesión
+
+## Escenario
+
+Usuario decide salir.
+
+## Flujo
+
+```text
+Menú
+↓
+Salir
+↓
+supabase.auth.signOut()
+↓
+Eliminar sesión
+↓
+Login
+```
+
+---
+
+# Flujo 19 - Actualización Realtime de Reservas
+
+## Escenario
+
+Otro usuario crea o cancela una reserva.
+
+## Flujo
+
+```text
+Cambio en bookings
+↓
+Evento Realtime
+↓
+Actualizar calendario
+↓
+Actualizar Mis reservas
+```
+
+---
+
+# Flujo 20 - Actualización Realtime de Notificaciones
+
+## Escenario
+
+Nueva notificación.
+
+## Flujo
+
+```text
+Cambio en notifications
+↓
+Evento Realtime
+↓
+Actualizar pantalla Notificaciones
+```

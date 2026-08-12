@@ -1,223 +1,280 @@
-# Jardines de hercules Pista Padel
+# 03 - Database
 
-## 03 - Database Design
+## Objetivo
 
-**Versión:** 1.0
+Este documento define la estructura de base de datos de la aplicación Jardines de Hércules II - Pista de Pádel.
 
-Este documento define el diseño completo de la base de datos de "Jardines de hercules Pista Padel".
-
-La base de datos será PostgreSQL gestionada mediante Supabase.
-
-La base de datos representa la única fuente de verdad del sistema.
-
-Toda la lógica crítica deberá validarse desde el backend.
+La base de datos se implementará en Supabase PostgreSQL.
 
 ---
 
-# 1. Principios
+# Esquema General
 
-- Evitar datos duplicados.
-- Mantener la integridad.
-- Minimizar inconsistencias.
-- Facilitar futuras ampliaciones.
-- Simplificar las consultas.
+## Tablas
 
----
+```text
+profiles
+settings
+slots
+bookings
+notifications
+```
 
-# 2. Modelo de datos
+Además se utilizará:
 
-Entidades:
+```text
+auth.users
+```
 
-- profiles
-- bookings
-- time_slots
-- blocked_days
-- notifications
-- rules
-- settings
-- access_requests
+gestionada por Supabase Authentication.
 
 ---
 
-# 3. Tabla profiles
+# Tabla: profiles
 
-| Campo      | Tipo      | Descripción                      |
-| ---------- | --------- | -------------------------------- |
-| id         | UUID      | PK                               |
-| email      | TEXT      | Login                            |
-| alias      | TEXT      | Visible en la aplicación         |
-| staircase  | INTEGER   | Escalera                         |
-| floor      | INTEGER   | Planta                           |
-| door       | TEXT      | Puerta                           |
-| status     | TEXT      | active / disabled                |
-| is_admin   | BOOLEAN   | Identificación del administrador |
-| created_at | TIMESTAMP | Alta                             |
+Información pública y operativa de cada usuario.
 
-Restricciones:
+## Campos
+
+| Campo | Tipo | Nulo | Descripción |
+|---------|---------|---------|---------|
+| id | uuid | No | FK a auth.users.id |
+| alias | varchar(20) | No | Alias visible |
+| staircase | varchar(10) | No | Escalera |
+| floor | varchar(10) | No | Planta |
+| door | varchar(10) | No | Puerta |
+| active | boolean | No | Usuario activo |
+| created_at | timestamptz | No | Fecha creación |
+| updated_at | timestamptz | No | Fecha actualización |
+
+## Restricciones
+
+### Alias único
 
 ```sql
-UNIQUE(alias);
-UNIQUE(staircase, floor, door);
+UNIQUE(alias)
 ```
 
----
+Comparación case-insensitive.
 
-# 4. Tabla time_slots
-
-| Campo         | Tipo    |
-| ------------- | ------- |
-| id            | UUID    |
-| season        | TEXT    |
-| start_time    | TIME    |
-| end_time      | TIME    |
-| display_order | INTEGER |
-
-Las reservas referencian siempre un `slot_id`.
-
----
-
-# 5. Tabla bookings
-
-| Campo        | Tipo      |
-| ------------ | --------- |
-| id           | UUID      |
-| user_id      | UUID      |
-| slot_id      | UUID      |
-| booking_date | DATE      |
-| created_at   | TIMESTAMP |
-
-Relaciones:
-
-- profiles (1) -> bookings (N)
-- time_slots (1) -> bookings (N)
-
-Restricción:
+### Vivienda única
 
 ```sql
-UNIQUE(booking_date, slot_id);
+UNIQUE(staircase, floor, door)
+```
+
+Solo puede existir un usuario por vivienda.
+
+---
+
+# Tabla: settings
+
+Configuración global de la aplicación.
+
+## Campos
+
+| Campo | Tipo |
+|---------|---------|
+| id | integer |
+| summer_start | date |
+| summer_end | date |
+| created_at | timestamptz |
+| updated_at | timestamptz |
+
+## Uso
+
+Permite determinar:
+
+- Temporada de verano.
+- Temporada de invierno.
+
+La selección de slots se realizará mediante código.
+
+---
+
+# Tabla: slots
+
+Define los horarios disponibles.
+
+## Campos
+
+| Campo | Tipo |
+|---------|---------|
+| id | bigint |
+| season | varchar(20) |
+| start_time | time |
+| end_time | time |
+| created_at | timestamptz |
+
+## Valores season
+
+```text
+summer
+winter
+```
+
+## Ejemplo invierno
+
+```text
+10:00 - 11:30
+11:30 - 13:00
+13:00 - 14:30
+17:00 - 18:00
+18:00 - 19:00
+19:00 - 20:30
+20:30 - 22:00
+```
+
+## Ejemplo verano
+
+```text
+10:00 - 11:30
+11:30 - 13:00
+13:00 - 14:30
+18:00 - 19:00
+19:00 - 20:00
+20:00 - 21:30
+21:30 - 23:00
 ```
 
 ---
 
-# 6. Tabla blocked_days
+# Tabla: bookings
 
-| Campo      | Tipo      |
-| ---------- | --------- |
-| id         | UUID      |
-| date       | DATE      |
-| reason     | TEXT      |
-| created_at | TIMESTAMP |
+Reservas de pista.
+
+## Campos
+
+| Campo | Tipo | Nulo | Descripción |
+|---------|---------|---------|---------|
+| id | uuid | No | ID de la reserva |
+| user_id | uuid | No | FK a profiles.id |
+| booking_date | date | No | Fecha reservada |
+| slot_id | bigint | No | FK a slots.id |
+| status | varchar(30) | No | Estado de la reserva |
+| cancelled_by_admin | boolean | Sí | Cancelación por admin |
+| created_at | timestamptz | No | Fecha creación |
+| updated_at | timestamptz | No | Fecha actualización |
+
+## Estados
+
+```text
+active
+cancelled_by_user
+cancelled_by_admin
+maintenance
+```
+
+## Relaciones
+
+```text
+user_id -> profiles.id
+slot_id -> slots.id
+```
+
+## Restricciones y Función RPC `create_booking`
+
+### Reserva única por slot
 
 ```sql
-UNIQUE(date);
+UNIQUE(booking_date, slot_id)
+```
+
+Evita reservas duplicadas para una misma franja.
+
+### Creación de reservas vía RPC
+
+La creación de reservas no se realiza por `INSERT` directo desde la aplicación, sino mediante la función RPC `create_booking(p_slot_id, p_booking_date)` que valida atómicamente en backend:
+- Usuario activo (`profiles.active = true`).
+- Máximo 3 reservas activas por usuario.
+- Máximo 1 reserva por día por usuario.
+- Horario no repetido (`slot_id` no repetido entre reservas activas).
+- Disponibilidad del slot.
+
+### Mantenimiento y Usuario Técnico
+
+`user_id` es siempre `NOT NULL`. Para las reservas de estado `maintenance` u operaciones técnicas del administrador hechas en Supabase, se asociará el ID de un usuario técnico permanente con alias `"Sistema"`.
+
+---
+
+# Tabla: notifications
+
+Notificaciones visibles para todos los vecinos.
+
+## Campos
+
+| Campo | Tipo | Nulo | Descripción |
+|---------|---------|---------|---------|
+| id | uuid | No | ID de notificación |
+| message | text | No | Texto descriptivo |
+| event_date | date | No | Fecha asociada del evento |
+| created_at | timestamptz | No | Fecha creación |
+
+## Características y Permisos RLS
+
+- No existen estados leído/no leído.
+- No existen notificaciones por usuario (son públicas).
+- Los usuarios autenticados pueden consultar (`SELECT`) e insertar (`INSERT`) notificaciones directamente desde la aplicación tras crear/cancelar una reserva.
+- El filtrado de notificaciones visibles en el calendario se realiza utilizando `event_date` coincidiendo con la ventana de 7 días visibles.
+
+---
+
+# Auditoría
+
+Todas las tablas principales incluirán:
+
+```text
+created_at
+updated_at
+```
+
+Gestionados automáticamente por base de datos.
+
+---
+
+# Relaciones
+
+```text
+auth.users
+    │
+    ▼
+profiles
+    │
+    ▼
+bookings
+    │
+    ├────► slots
+    │
+    └────► notifications (asociadas mediante event_date y creadas tras reservas)
 ```
 
 ---
 
-# 7. Tabla notifications
+# Decisiones de Diseño
 
-| Campo      | Tipo      |
-| ---------- | --------- |
-| id         | UUID      |
-| type       | TEXT      |
-| message    | TEXT      |
-| created_at | TIMESTAMP |
+## Simplicidad
 
----
+Se prioriza una estructura sencilla y fácilmente mantenible.
 
-# 8. Tabla rules
+## Administración Manual
 
-Único registro.
+Las tareas poco frecuentes se realizarán directamente desde Supabase.
 
-| Campo   | Tipo |
-| ------- | ---- |
-| id      | UUID |
-| title   | TEXT |
-| content | TEXT |
+Ejemplos:
 
----
+- Altas de usuarios.
+- Bajas de usuarios.
+- Desactivación de usuarios.
+- Mantenimiento (asignando el usuario técnico "Sistema").
+- Creación de notificaciones manuales.
 
-# 9. Tabla settings
+## Sin histórico complejo
 
-Único registro.
+No existen tablas específicas para:
 
-| Campo      | Tipo |
-| ---------- | ---- |
-| id         | UUID |
-| season     | TEXT |
-| about_text | TEXT |
+- Histórico de reservas.
+- Logs funcionales.
+- Incidencias.
+- Sanciones.
 
----
-
-# 10. Tabla access_requests
-
-| Campo       | Tipo      |
-| ----------- | --------- |
-| id          | UUID      |
-| staircase   | INTEGER   |
-| floor       | INTEGER   |
-| door        | TEXT      |
-| status      | TEXT      |
-| reviewed_at | TIMESTAMP |
-| created_at  | TIMESTAMP |
-
----
-
-# 11. Índices
-
-- bookings.booking_date
-- bookings.user_id
-- bookings.slot_id
-- profiles.alias
-- profiles.email
-- blocked_days.date
-- access_requests.status
-
----
-
-# 12. Política de borrado
-
-Los usuarios nunca se eliminan.
-
-Se marcan como:
-
-```
-status = disabled
-```
-
----
-
-# 13. Integridad
-
-La base de datos debe impedir:
-
-- viviendas duplicadas
-- alias duplicados
-- reservas duplicadas
-- días bloqueados duplicados
-
----
-
-# 14. Seguridad
-
-Todas las tablas utilizarán RLS.
-
-Cada usuario solo podrá acceder a sus propios datos.
-
----
-
-# 15. Migraciones
-
-Todo cambio del esquema deberá realizarse mediante migraciones de Supabase.
-
----
-
-# 16. Futuras ampliaciones
-
-El modelo permitirá evolucionar hacia:
-
-- múltiples pistas
-- historial de reservas
-- estadísticas
-- reservas recurrentes
-- panel de administración
+La aplicación utilizará únicamente las tablas necesarias para su funcionamiento.

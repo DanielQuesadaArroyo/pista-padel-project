@@ -1,180 +1,394 @@
-# Jardines de hercules Pista Padel
+# 14 - State Management
 
-## 14 - State Management
+## Objetivo
 
-**Versión:** 1.0
+Este documento define la estrategia de gestión de estado de la aplicación Jardines de Hércules II - Pista de Pádel.
 
-Este documento define cómo gestionar el estado de la aplicación utilizando Pinia y Vue.
-
----
-
-# 1. Objetivo
-
-Separar claramente:
-
-- Estado global.
-- Estado local.
-- Datos persistidos.
-- Datos calculados.
+La solución debe ser simple, fácil de mantener y adecuada para una comunidad con pocos usuarios concurrentes.
 
 ---
 
-# 2. Principios
+# Principio General
 
-- Pinia solo almacenará estado compartido.
-- Los componentes serán lo más "tontos" posible.
-- Toda la lógica de negocio residirá en composables y backend.
+Se utilizará la solución más sencilla posible.
+
+No se implementarán sistemas complejos de gestión de estado.
 
 ---
 
-# 3. Stores
+# Tecnología
+
+## Permitido
+
+- Vue Composables
+- Nuxt State
+- Pinia
+
+## Decisión
+
+Se utilizará:
+
+```text
+Pinia
+```
+
+como store global de la aplicación.
+
+---
+
+# Stores
 
 ## authStore
 
-Responsabilidad:
+Gestiona la sesión del usuario.
 
-- Usuario autenticado.
-- Perfil.
-- Estado de autenticación.
+### Información almacenada
 
-Nunca almacenar contraseñas.
+```text
+userId
+email
+isAuthenticated
+```
 
----
+### Responsabilidades
 
-## bookingStore
-
-Responsabilidad:
-
-- Reservas visibles.
-- Calendario.
-- Días bloqueados.
-- Temporada.
-
-No guardar datos históricos.
+- Login.
+- Logout.
+- Estado autenticado.
+- Persistencia de sesión.
 
 ---
 
-## notificationStore
+## profileStore
 
-Responsabilidad:
+Gestiona la información del perfil.
 
-- Notificaciones cargadas.
-- Estado de lectura (si se implementa en el futuro).
+### Información almacenada
+
+```text
+alias
+staircase
+floor
+door
+active
+```
+
+### Responsabilidades
+
+- Cargar perfil.
+- Actualizar alias.
+- Detectar usuario deshabilitado.
 
 ---
 
 ## settingsStore
 
-Responsabilidad:
+Gestiona la configuración global.
 
-- Normas.
-- Acerca de.
-- Configuración general.
+### Información almacenada
 
----
+```text
+summerStart
+summerEnd
+```
 
-# 4. Estado local
+### Responsabilidades
 
-Cada componente mantendrá únicamente:
-
-- Modales abiertos.
-- Inputs.
-- Loading.
-- Errores locales.
-
-Nunca almacenar datos globales.
+- Determinar temporada activa.
+- Configuración global.
 
 ---
 
-# 5. Datos obtenidos de Supabase
+## reservationsStore
 
-Siempre se consideran la fuente de verdad.
+Gestiona las reservas.
 
-Nunca asumir que el estado local es correcto.
+### Información almacenada
 
-Tras cualquier operación importante:
+```text
+calendarReservations
+myReservations
+```
 
-- confiar en Realtime.
+### Responsabilidades
 
----
-
-# 6. Datos calculados
-
-Utilizar propiedades computadas para:
-
-- Número de reservas activas.
-- Reservas del día.
-- Slots libres.
-- Slots propios.
-- Slots ocupados.
-
-No persistir estos datos.
+- Cargar reservas visibles.
+- Cargar reservas propias.
+- Crear reservas.
+- Cancelar reservas.
+- Actualización Realtime.
 
 ---
 
-# 7. Flujo de actualización
+## notificationsStore
 
-Usuario
+Gestiona las notificaciones.
 
+### Información almacenada
+
+```text
+notifications
+```
+
+### Responsabilidades
+
+- Obtener notificaciones.
+- Actualización Realtime.
+
+---
+
+# Datos No Persistentes
+
+No es necesario almacenar globalmente:
+
+- Estados de modales.
+- Formularios temporales.
+- Indicadores visuales.
+- Filtros temporales.
+
+Estos estados vivirán dentro de cada componente.
+
+---
+
+# Persistencia
+
+## Sesión
+
+La persistencia de autenticación será gestionada por:
+
+```text
+Supabase Auth
+```
+
+---
+
+## Stores
+
+No se utilizará persistencia local adicional.
+
+No se almacenará información de negocio en:
+
+```text
+localStorage
+sessionStorage
+```
+
+salvo lo que gestione internamente Supabase.
+
+---
+
+# Carga Inicial
+
+## Flujo
+
+```text
+Aplicación
 ↓
-
-Acción
-
+Recuperar sesión Supabase
 ↓
-
-Backend
-
+Cargar perfil
 ↓
-
-Base de datos
-
+Cargar settings
 ↓
-
-Realtime
-
-↓
-
-Store
-
-↓
-
-Componentes
-
-Nunca actualizar el estado manualmente antes de que el backend confirme la operación.
+Abrir Notificaciones
+```
 
 ---
 
-# 8. Persistencia
+# Realtime
 
-Persistir únicamente:
+## Bookings
 
-- Sesión de Supabase.
+Cuando cambie:
 
-No persistir:
+```text
+bookings
+```
 
-- Calendario.
-- Reservas.
-- Notificaciones.
+Actualizar:
 
-Siempre recargar desde backend.
-
----
-
-# 9. Errores
-
-Cada store deberá exponer:
-
-- loading
-- error
-
-Nunca lanzar errores sin controlar.
+```text
+calendarReservations
+myReservations
+```
 
 ---
 
-# 10. Checklist
+## Notifications
 
-- Estado mínimo.
-- Sin duplicidad.
-- Backend como fuente de verdad.
-- Pinia solo para estado compartido.
-- Datos derivados mediante computed.
+Cuando cambie:
+
+```text
+notifications
+```
+
+Actualizar:
+
+```text
+notifications
+```
+
+---
+
+## Profiles
+
+Cuando cambie:
+
+```text
+profiles
+```
+
+Actualizar:
+
+```text
+profileStore
+```
+
+Si:
+
+```text
+active = false
+```
+
+ejecutar:
+
+```text
+logout
+```
+
+---
+
+# Mutaciones
+
+## Crear reserva
+
+```text
+Crear reserva
+↓
+Actualizar store
+↓
+Actualizar interfaz
+```
+
+---
+
+## Cancelar reserva
+
+```text
+Cancelar reserva
+↓
+Actualizar store
+↓
+Actualizar interfaz
+```
+
+---
+
+## Cambiar alias
+
+```text
+Actualizar alias
+↓
+Actualizar profileStore
+↓
+Actualizar interfaz
+```
+
+---
+
+# Datos Derivados
+
+## Temporada activa
+
+Calculada a partir de:
+
+```text
+settings
+fecha actual
+```
+
+Resultado:
+
+```text
+summer
+winter
+```
+
+---
+
+## Slots visibles
+
+Calculados a partir de:
+
+```text
+temporada activa
+slots
+```
+
+---
+
+## Días visibles
+
+Calculados dinámicamente:
+
+```text
+día actual + 6 días
+```
+
+---
+
+# Principios de Implementación
+
+## Single Source of Truth
+
+Cada dato tendrá una única fuente de verdad.
+
+Ejemplos:
+
+```text
+Perfil → profileStore
+Reservas → reservationsStore
+Notificaciones → notificationsStore
+```
+
+---
+
+## Evitar Duplicidad
+
+No duplicar información entre stores.
+
+---
+
+## Simplicidad
+
+Si un dato solo se utiliza en un componente:
+
+```text
+No crear store.
+```
+
+Mantenerlo local.
+
+---
+
+# Tecnologías No Permitidas
+
+No utilizar:
+
+- Vuex.
+- Redux.
+- Zustand.
+- MobX.
+- Event Bus.
+- WebSockets personalizados.
+
+---
+
+# Objetivo Final
+
+Mantener una gestión de estado:
+
+- Simple.
+- Tipada.
+- Fácil de mantener.
+- Adecuada para el tamaño real de la comunidad.

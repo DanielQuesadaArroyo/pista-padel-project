@@ -1,87 +1,44 @@
-# Jardines de hercules Pista Padel
+# 12 - Setup
 
-## 12 - Setup
+## Objetivo
 
-**Versión:** 1.0
-
-Este documento describe cómo preparar el entorno de desarrollo desde cero.
+Este documento describe el proceso de instalación, configuración y puesta en marcha del proyecto Jardines de Hércules II - Pista de Pádel.
 
 ---
 
-# 1. Requisitos
+# Requisitos Previos
 
-- Node.js LTS (22 o superior recomendado)
+Antes de comenzar será necesario disponer de:
+
+## Software
+
+- Node.js LTS
 - npm
 - Git
-- Cuenta en Supabase
-- Cuenta en GitHub
+
+## Servicios
+
+- Cuenta de Supabase
+
+## Editor recomendado
+
+- Visual Studio Code
 
 ---
 
-# 2. Crear proyecto Supabase
+# Creación del Proyecto
 
-1. Crear un proyecto nuevo.
-2. Esperar a que finalice la inicialización.
-3. Anotar:
-   - Project URL
-   - Publishable (Anon) Key
+## Crear aplicación Nuxt
 
-No utilizar la Service Role Key en el frontend.
-
----
-
-# 3. Variables de entorno
-
-Crear un archivo `.env`:
-
-```env
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your-anon-key
+```bash
+npx nuxi@latest init jardines-hercules-padel
 ```
 
-Nunca hardcodear credenciales.
+Entrar en el proyecto:
 
----
-
-# 4. Dependencias
-
-Instalar:
-
-- Nuxt 4
-- Vue 3
-- TypeScript
-- Tailwind CSS
-- Pinia
-- @nuxtjs/supabase
-
----
-
-# 5. Base de datos
-
-Aplicar las migraciones para crear todas las tablas definidas en `03-database.md`.
-
-Activar Row Level Security y configurar las políticas.
-
----
-
-# 6. Datos iniciales
-
-Crear:
-
-- Registro inicial de `settings`.
-- Registro inicial de `rules`.
-- Franjas horarias de invierno.
-- Franjas horarias de verano.
-
----
-
-# 7. Usuario administrador
-
-Crear manualmente el primer usuario en Supabase Auth y su registro correspondiente en `profiles`.
-
----
-
-# 8. Desarrollo
+```bash
+cd jardines-hercules-padel
+```
 
 Instalar dependencias:
 
@@ -89,33 +46,340 @@ Instalar dependencias:
 npm install
 ```
 
-Iniciar la aplicación:
+---
+
+# Dependencias Principales
+
+## Supabase
+
+Instalar:
+
+```bash
+npm install @supabase/supabase-js
+```
+
+---
+
+# Configuración de Supabase
+
+## Crear proyecto
+
+Crear un nuevo proyecto en Supabase.
+
+---
+
+## Obtener credenciales
+
+Desde:
+
+```text
+Project Settings
+→ API
+```
+
+Obtener:
+
+```text
+Project URL
+Anon Key
+```
+
+---
+
+# Variables de Entorno
+
+Crear:
+
+```text
+.env
+```
+
+Contenido:
+
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+---
+
+# Configuración Nuxt
+
+## Runtime Config
+
+Archivo:
+
+```text
+nuxt.config.ts
+```
+
+Ejemplo:
+
+```ts
+export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
+    },
+  },
+})
+```
+
+---
+
+# Base de Datos
+
+## Crear tablas
+
+Crear las tablas definidas en:
+
+```text
+03-database.md
+```
+
+Tablas:
+
+```text
+profiles
+settings
+slots
+bookings
+notifications
+```
+
+---
+
+# Authentication
+
+## Configurar Auth
+
+En Supabase:
+
+```text
+Authentication
+→ Providers
+```
+
+Mantener únicamente:
+
+```text
+Email
+```
+
+---
+
+## Crear primer usuario
+
+Desde:
+
+```text
+Authentication
+→ Users
+```
+
+Crear manualmente:
+
+```text
+Email
+Contraseña
+```
+
+---
+
+## Crear perfil
+
+Insertar registro correspondiente en:
+
+```text
+profiles
+```
+
+---
+
+# Configuración Inicial
+
+## Settings
+
+Insertar registro inicial en:
+
+```text
+settings
+```
+
+Ejemplo:
+
+```text
+summer_start = 2026-05-01
+summer_end = 2026-09-30
+```
+
+---
+
+## Slots Invierno
+
+Insertar:
+
+```text
+10:00 - 11:30
+11:30 - 13:00
+13:00 - 14:30
+17:00 - 18:00
+18:00 - 19:00
+19:00 - 20:30
+20:30 - 22:00
+```
+
+---
+
+## Slots Verano
+
+Insertar:
+
+```text
+10:00 - 11:30
+11:30 - 13:00
+13:00 - 14:30
+18:00 - 19:00
+19:00 - 20:00
+20:00 - 21:30
+21:30 - 23:00
+```
+
+---
+
+# Arranque Local
+
+Ejecutar:
 
 ```bash
 npm run dev
 ```
 
----
+Aplicación disponible en:
 
-# 9. Verificaciones
-
-Comprobar:
-
-- Login.
-- Logout.
-- Recuperación de contraseña.
-- Realtime.
-- Calendario.
-- Reservas.
-- Cancelaciones.
+```text
+http://localhost:3000
+```
 
 ---
 
-# 10. Checklist
+# Build Producción
 
-- Proyecto Supabase creado.
+Generar build:
+
+```bash
+npm run build
+```
+
+Previsualizar:
+
+```bash
+npm run preview
+```
+
+---
+
+# Despliegue
+
+## Recomendado
+
+Vercel
+
+o
+
+Netlify
+
+---
+
+## Variables de entorno
+
+Configurar en el proveedor:
+
+```text
+SUPABASE_URL
+SUPABASE_ANON_KEY
+```
+
+---
+
+# Estructura Documental
+
+La carpeta:
+
+```text
+/docs
+```
+
+debe contener:
+
+```text
+00-project-overview.md
+01-business-rules.md
+02-ui-ux.md
+03-database.md
+04-authentication.md
+05-reservations.md
+06-realtime.md
+07-api.md
+08-pages.md
+09-components.md
+10-testing.md
+11-development-rules.md
+12-setup.md
+```
+
+---
+
+# Diseños
+
+Los diseños oficiales deben almacenarse en:
+
+```text
+/docs/design
+```
+
+Ejemplo:
+
+```text
+Acerca-de.png
+Calendario.png
+Calendario-full.png
+Cambio-Alias.png
+Login.png
+Menu.png
+Modal-Cancelar.png
+My-reservas.png
+Normas-Uso.png
+Notificaciones.png
+```
+
+---
+
+# Verificación Inicial
+
+Antes de comenzar el desarrollo comprobar:
+
+- Login operativo.
+- Supabase conectado.
+- Tablas creadas.
 - Variables de entorno configuradas.
-- Migraciones ejecutadas.
-- Datos iniciales cargados.
-- Administrador creado.
-- Aplicación funcionando correctamente.
+- Primer usuario creado.
+- Slots cargados.
+- Settings cargados.
+
+---
+
+# Referencias
+
+La implementación deberá seguir obligatoriamente los documentos definidos en la carpeta:
+
+```text
+/Docs
+```
+
+y los diseños almacenados en:
+
+```text
+/Docs/design
+```

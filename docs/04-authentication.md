@@ -1,199 +1,312 @@
-# Jardines de hercules Pista Padel
+# 04 - Authentication
 
-## 04 - Authentication
+## Objetivo
 
-**Versión:** 1.0
+Este documento define el sistema de autenticación de la aplicación Jardines de Hércules II - Pista de Pádel.
 
-Este documento define el sistema de autenticación y autorización de Jardines de hercules Pista Padel.
-
-La autenticación estará completamente basada en Supabase Auth.
+La autenticación será gestionada mediante Supabase Authentication.
 
 ---
 
-# 1. Objetivos
+# Proveedor de autenticación
 
-- Seguridad.
-- Simplicidad.
-- Integración nativa con Supabase.
-- Sin registro libre.
+La aplicación utilizará:
 
----
+```text
+Supabase Auth
+```
 
-# 2. Filosofía
+Método:
 
-Solo podrán acceder usuarios aprobados previamente.
+```text
+Email + Contraseña
+```
 
-No existe autorregistro.
+No se utilizarán proveedores externos:
 
-La aprobación se realiza directamente desde la base de datos.
-
----
-
-# 3. Flujo general
-
-1. El vecino solicita acceso enviando un correo electronico al administrador.
-2. Introduce escalera, planta, puerta y email.
-3. Se crea una solicitud pendiente.
-4. El administrador revisa la solicitud desde Supabase.
-5. Si la aprueba:
-   - Se crea el usuario en Supabase Auth.
-   - Se crea el registro en `profiles`.
-   - Se genera un alias (`JH + escalera + planta + puerta`).
-   - Se genera una contraseña aleatoria.
-6. El usuario inicia sesión con las credenciales recibidas.
+- Google
+- Facebook
+- Apple
+- GitHub
 
 ---
 
-# 4. Solicitud de acceso
+# Registro de usuarios
 
-Campos obligatorios:
+## Creación de cuentas
+
+Los usuarios no pueden registrarse directamente desde la aplicación.
+
+La creación de cuentas será siempre manual.
+
+## Proceso
+
+El vecino deberá contactar con el presidente de la comunidad.
+
+Facilitará:
 
 - Escalera
 - Planta
 - Puerta
 - Email
 
-Validaciones:
+Si la solicitud es aprobada:
 
-- Email válido.
-- No puede existir ya un usuario para esa vivienda.
-- No puede existir otra solicitud pendiente para esa vivienda.
-
-Estados:
-
-- pending
-- approved
-- rejected
+1. El administrador crea el usuario en Supabase Auth.
+2. El administrador crea el registro correspondiente en la tabla profiles.
+3. Se genera una contraseña inicial aleatoria.
 
 ---
 
-# 5. Inicio de sesión
+# Inicio de sesión
 
-Credenciales:
+## Datos requeridos
+
+El usuario deberá introducir:
 
 - Email
 - Contraseña
 
-No existe login mediante Google, Apple o redes sociales.
+## Validación
+
+La validación será realizada por Supabase Authentication.
 
 ---
 
-# 6. Recuperación de contraseña
+# Persistencia de sesión
 
-Se utilizará exclusivamente el flujo estándar de Supabase Auth.
+## Comportamiento
 
-No existirá lógica personalizada.
+La sesión permanecerá abierta de forma indefinida.
 
----
+El usuario no tendrá que iniciar sesión nuevamente cada vez que abra la aplicación.
 
-# 7. Cambio de alias
+La sesión finalizará únicamente cuando:
 
-El usuario únicamente podrá modificar su alias.
-
-No podrá modificar:
-
-- Email
-- Escalera
-- Planta
-- Puerta
-
-El alias deberá ser único.
+- El usuario pulse "Salir".
+- El usuario sea deshabilitado por el administrador.
+- La sesión expire por causas propias de Supabase.
 
 ---
 
-# 8. Estado del usuario
+# Cierre de sesión
+
+## Menú
+
+El menú lateral incluirá la opción:
+
+```text
+Salir
+```
+
+## Comportamiento
+
+Al pulsar:
+
+```text
+Salir
+```
+
+Se ejecutará:
+
+```text
+supabase.auth.signOut()
+```
+
+Posteriormente:
+
+- Se eliminará la sesión local.
+- Se redirigirá al Login.
+
+---
+
+# Recuperación de contraseña
+
+## Funcionalidad
+
+No existe recuperación automática de contraseña.
+
+## Pantalla Login
+
+Se mostrará:
+
+```text
+¿Olvidaste tu contraseña?
+```
+
+## Comportamiento
+
+Al pulsar:
+
+```text
+¿Olvidaste tu contraseña?
+```
+
+Se mostrará un mensaje informativo:
+
+```text
+Contacte con el presidente de la comunidad para recuperar su acceso.
+```
+
+No se enviarán correos automáticos.
+
+---
+
+# Cambio de contraseña
+
+## Funcionalidad
+
+No existe pantalla de cambio de contraseña.
+
+## Gestión
+
+Si fuera necesario modificar una contraseña:
+
+- El administrador lo realizará manualmente desde Supabase.
+
+---
+
+# Usuario deshabilitado
+
+## Campo utilizado
+
+Tabla:
+
+```text
+profiles
+```
 
 Campo:
 
-`status`
+```text
+active
+```
 
-Valores:
+## Valor
 
-- active
-- disabled
+```text
+true
+```
 
-Si un usuario está deshabilitado:
+Usuario habilitado.
 
-- No podrá iniciar sesión.
-- No podrá acceder a la aplicación.
+```text
+false
+```
 
----
-
-# 9. Sesión
-
-La sesión será gestionada por Supabase.
-
-La aplicación restaurará automáticamente la sesión si sigue siendo válida.
+Usuario deshabilitado.
 
 ---
 
-# 10. Logout
+## Comprobación
 
-Desde el menú lateral.
+La aplicación verificará periódicamente el valor:
 
-Acciones:
+```text
+active
+```
 
-- Cerrar sesión en Supabase.
-- Eliminar la sesión local.
-- Redirigir a Login.
-
----
-
-# 11. Middleware
-
-Todas las rutas privadas utilizarán middleware de autenticación.
-
-Si no existe sesión válida:
-
-- Redirigir a `/login`.
-
-Además deberá comprobarse que:
-
-`status = active`
+del usuario autenticado.
 
 ---
 
-# 12. Seguridad
+## Comportamiento
 
-Nunca confiar en datos enviados por el frontend.
+Si:
 
-El identificador del usuario siempre se obtendrá mediante:
+```text
+active = false
+```
 
-`auth.uid()`
+entonces:
+
+1. Se cerrará automáticamente la sesión.
+2. Se ejecutará signOut().
+3. Se redirigirá al Login.
+4. Se mostrará el mensaje:
+
+```text
+Su acceso ha sido deshabilitado. Contacte con el presidente de la comunidad.
+```
 
 ---
 
-# 13. RLS
+# Gestión del Email
 
-Todas las tablas deberán utilizar Row Level Security.
+## Almacenamiento
+
+El email vive exclusivamente en:
+
+```text
+auth.users
+```
+
+No se almacenará una copia en:
+
+```text
+profiles
+```
+
+---
+
+# Relación Auth / Profiles
+
+## Estructura
+
+```text
+auth.users
+    │
+    ▼
+profiles
+```
+
+## Clave
+
+```text
+profiles.id
+```
+
+será:
+
+```text
+auth.users.id
+```
+
+---
+
+# Seguridad
+
+## Acceso a perfiles
 
 Cada usuario únicamente podrá acceder a:
 
-- Su perfil.
-- Sus reservas.
+- Su propio perfil.
+- Sus propias reservas.
+
+## Notificaciones
+
+Las notificaciones son públicas para todos los usuarios autenticados.
+
+## Reservas
+
+Los usuarios únicamente podrán:
+
+- Crear reservas propias.
+- Cancelar reservas propias.
+
+No podrán modificar reservas de otros usuarios.
 
 ---
 
-# 14. Casos de error
+# Funcionalidades Excluidas
 
-- Usuario o contraseña incorrectos.
-- Usuario deshabilitado.
-- Solicitud pendiente.
-- Alias duplicado.
-- Error de conexión.
+No forman parte del proyecto:
 
-No revelar información sensible en los mensajes de error.
-
----
-
-# 15. Checklist
-
-- Sin registro libre.
-- Solicitudes aprobadas manualmente.
-- Alias único.
-- Una vivienda = un usuario.
-- Login mediante Supabase Auth.
-- Recuperación estándar de contraseña.
-- Middleware en todas las rutas privadas.
-- RLS en todas las tablas.
-- Verificación de `status = active`.
+- Registro público.
+- Verificación por email.
+- Recuperación automática de contraseña.
+- Cambio de contraseña.
+- Login social.
+- MFA.
+- Roles complejos.
+- Gestión de permisos avanzada.

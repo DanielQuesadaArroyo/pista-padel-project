@@ -1,133 +1,418 @@
-# Jardines de hercules Pista Padel
+# 10 - Testing
 
-## 10 - Testing
+## Objetivo
 
-**Versión:** 1.0
+Este documento define la estrategia de pruebas para la aplicación Jardines de Hércules II - Pista de Pádel.
 
-Este documento define la estrategia de pruebas del proyecto.
-
----
-
-# 1. Objetivos
-
-Garantizar que todas las reglas de negocio funcionan correctamente y evitar regresiones.
+El objetivo es garantizar que las funcionalidades críticas funcionan correctamente antes de poner la aplicación en producción.
 
 ---
 
-# 2. Tipos de pruebas
+# Estrategia
 
-- Unitarias
-- Integración
-- End-to-End
-- Manuales
+La prioridad será validar:
 
----
-
-# 3. Pruebas unitarias
-
-Cubrir:
-
-- Validaciones
-- Utilidades
-- Composables
-- Stores
-- Componentes puros
+- Reglas de negocio.
+- Reservas.
+- Autenticación.
+- Integridad de datos.
+- Experiencia de usuario.
 
 ---
 
-# 4. Integración
+# Pruebas de Autenticación
 
-Verificar:
+## Login correcto
 
-- Supabase Auth
-- Base de datos
-- Realtime
-- Middleware
-- API
+### Escenario
 
----
+Usuario válido.
 
-# 5. End-to-End
+### Resultado esperado
 
-Flujos principales:
-
-- Login
-- Solicitud de acceso
-- Reservar pista
-- Cancelar reserva
-- Cambiar alias
-- Recuperar contraseña
-- Logout
+- Inicio de sesión correcto.
+- Redirección a Notificaciones.
 
 ---
 
-# 6. Casos de negocio
+## Contraseña incorrecta
 
-Comprobar:
+### Resultado esperado
 
-- Máximo 3 reservas.
-- Una reserva por día.
-- Horarios diferentes.
-- Día bloqueado.
-- Usuario deshabilitado.
-- Cancelación cinco minutos antes.
-- Actualización de la ventana.
-- Cambio de temporada.
+- Error de autenticación.
+- Permanencia en Login.
 
 ---
 
-# 7. Concurrencia
+## Usuario inexistente
 
-Simular:
+### Resultado esperado
 
-- Dos usuarios reservando el mismo slot.
-- Múltiples usuarios conectados.
-- Realtime.
+- Error de autenticación.
 
 ---
 
-# 8. UI
+## Usuario deshabilitado
 
-Verificar:
+### Escenario
 
-- Responsive.
-- Drawer.
-- Toasts.
-- Skeletons.
-- Estados vacíos.
-- Modales.
+```text
+profiles.active = false
+```
+
+### Resultado esperado
+
+- Cierre automático de sesión.
+- Redirección a Login.
+- Mensaje informativo.
 
 ---
 
-# 9. Rendimiento
+# Pruebas de Alias
 
-Comprobar:
+## Cambio correcto
 
-- Tiempo de carga.
+### Resultado esperado
+
+- Alias actualizado.
+- Persistencia en base de datos.
+
+---
+
+## Alias vacío
+
+### Resultado esperado
+
+- Botón Guardar deshabilitado.
+
+---
+
+## Alias menor de 3 caracteres
+
+### Resultado esperado
+
+Mensaje:
+
+```text
+El alias debe tener al menos 3 caracteres.
+```
+
+---
+
+## Alias mayor de 20 caracteres
+
+### Resultado esperado
+
+Mensaje:
+
+```text
+El alias no puede superar los 20 caracteres.
+```
+
+---
+
+## Alias duplicado
+
+### Resultado esperado
+
+Error de validación.
+
+---
+
+## Alias reservado
+
+Valores:
+
+```text
+admin
+administrador
+presidente
+system
+sistema
+```
+
+### Resultado esperado
+
+Error de validación.
+
+---
+
+# Pruebas de Reservas
+
+## Reserva válida
+
+### Resultado esperado
+
+- Reserva creada.
+- Slot actualizado.
+- Notificación creada.
+
+---
+
+## Máximo 3 reservas activas
+
+### Escenario
+
+Usuario con 3 reservas activas.
+
+### Resultado esperado
+
+Mensaje:
+
+```text
+Ha alcanzado el máximo de 3 reservas activas.
+```
+
+---
+
+## Segunda reserva el mismo día
+
+### Resultado esperado
+
+Error de validación.
+
+---
+
+## Horario repetido
+
+### Resultado esperado
+
+Error de validación.
+
+---
+
+## Slot ocupado
+
+### Resultado esperado
+
+No se crea la reserva.
+
+---
+
+## Slot mantenimiento
+
+### Resultado esperado
+
+No se crea la reserva.
+
+---
+
+# Pruebas de Concurrencia
+
+## Reserva simultánea
+
+### Escenario
+
+Dos usuarios intentan reservar el mismo slot.
+
+### Resultado esperado
+
+- Solo una reserva creada.
+- La otra operación falla.
+
+---
+
+# Pruebas de Cancelación
+
+## Cancelación desde Mis reservas
+
+### Resultado esperado
+
+- Reserva cancelada.
+- Notificación creada.
+
+---
+
+## Cancelación desde Reservas
+
+### Resultado esperado
+
+- Apertura de modal.
+- Cancelación correcta.
+
+---
+
+## Cancelación abortada
+
+### Resultado esperado
+
+- No se realizan cambios.
+
+---
+
+# Pruebas de Notificaciones
+
+## Nueva notificación
+
+### Resultado esperado
+
+- Visible automáticamente.
 - Actualización Realtime.
-- Consultas repetidas.
 
 ---
 
-# 10. Seguridad
+## Eliminación
 
-Verificar:
+### Resultado esperado
 
-- RLS.
-- Acceso a datos ajenos.
-- Middleware.
-- Usuario deshabilitado.
-- Manipulación de peticiones.
+- Desaparición automática.
 
 ---
 
-# 11. Checklist previo al despliegue
+## Estado vacío
 
-- Todas las pruebas unitarias superadas.
-- Flujos E2E correctos.
-- Sin errores de consola.
-- Sin consultas innecesarias.
-- Responsive validado.
-- Accesibilidad básica comprobada.
-- Realtime funcionando.
-- Base de datos migrada.
+### Resultado esperado
+
+Mostrar:
+
+```text
+No existen notificaciones para los próximos días.
+```
+
+---
+
+# Pruebas de Calendario
+
+## Ventana de 7 días
+
+### Resultado esperado
+
+Mostrar:
+
+```text
+Día actual + 6 días
+```
+
+---
+
+## Cambio de día invierno
+
+### Hora
+
+```text
+22:01
+```
+
+### Resultado esperado
+
+- Eliminar día actual.
+- Añadir nuevo día.
+
+---
+
+## Cambio de día verano
+
+### Hora
+
+```text
+23:01
+```
+
+### Resultado esperado
+
+- Eliminar día actual.
+- Añadir nuevo día.
+
+---
+
+# Pruebas Realtime
+
+## Nueva reserva
+
+### Resultado esperado
+
+Actualización automática.
+
+---
+
+## Cancelación
+
+### Resultado esperado
+
+Actualización automática.
+
+---
+
+## Nueva notificación
+
+### Resultado esperado
+
+Actualización automática.
+
+---
+
+## Usuario deshabilitado
+
+### Resultado esperado
+
+Logout automático.
+
+---
+
+# Pruebas Responsive
+
+## Dispositivos
+
+Validar:
+
+- Android.
+- iPhone.
+- Tablet.
+- Navegador escritorio.
+
+---
+
+# Pruebas de Rendimiento
+
+## Carga inicial
+
+### Objetivo
+
+Tiempo de carga reducido.
+
+---
+
+## Navegación
+
+### Objetivo
+
+Transiciones fluidas.
+
+---
+
+## Realtime
+
+### Objetivo
+
+Sin retrasos perceptibles.
+
+---
+
+# Pruebas de Seguridad
+
+## Profiles
+
+Un usuario no puede acceder a perfiles ajenos.
+
+---
+
+## Reservas
+
+Un usuario no puede modificar reservas ajenas.
+
+---
+
+## Notificaciones
+
+Solo lectura para usuarios autenticados.
+
+---
+
+# Criterio de Aceptación
+
+La aplicación se considerará apta para producción cuando:
+
+- Todas las pruebas críticas sean satisfactorias.
+- No existan errores bloqueantes.
+- Las reglas de negocio estén correctamente implementadas.
+- La experiencia móvil sea correcta.

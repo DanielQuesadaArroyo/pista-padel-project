@@ -1,168 +1,386 @@
-# Jardines de hercules Pista Padel
+# 07 - API
 
-## 07 - API
+## Objetivo
 
-**Versión:** 1.0
+Este documento define las operaciones de acceso a datos utilizadas por la aplicación Jardines de Hércules II - Pista de Pádel.
 
-Este documento define el contrato entre el frontend (Nuxt) y el backend (Supabase).
+La aplicación utilizará exclusivamente Supabase como backend.
 
-La aplicación deberá minimizar el acceso directo a las tablas y centralizar toda la lógica de negocio en funciones o servicios reutilizables.
-
----
-
-# 1. Principios
-
-- Toda validación crítica se realizará en el backend.
-- El frontend nunca confiará en su propio estado.
-- Las respuestas deberán ser consistentes.
-- Todas las operaciones devolverán errores controlados.
+No existirán APIs REST personalizadas ni servidores intermedios.
 
 ---
 
-# 2. Operaciones principales
+# Arquitectura
 
-## Autenticación
-
-- Iniciar sesión
-- Cerrar sesión
-- Recuperar contraseña
-- Obtener sesión actual
-
----
-
-## Usuario
-
-- Obtener perfil
-- Actualizar alias
-
----
-
-## Solicitudes de acceso
-
-- Crear solicitud de acceso
-
----
-
-## Reservas
-
-- Obtener calendario de los próximos 7 días
-- Crear reserva
-- Cancelar reserva
-- Obtener mis reservas
-
----
-
-## Configuración
-
-- Obtener normas
-- Obtener información "Acerca de"
-- Obtener temporada activa
-
----
-
-## Notificaciones
-
-- Obtener listado de notificaciones
-
----
-
-# 3. Formato de respuesta
-
-Todas las operaciones deberán devolver una estructura uniforme.
-
-## Respuesta correcta
-
-```json
-{
-  "success": true,
-  "data": {}
-}
+```text
+Nuxt Application
+        │
+        ▼
+Supabase Client
+        │
+        ▼
+Supabase Database
 ```
 
-## Respuesta con error
+Todas las operaciones se realizarán mediante:
 
-```json
-{
-  "success": false,
-  "error": {
-    "code": "BOOKING_LIMIT_REACHED",
-    "message": "Has alcanzado el máximo de reservas."
-  }
-}
+- Supabase Auth
+- Supabase Database
+- Supabase Realtime
+
+---
+
+# Autenticación
+
+## Login
+
+### Entrada
+
+```text
+email
+password
+```
+
+### Operación
+
+```ts
+supabase.auth.signInWithPassword()
+```
+
+### Resultado
+
+- Sesión creada.
+- Token gestionado por Supabase.
+
+---
+
+## Logout
+
+### Operación
+
+```ts
+supabase.auth.signOut()
+```
+
+### Resultado
+
+- Sesión eliminada.
+- Redirección al Login.
+
+---
+
+# Profiles
+
+## Obtener perfil actual
+
+### Tabla
+
+```text
+profiles
+```
+
+### Filtro
+
+```text
+id = auth.user.id
+```
+
+### Uso
+
+- Alias.
+- Vivienda.
+- Estado activo.
+
+---
+
+## Actualizar alias
+
+### Tabla
+
+```text
+profiles
+```
+
+### Campos modificables
+
+```text
+alias
+```
+
+### Validaciones
+
+- Obligatorio.
+- Entre 3 y 20 caracteres.
+- Único.
+- No reservado.
+
+---
+
+# Settings
+
+## Obtener configuración
+
+### Tabla
+
+```text
+settings
+```
+
+### Uso
+
+Determinar:
+
+- Inicio verano.
+- Fin verano.
+
+---
+
+# Slots
+
+## Obtener slots de temporada
+
+### Tabla
+
+```text
+slots
+```
+
+### Filtro
+
+```text
+season = summer
+```
+
+o
+
+```text
+season = winter
+```
+
+### Uso
+
+Construcción del calendario.
+
+---
+
+# Bookings
+
+## Obtener reservas visibles
+
+### Tabla
+
+```text
+bookings
+```
+
+### Filtros
+
+```text
+status = active
+```
+
+y
+
+```text
+booking_date
+```
+
+dentro de los 7 días visibles.
+
+### Uso
+
+Pantalla Reservas.
+
+---
+
+## Obtener mis reservas
+
+### Tabla
+
+```text
+bookings
+```
+
+### Filtros
+
+```text
+user_id = usuario actual
+status = active
+```
+
+### Orden
+
+```text
+booking_date ASC
 ```
 
 ---
 
-# 4. Códigos de error
+## Crear reserva
 
-- UNAUTHORIZED
-- USER_DISABLED
-- INVALID_SLOT
-- SLOT_ALREADY_BOOKED
-- BOOKING_LIMIT_REACHED
-- DUPLICATE_TIME_SLOT
-- DUPLICATE_DAY_BOOKING
-- DAY_BLOCKED
-- BOOKING_NOT_FOUND
-- CANCELLATION_NOT_ALLOWED
-- VALIDATION_ERROR
-- INTERNAL_ERROR
+### Operación
 
----
+Llamada a la función RPC de Supabase:
 
-# 5. Validaciones
+```ts
+supabase.rpc('create_booking', {
+  p_slot_id: slotId,
+  p_booking_date: bookingDate
+})
+```
 
-Antes de crear una reserva deberán comprobarse:
+### Validaciones Backend (RPC)
 
-- Usuario autenticado.
 - Usuario activo.
-- Día visible.
-- Día no bloqueado.
-- Slot disponible.
-- Menos de tres reservas activas.
-- Horario no repetido.
-- Sin otra reserva ese mismo día.
+- Máximo 3 reservas activas.
+- Máximo 1 reserva por día.
+- Horario (`slot_id`) no repetido.
+- Slot libre.
 
 ---
 
-# 6. Idempotencia
+## Cancelar reserva
 
-Una misma petición repetida nunca deberá generar dos reservas.
+### Tabla
 
----
+```text
+bookings
+```
 
-# 7. Seguridad
+### Acción
 
-Nunca aceptar:
+Actualizar:
 
-- user_id
-- alias
-- email
+```text
+status = cancelled_by_user
+```
 
-como fuente de verdad desde el frontend.
+### Resultado
 
-El usuario autenticado siempre se obtendrá mediante Supabase Auth.
-
----
-
-# 8. Rendimiento
-
-Evitar múltiples consultas para una misma operación.
-
-Priorizar consultas únicas y funciones reutilizables.
+- Reserva cancelada.
+- Notificación insertada directamente por la app.
 
 ---
 
-# 9. Versionado
+# Notifications
 
-Todas las nuevas funcionalidades deberán mantener compatibilidad con las operaciones existentes.
+## Obtener notificaciones
+
+### Tabla
+
+```text
+notifications
+```
+
+### Filtros
+
+```text
+event_date
+```
+
+dentro de los 7 días visibles en el calendario.
+
+### Orden
+
+```text
+created_at DESC
+```
+
+### Uso
+
+Pantalla principal.
 
 ---
 
-# 10. Checklist
+## Crear notificación
 
-- Respuestas homogéneas.
-- Errores tipificados.
-- Validaciones en backend.
-- Sin lógica crítica en frontend.
-- Operaciones reutilizables.
+Insertada directamente por la aplicación tras realizar o cancelar una reserva.
+
+```ts
+supabase.from('notifications').insert({
+  message: '...',
+  event_date: 'YYYY-MM-DD'
+})
+```
+
+---
+
+# Realtime
+
+## Suscripciones
+
+La aplicación escuchará cambios en:
+
+```text
+bookings
+notifications
+profiles
+```
+
+---
+
+# Seguridad
+
+## Profiles
+
+Cada usuario solo podrá acceder a:
+
+```text
+Su propio perfil
+```
+
+---
+
+## Bookings
+
+Cada usuario podrá:
+
+```text
+Leer reservas visibles
+Crear reservas vía RPC create_booking
+Cancelar reservas propias
+```
+
+No podrá modificar reservas ajenas.
+
+---
+
+## Notifications
+
+Todos los usuarios autenticados podrán:
+
+```text
+Leer notificaciones (SELECT)
+Crear notificaciones (INSERT)
+```
+
+No podrán modificar ni eliminar notificaciones existentes.
+
+---
+
+# Operaciones Administrativas
+
+No se exponen mediante la aplicación.
+
+Se realizan directamente desde Supabase.
+
+Ejemplos:
+
+- Alta de usuarios.
+- Baja de usuarios.
+- Desactivación de usuarios.
+- Mantenimiento (asociado al usuario técnico permanente "Sistema").
+- Creación manual de notificaciones.
+
+---
+
+# Funcionalidades Excluidas
+
+No existirán:
+
+- API REST propia.
+- Backend Node.js.
+- Endpoints personalizados.
+- Microservicios.
+- GraphQL.
+- Integraciones externas.
