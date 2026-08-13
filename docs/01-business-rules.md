@@ -245,7 +245,7 @@ La gestión del mantenimiento será completamente manual desde Supabase.
 El administrador:
 
 1. Elimina manualmente las reservas afectadas.
-2. Crea manualmente registros de mantenimiento en `bookings` asignando el ID del usuario técnico permanente `"Sistema"` (`user_id NOT NULL`).
+2. Crea manualmente registros de mantenimiento en `bookings` asignando el ID del usuario técnico permanente `"AdminJdH"` (`user_id NOT NULL`).
 3. Crea manualmente las notificaciones necesarias.
 
 ### Alcance

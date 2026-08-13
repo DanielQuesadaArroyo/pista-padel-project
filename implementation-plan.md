@@ -3,13 +3,13 @@
 ## Decisiones consolidadas
 
 - La base de datos ya ha sido creada manualmente en Supabase. No se recrearán sus tablas ni se cargarán de nuevo sus datos iniciales.
-- La validación de `bbdd.json` (13-08-2026) confirma las tablas, RLS, claves, valores por defecto, triggers y RPCs. El índice parcial de reservas ya permite reutilizar una franja cancelada y `create_booking` distingue mantenimiento de una reserva activa. No se certifica todavía que el esquema cumpla todas las reglas: la política de actualización de `profiles` es demasiado amplia y `create_booking` no valida toda la ventana ni la temporada. La Fase 1 se limita a verificar el estado real y aplicar únicamente estos ajustes.
+- La validación final de `bbdd.json` (13-08-2026) confirma tablas, RLS, claves, restricciones, índices, triggers, permisos mínimos y RPCs. La Fase 1 está completada sin recrear tablas ni datos.
 - Las reservas se crean únicamente mediante `create_booking(p_slot_id, p_booking_date)`.
 - Las reservas se cancelan únicamente mediante `cancel_booking(p_booking_id)`.
 - No se permiten `INSERT` ni `UPDATE` directos sobre `bookings` desde la aplicación.
 - La aplicación inserta la notificación solo después de que la RPC de creación o cancelación finalice correctamente. No se usan triggers.
 - Las fechas, temporadas y ventana de reserva se calculan con `Europe/Madrid`.
-- Las reservas de mantenimiento pertenecen a un usuario técnico real, `Sistema`, y su `user_id` nunca es nulo.
+- Las reservas de mantenimiento pertenecen al usuario administrativo real `AdminJdH` y su `user_id` nunca es nulo.
 
 ## Fase 0 — Normalizar el proyecto como Nuxt
 
@@ -25,12 +25,10 @@ Validar el esquema ya existente contra `docs/01-business-rules.md`, `docs/03-dat
 
 `bbdd.json` confirma los cinco conjuntos de columnas, valores por defecto, RLS, claves principales y foráneas, alias `citext` único, vivienda única, los triggers de `updated_at` y las dos RPC requeridas. También confirma el `CHECK` de temporadas de los slots y de estados de reserva.
 
-- La política `profiles` de `UPDATE` restringe la fila a `auth.uid() = id`, pero permite modificar cualquier columna de esa fila, incluidos `active` y los datos de vivienda. Debe sustituirse o complementarse para que desde la aplicación solo pueda modificarse `alias`.
-- Las políticas de lectura de `settings`, `slots` y `bookings`, y de lectura/inserción de `notifications`, son compatibles con el plan. La lectura de todos los `profiles` difiere del criterio de mínimo privilegio previsto y deberá decidirse durante la comprobación directa según la consulta final de alias.
-- El índice único parcial `bookings_active_maintenance_date_slot_key` aplica la ocupación solo a `active` y `maintenance`. Una reserva `cancelled_by_user` libera correctamente esa franja en su fecha para cualquier usuario, incluido quien la canceló. `create_booking` detecta ambos estados y devuelve un mensaje específico ante mantenimiento.
-- `create_booking` ya valida usuario activo, límites, concurrencia y mantenimiento, pero debe añadir la ventana de siete días con rollover `Europe/Madrid` y la pertenencia del slot a la temporada de la fecha.
-- Deben añadirse las restricciones de alias (3–20 caracteres y reservados), de horario de slots (`start_time < end_time` y franja única por temporada), y de único registro de `settings`. Las RPC `SECURITY DEFINER` deben fijar un `search_path` seguro y limitar `EXECUTE` a `authenticated`.
-- Aunque la interfaz solo permita cambiar el alias, la base de datos debe revocar a `authenticated` la actualización de las demás columnas de `profiles`. Las modificaciones administrativas manuales desde Supabase conservarán sus privilegios administrativos.
+- El índice único parcial `bookings_active_maintenance_date_slot_key` bloquea únicamente los estados `active` y `maintenance`; una reserva cancelada libera su franja en la fecha correspondiente.
+- `create_booking` valida usuario activo, ventana de siete días y rollover en `Europe/Madrid`, temporada del slot, mantenimiento, límites y concurrencia. `cancel_booking` valida autenticación, propiedad y estado activo.
+- Alias, slots y configuración global tienen las restricciones requeridas. Las RPC usan `SECURITY DEFINER`, `search_path` seguro y ejecución limitada a `authenticated`.
+- Los usuarios autenticados solo pueden leer su propio perfil y actualizar su alias; las operaciones manuales siguen disponibles desde Supabase para el administrador.
 
 ### Integridad de datos
 
@@ -74,7 +72,7 @@ Recibirá `p_booking_id` y, en backend, validará atómicamente:
 
 Después actualizará exclusivamente su estado a `cancelled_by_user` y devolverá los datos de la reserva cancelada necesarios para la notificación. Una segunda confirmación o un estado no activo no producirá una nueva cancelación.
 
-**Entregable:** informe de validación del esquema existente y, solo si procede, migración de ajuste aplicable y comprobada. La base ya creada se conserva; quedarán verificadas RLS, `create_booking`, `cancel_booking`, slots, settings y el usuario técnico `Sistema`.
+**Entregable completado:** migración de ajuste aplicada y comprobada en `bbdd.json`. La base existente se conserva; quedan verificadas RLS, `create_booking`, `cancel_booking`, slots, settings y el usuario administrativo `AdminJdH`.
 
 ## Fase 2 — Tipos, fechas y servicios
 
