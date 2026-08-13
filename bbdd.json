@@ -1,0 +1,1435 @@
+[
+  {
+    "table_name": "bookings",
+    "column_name": "id",
+    "data_type": "uuid",
+    "udt_name": "uuid",
+    "is_nullable": "NO",
+    "column_default": "gen_random_uuid()",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "bookings",
+    "column_name": "user_id",
+    "data_type": "uuid",
+    "udt_name": "uuid",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "bookings",
+    "column_name": "booking_date",
+    "data_type": "date",
+    "udt_name": "date",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "bookings",
+    "column_name": "slot_id",
+    "data_type": "bigint",
+    "udt_name": "int8",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "bookings",
+    "column_name": "status",
+    "data_type": "character varying",
+    "udt_name": "varchar",
+    "is_nullable": "NO",
+    "column_default": "'active'::character varying",
+    "character_maximum_length": 30
+  },
+  {
+    "table_name": "bookings",
+    "column_name": "cancelled_by_admin",
+    "data_type": "boolean",
+    "udt_name": "bool",
+    "is_nullable": "NO",
+    "column_default": "false",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "bookings",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "udt_name": "timestamptz",
+    "is_nullable": "NO",
+    "column_default": "now()",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "bookings",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "udt_name": "timestamptz",
+    "is_nullable": "NO",
+    "column_default": "now()",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "id",
+    "data_type": "uuid",
+    "udt_name": "uuid",
+    "is_nullable": "NO",
+    "column_default": "gen_random_uuid()",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "message",
+    "data_type": "text",
+    "udt_name": "text",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "udt_name": "timestamptz",
+    "is_nullable": "NO",
+    "column_default": "now()",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "notifications",
+    "column_name": "event_date",
+    "data_type": "date",
+    "udt_name": "date",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "id",
+    "data_type": "uuid",
+    "udt_name": "uuid",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "alias",
+    "data_type": "USER-DEFINED",
+    "udt_name": "citext",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "staircase",
+    "data_type": "character varying",
+    "udt_name": "varchar",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": 10
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "floor",
+    "data_type": "character varying",
+    "udt_name": "varchar",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": 10
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "door",
+    "data_type": "character varying",
+    "udt_name": "varchar",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": 10
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "active",
+    "data_type": "boolean",
+    "udt_name": "bool",
+    "is_nullable": "NO",
+    "column_default": "true",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "udt_name": "timestamptz",
+    "is_nullable": "NO",
+    "column_default": "now()",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "profiles",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "udt_name": "timestamptz",
+    "is_nullable": "NO",
+    "column_default": "now()",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "settings",
+    "column_name": "id",
+    "data_type": "integer",
+    "udt_name": "int4",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "settings",
+    "column_name": "summer_start",
+    "data_type": "date",
+    "udt_name": "date",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "settings",
+    "column_name": "summer_end",
+    "data_type": "date",
+    "udt_name": "date",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "settings",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "udt_name": "timestamptz",
+    "is_nullable": "NO",
+    "column_default": "now()",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "settings",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "udt_name": "timestamptz",
+    "is_nullable": "NO",
+    "column_default": "now()",
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "slots",
+    "column_name": "id",
+    "data_type": "bigint",
+    "udt_name": "int8",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "slots",
+    "column_name": "season",
+    "data_type": "character varying",
+    "udt_name": "varchar",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": 20
+  },
+  {
+    "table_name": "slots",
+    "column_name": "start_time",
+    "data_type": "time without time zone",
+    "udt_name": "time",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "slots",
+    "column_name": "end_time",
+    "data_type": "time without time zone",
+    "udt_name": "time",
+    "is_nullable": "NO",
+    "column_default": null,
+    "character_maximum_length": null
+  },
+  {
+    "table_name": "slots",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "udt_name": "timestamptz",
+    "is_nullable": "NO",
+    "column_default": "now()",
+    "character_maximum_length": null
+  }
+]
+
+[
+  {
+    "table_name": "profiles",
+    "constraint_name": "profiles_alias_key",
+    "constraint_type": "u",
+    "definition": "UNIQUE (alias)"
+  },
+  {
+    "table_name": "profiles",
+    "constraint_name": "profiles_id_fkey",
+    "constraint_type": "f",
+    "definition": "FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE"
+  },
+  {
+    "table_name": "profiles",
+    "constraint_name": "profiles_pkey",
+    "constraint_type": "p",
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "table_name": "profiles",
+    "constraint_name": "profiles_staircase_floor_door_key",
+    "constraint_type": "u",
+    "definition": "UNIQUE (staircase, floor, door)"
+  },
+  {
+    "table_name": "settings",
+    "constraint_name": "settings_pkey",
+    "constraint_type": "p",
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "table_name": "slots",
+    "constraint_name": "slots_pkey",
+    "constraint_type": "p",
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "table_name": "slots",
+    "constraint_name": "slots_season_check",
+    "constraint_type": "c",
+    "definition": "CHECK (((season)::text = ANY ((ARRAY['summer'::character varying, 'winter'::character varying])::text[])))"
+  },
+  {
+    "table_name": "bookings",
+    "constraint_name": "bookings_pkey",
+    "constraint_type": "p",
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "table_name": "bookings",
+    "constraint_name": "bookings_slot_id_fkey",
+    "constraint_type": "f",
+    "definition": "FOREIGN KEY (slot_id) REFERENCES slots(id) ON DELETE RESTRICT"
+  },
+  {
+    "table_name": "bookings",
+    "constraint_name": "bookings_status_check",
+    "constraint_type": "c",
+    "definition": "CHECK (((status)::text = ANY ((ARRAY['active'::character varying, 'cancelled_by_user'::character varying, 'cancelled_by_admin'::character varying, 'maintenance'::character varying])::text[])))"
+  },
+  {
+    "table_name": "bookings",
+    "constraint_name": "bookings_user_id_fkey",
+    "constraint_type": "f",
+    "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE"
+  },
+  {
+    "table_name": "notifications",
+    "constraint_name": "notifications_pkey",
+    "constraint_type": "p",
+    "definition": "PRIMARY KEY (id)"
+  }
+]
+
+[
+  {
+    "tablename": "bookings",
+    "indexname": "bookings_active_maintenance_date_slot_key",
+    "indexdef": "CREATE UNIQUE INDEX bookings_active_maintenance_date_slot_key ON public.bookings USING btree (booking_date, slot_id) WHERE ((status)::text = ANY ((ARRAY['active'::character varying, 'maintenance'::character varying])::text[]))"
+  },
+  {
+    "tablename": "bookings",
+    "indexname": "bookings_pkey",
+    "indexdef": "CREATE UNIQUE INDEX bookings_pkey ON public.bookings USING btree (id)"
+  },
+  {
+    "tablename": "notifications",
+    "indexname": "notifications_pkey",
+    "indexdef": "CREATE UNIQUE INDEX notifications_pkey ON public.notifications USING btree (id)"
+  },
+  {
+    "tablename": "profiles",
+    "indexname": "profiles_alias_key",
+    "indexdef": "CREATE UNIQUE INDEX profiles_alias_key ON public.profiles USING btree (alias)"
+  },
+  {
+    "tablename": "profiles",
+    "indexname": "profiles_pkey",
+    "indexdef": "CREATE UNIQUE INDEX profiles_pkey ON public.profiles USING btree (id)"
+  },
+  {
+    "tablename": "profiles",
+    "indexname": "profiles_staircase_floor_door_key",
+    "indexdef": "CREATE UNIQUE INDEX profiles_staircase_floor_door_key ON public.profiles USING btree (staircase, floor, door)"
+  },
+  {
+    "tablename": "settings",
+    "indexname": "settings_pkey",
+    "indexdef": "CREATE UNIQUE INDEX settings_pkey ON public.settings USING btree (id)"
+  },
+  {
+    "tablename": "slots",
+    "indexname": "slots_pkey",
+    "indexdef": "CREATE UNIQUE INDEX slots_pkey ON public.slots USING btree (id)"
+  }
+]
+
+[
+  {
+    "table_name": "bookings",
+    "rls_enabled": true,
+    "policy_name": "Permitir ver todas las reservas a usuarios autenticados",
+    "command": "r",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "table_name": "notifications",
+    "rls_enabled": true,
+    "policy_name": "Permitir crear notificaciones",
+    "command": "a",
+    "using_expression": null,
+    "with_check_expression": "true"
+  },
+  {
+    "table_name": "notifications",
+    "rls_enabled": true,
+    "policy_name": "Permitir lectura de notificaciones",
+    "command": "r",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "table_name": "profiles",
+    "rls_enabled": true,
+    "policy_name": "Permitir a cada usuario actualizar solo su propio perfil",
+    "command": "w",
+    "using_expression": "(auth.uid() = id)",
+    "with_check_expression": null
+  },
+  {
+    "table_name": "profiles",
+    "rls_enabled": true,
+    "policy_name": "Permitir lectura de perfiles a autenticados",
+    "command": "r",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "table_name": "settings",
+    "rls_enabled": true,
+    "policy_name": "Permitir lectura de configuración",
+    "command": "r",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "table_name": "slots",
+    "rls_enabled": true,
+    "policy_name": "Permitir lectura de slots",
+    "command": "r",
+    "using_expression": "true",
+    "with_check_expression": null
+  }
+]
+
+[
+  {
+    "table_name": "bookings",
+    "trigger_name": "set_updated_at_bookings",
+    "definition": "CREATE TRIGGER set_updated_at_bookings BEFORE UPDATE ON public.bookings FOR EACH ROW EXECUTE FUNCTION handle_updated_at()"
+  },
+  {
+    "table_name": "profiles",
+    "trigger_name": "set_updated_at_profiles",
+    "definition": "CREATE TRIGGER set_updated_at_profiles BEFORE UPDATE ON public.profiles FOR EACH ROW EXECUTE FUNCTION handle_updated_at()"
+  },
+  {
+    "table_name": "settings",
+    "trigger_name": "set_updated_at_settings",
+    "definition": "CREATE TRIGGER set_updated_at_settings BEFORE UPDATE ON public.settings FOR EACH ROW EXECUTE FUNCTION handle_updated_at()"
+  }
+]
+
+[
+  {
+    "signature": "cancel_booking(uuid)",
+    "definition": "CREATE OR REPLACE FUNCTION public.cancel_booking(p_booking_id uuid)\n RETURNS boolean\n LANGUAGE plpgsql\n SECURITY DEFINER\nAS $function$\r\nDECLARE\r\n    v_user_id uuid;\r\nBEGIN\r\n\r\n    v_user_id := auth.uid();\r\n\r\n    UPDATE public.bookings\r\n    SET\r\n        status = 'cancelled_by_user',\r\n        updated_at = now()\r\n    WHERE id = p_booking_id\r\n    AND user_id = v_user_id\r\n    AND status = 'active';\r\n\r\n    IF NOT FOUND THEN\r\n        RAISE EXCEPTION 'Reserva no encontrada o no cancelable';\r\n    END IF;\r\n\r\n    RETURN true;\r\n\r\nEND;\r\n$function$\n"
+  },
+  {
+    "signature": "create_booking(bigint,date)",
+    "definition": "CREATE OR REPLACE FUNCTION public.create_booking(p_slot_id bigint, p_booking_date date)\n RETURNS uuid\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public', 'pg_temp'\nAS $function$\r\ndeclare\r\n  v_booking_id uuid;\r\n  v_user_id uuid;\r\n  v_active_count integer;\r\n  v_same_day_count integer;\r\n  v_same_slot_count integer;\r\nbegin\r\n  v_user_id := auth.uid();\r\n\r\n  if v_user_id is null then\r\n    raise exception 'Usuario no autenticado';\r\n  end if;\r\n\r\n  if not exists (\r\n    select 1\r\n    from public.profiles\r\n    where id = v_user_id\r\n      and active = true\r\n  ) then\r\n    raise exception 'Usuario desactivado';\r\n  end if;\r\n\r\n  perform pg_advisory_xact_lock(\r\n    hashtext(p_booking_date::text || '-' || p_slot_id::text)\r\n  );\r\n\r\n  if exists (\r\n    select 1\r\n    from public.bookings\r\n    where booking_date = p_booking_date\r\n      and slot_id = p_slot_id\r\n      and status = 'maintenance'\r\n  ) then\r\n    raise exception 'La franja no está disponible por mantenimiento';\r\n  end if;\r\n\r\n  if exists (\r\n    select 1\r\n    from public.bookings\r\n    where booking_date = p_booking_date\r\n      and slot_id = p_slot_id\r\n      and status = 'active'\r\n  ) then\r\n    raise exception 'La pista ya está reservada';\r\n  end if;\r\n\r\n  select count(*)\r\n    into v_active_count\r\n  from public.bookings\r\n  where user_id = v_user_id\r\n    and status = 'active';\r\n\r\n  if v_active_count >= 3 then\r\n    raise exception 'Máximo 3 reservas activas';\r\n  end if;\r\n\r\n  select count(*)\r\n    into v_same_day_count\r\n  from public.bookings\r\n  where user_id = v_user_id\r\n    and booking_date = p_booking_date\r\n    and status = 'active';\r\n\r\n  if v_same_day_count > 0 then\r\n    raise exception 'Ya existe una reserva ese día';\r\n  end if;\r\n\r\n  select count(*)\r\n    into v_same_slot_count\r\n  from public.bookings\r\n  where user_id = v_user_id\r\n    and slot_id = p_slot_id\r\n    and status = 'active';\r\n\r\n  if v_same_slot_count > 0 then\r\n    raise exception 'No puede repetir horario';\r\n  end if;\r\n\r\n  insert into public.bookings (\r\n    user_id,\r\n    booking_date,\r\n    slot_id,\r\n    status\r\n  )\r\n  values (\r\n    v_user_id,\r\n    p_booking_date,\r\n    p_slot_id,\r\n    'active'\r\n  )\r\n  returning id into v_booking_id;\r\n\r\n  return v_booking_id;\r\nend;\r\n$function$\n"
+  }
+]
+
+[
+  {
+    "grantee": "anon",
+    "table_name": "bookings",
+    "privilege_type": "DELETE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "bookings",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "bookings",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "bookings",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "bookings",
+    "privilege_type": "TRIGGER"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "bookings",
+    "privilege_type": "TRUNCATE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "bookings",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "privilege_type": "DELETE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "privilege_type": "TRIGGER"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "privilege_type": "TRUNCATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "notifications",
+    "privilege_type": "DELETE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "notifications",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "notifications",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "notifications",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "notifications",
+    "privilege_type": "TRIGGER"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "notifications",
+    "privilege_type": "TRUNCATE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "notifications",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "privilege_type": "DELETE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "privilege_type": "TRIGGER"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "privilege_type": "TRUNCATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "profiles",
+    "privilege_type": "DELETE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "profiles",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "profiles",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "profiles",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "profiles",
+    "privilege_type": "TRIGGER"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "profiles",
+    "privilege_type": "TRUNCATE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "profiles",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "privilege_type": "DELETE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "privilege_type": "TRIGGER"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "privilege_type": "TRUNCATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "settings",
+    "privilege_type": "DELETE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "settings",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "settings",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "settings",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "settings",
+    "privilege_type": "TRIGGER"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "settings",
+    "privilege_type": "TRUNCATE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "settings",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "privilege_type": "DELETE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "privilege_type": "TRIGGER"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "privilege_type": "TRUNCATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "slots",
+    "privilege_type": "DELETE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "slots",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "slots",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "slots",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "slots",
+    "privilege_type": "TRIGGER"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "slots",
+    "privilege_type": "TRUNCATE"
+  },
+  {
+    "grantee": "anon",
+    "table_name": "slots",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "slots",
+    "privilege_type": "DELETE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "slots",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "slots",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "slots",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "slots",
+    "privilege_type": "TRIGGER"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "slots",
+    "privilege_type": "TRUNCATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "slots",
+    "privilege_type": "UPDATE"
+  }
+]
+
+[
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "booking_date",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "booking_date",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "booking_date",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "booking_date",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "cancelled_by_admin",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "cancelled_by_admin",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "cancelled_by_admin",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "cancelled_by_admin",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "created_at",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "created_at",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "created_at",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "created_at",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "id",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "id",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "id",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "id",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "slot_id",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "slot_id",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "slot_id",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "slot_id",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "status",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "status",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "status",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "status",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "updated_at",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "updated_at",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "updated_at",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "updated_at",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "user_id",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "user_id",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "user_id",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "bookings",
+    "column_name": "user_id",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "created_at",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "created_at",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "created_at",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "created_at",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "event_date",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "event_date",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "event_date",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "event_date",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "id",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "id",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "id",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "id",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "message",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "message",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "message",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "notifications",
+    "column_name": "message",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "active",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "active",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "active",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "active",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "alias",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "alias",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "alias",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "alias",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "created_at",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "created_at",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "created_at",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "created_at",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "door",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "door",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "door",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "door",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "floor",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "floor",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "floor",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "floor",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "id",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "id",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "id",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "id",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "staircase",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "staircase",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "staircase",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "staircase",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "updated_at",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "updated_at",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "updated_at",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "profiles",
+    "column_name": "updated_at",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "created_at",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "created_at",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "created_at",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "created_at",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "id",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "id",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "id",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "id",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "summer_end",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "summer_end",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "summer_end",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "summer_end",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "summer_start",
+    "privilege_type": "UPDATE"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "summer_start",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "summer_start",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "summer_start",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "updated_at",
+    "privilege_type": "INSERT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "updated_at",
+    "privilege_type": "REFERENCES"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "updated_at",
+    "privilege_type": "SELECT"
+  },
+  {
+    "grantee": "authenticated",
+    "table_name": "settings",
+    "column_name": "updated_at",
+    "privilege_type": "UPDATE"
+  }
+]
+
