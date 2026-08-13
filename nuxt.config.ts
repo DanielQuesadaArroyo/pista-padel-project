@@ -1,10 +1,13 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-  future: {
-    compatibilityVersion: 4,
+  devtools: {
+    enabled: true,
   },
-  modules: ['@nuxt/ui', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/supabase'],
+  modules: ['@pinia/nuxt', '@nuxtjs/supabase'],
   supabase: {
     redirect: false, // Ajusta según si quieres redirección automática por Auth
+  },
+  typescript: {
+    strict: true,
   },
 })

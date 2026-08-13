@@ -1,6 +1,15 @@
 {
   "compilerOptions": {
     "paths": {
+      "vue-router": [
+        "../node_modules/vue-router"
+      ],
+      "vue-router/auto-routes": [
+        "../node_modules/vue-router/vue-router-auto-routes"
+      ],
+      "nuxt": [
+        "../node_modules/nuxt"
+      ],
       "@unhead/vue": [
         "../node_modules/@unhead/vue"
       ],
@@ -14,28 +23,7 @@
         "../node_modules/@vue/compiler-sfc"
       ],
       "@nuxt/schema": [
-        "../node_modules/@nuxt/schema"
-      ],
-      "nuxt": [
-        "../node_modules/nuxt"
-      ],
-      "@nuxt/icon": [
-        "../node_modules/@nuxt/icon"
-      ],
-      "@nuxt/fonts": [
-        "../node_modules/@nuxt/fonts"
-      ],
-      "@nuxtjs/color-mode": [
-        "../node_modules/@nuxtjs/color-mode"
-      ],
-      "nitropack/types": [
-        "../node_modules/nitropack/types"
-      ],
-      "nitropack/runtime": [
-        "../node_modules/nitropack/runtime"
-      ],
-      "nitropack": [
-        "../node_modules/nitropack"
+        "../node_modules/nuxt/node_modules/@nuxt/schema"
       ],
       "defu": [
         "../node_modules/defu"
@@ -51,6 +39,21 @@
       ],
       "crossws": [
         "../node_modules/crossws"
+      ],
+      "unplugin-vue-router/client": [
+        "../node_modules/unplugin-vue-router/client"
+      ],
+      "nitropack": [
+        "../node_modules/nitropack"
+      ],
+      "vite/client": [
+        "../node_modules/vite/client"
+      ],
+      "nitropack/types": [
+        "../node_modules/nitropack/types"
+      ],
+      "nitropack/runtime": [
+        "../node_modules/nitropack/runtime"
       ],
       "~": [
         ".."
@@ -82,6 +85,18 @@
       "#shared/*": [
         "../shared/*"
       ],
+      "assets": [
+        "../assets"
+      ],
+      "assets/*": [
+        "../assets/*"
+      ],
+      "public": [
+        "../public"
+      ],
+      "public/*": [
+        "../public/*"
+      ],
       "#server": [
         "../server"
       ],
@@ -97,23 +112,17 @@
       "vue-demi": [
         "../node_modules/nuxt/dist/app/compat/vue-demi"
       ],
-      "#ui": [
-        "../node_modules/@nuxt/ui/dist/runtime"
-      ],
-      "#ui/*": [
-        "../node_modules/@nuxt/ui/dist/runtime/*"
-      ],
       "#vue-router": [
         "../node_modules/vue-router"
       ],
       "#unhead/composables": [
-        "../node_modules/nuxt/dist/head/runtime/composables"
+        "../node_modules/nuxt/dist/head/runtime/composables/v3"
       ],
       "#imports": [
         "./imports"
       ],
       "#app-manifest": [
-        "./manifest/meta/c7ead5e4-b2d5-4bd4-b70f-c6693761afea.json"
+        "./manifest/meta/dev.json"
       ],
       "#components": [
         "./components"
@@ -129,14 +138,13 @@
     "skipLibCheck": true,
     "target": "ESNext",
     "allowJs": true,
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "allowArbitraryExtensions": true,
     "strict": true,
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false,
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": true,
     "module": "preserve",
@@ -147,7 +155,6 @@
       "dom.iterable",
       "webworker"
     ],
-    "libReplacement": false,
     "jsx": "preserve",
     "jsxImportSource": "vue",
     "types": [],
@@ -157,50 +164,18 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "./nuxt.d.ts",
     "../**/*",
-    "../modules/*/runtime/**/*",
-    "../test/nuxt/**/*",
-    "../tests/nuxt/**/*",
-    "../layers/*/app/**/*",
-    "../layers/*/modules/*/runtime/**/*",
-    "../shared/**/*.d.ts",
-    "../modules/*/shared/**/*.d.ts",
-    "../layers/*/shared/**/*.d.ts",
-    "../*.d.ts",
-    "../layers/*/*.d.ts",
-    "./nuxt.node.d.ts",
-    "../modules/*.*",
-    "../nuxt.config.*",
     "../.config/nuxt.*",
-    "../layers/*/nuxt.config.*",
-    "../layers/*/.config/nuxt.*",
-    "../layers/*/modules/*.*",
-    "../layers/*/modules/*/*.*",
-    "../shared/**/*",
-    "../modules/*/shared/**/*",
-    "../layers/*/shared/**/*",
+    "./nuxt.d.ts",
     "../node_modules/runtime",
-    "../node_modules/dist/runtime"
+    "../node_modules/dist/runtime",
+    ".."
   ],
   "exclude": [
-    "../node_modules",
-    "../node_modules/nuxt/node_modules",
-    "../node_modules/@nuxt/ui/node_modules",
-    "../node_modules/@pinia/nuxt/node_modules",
-    "../node_modules/@vueuse/nuxt/node_modules",
-    "../node_modules/@nuxtjs/supabase/node_modules",
-    "../node_modules/@nuxt/devtools/node_modules",
-    "../node_modules/@nuxt/telemetry/node_modules",
-    "../node_modules/@nuxt/icon/node_modules",
-    "../node_modules/@nuxt/fonts/node_modules",
-    "../node_modules/@nuxtjs/color-mode/node_modules",
     "../dist",
     "../.data",
-    "../modules/*/runtime/server/**/*",
-    "../layers/*/server/**/*",
-    "../layers/*/modules/*/runtime/server/**/*",
     "../node_modules/runtime/server",
-    "../node_modules/dist/runtime/server"
+    "../node_modules/dist/runtime/server",
+    "dev"
   ]
 }
