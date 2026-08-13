@@ -36,16 +36,16 @@ Información pública y operativa de cada usuario.
 
 ## Campos
 
-| Campo | Tipo | Nulo | Descripción |
-|---------|---------|---------|---------|
-| id | uuid | No | FK a auth.users.id |
-| alias | varchar(20) | No | Alias visible |
-| staircase | varchar(10) | No | Escalera |
-| floor | varchar(10) | No | Planta |
-| door | varchar(10) | No | Puerta |
-| active | boolean | No | Usuario activo |
-| created_at | timestamptz | No | Fecha creación |
-| updated_at | timestamptz | No | Fecha actualización |
+| Campo      | Tipo        | Nulo | Descripción         |
+| ---------- | ----------- | ---- | ------------------- |
+| id         | uuid        | No   | FK a auth.users.id  |
+| alias      | varchar(20) | No   | Alias visible       |
+| staircase  | varchar(10) | No   | Escalera            |
+| floor      | varchar(10) | No   | Planta              |
+| door       | varchar(10) | No   | Puerta              |
+| active     | boolean     | No   | Usuario activo      |
+| created_at | timestamptz | No   | Fecha creación      |
+| updated_at | timestamptz | No   | Fecha actualización |
 
 ## Restricciones
 
@@ -73,13 +73,13 @@ Configuración global de la aplicación.
 
 ## Campos
 
-| Campo | Tipo |
-|---------|---------|
-| id | integer |
-| summer_start | date |
-| summer_end | date |
-| created_at | timestamptz |
-| updated_at | timestamptz |
+| Campo        | Tipo        |
+| ------------ | ----------- |
+| id           | integer     |
+| summer_start | date        |
+| summer_end   | date        |
+| created_at   | timestamptz |
+| updated_at   | timestamptz |
 
 ## Uso
 
@@ -98,12 +98,12 @@ Define los horarios disponibles.
 
 ## Campos
 
-| Campo | Tipo |
-|---------|---------|
-| id | bigint |
-| season | varchar(20) |
-| start_time | time |
-| end_time | time |
+| Campo      | Tipo        |
+| ---------- | ----------- |
+| id         | bigint      |
+| season     | varchar(20) |
+| start_time | time        |
+| end_time   | time        |
 | created_at | timestamptz |
 
 ## Valores season
@@ -145,16 +145,16 @@ Reservas de pista.
 
 ## Campos
 
-| Campo | Tipo | Nulo | Descripción |
-|---------|---------|---------|---------|
-| id | uuid | No | ID de la reserva |
-| user_id | uuid | No | FK a profiles.id |
-| booking_date | date | No | Fecha reservada |
-| slot_id | bigint | No | FK a slots.id |
-| status | varchar(30) | No | Estado de la reserva |
-| cancelled_by_admin | boolean | Sí | Cancelación por admin |
-| created_at | timestamptz | No | Fecha creación |
-| updated_at | timestamptz | No | Fecha actualización |
+| Campo              | Tipo        | Nulo | Descripción           |
+| ------------------ | ----------- | ---- | --------------------- |
+| id                 | uuid        | No   | ID de la reserva      |
+| user_id            | uuid        | No   | FK a profiles.id      |
+| booking_date       | date        | No   | Fecha reservada       |
+| slot_id            | bigint      | No   | FK a slots.id         |
+| status             | varchar(30) | No   | Estado de la reserva  |
+| cancelled_by_admin | boolean     | Sí   | Cancelación por admin |
+| created_at         | timestamptz | No   | Fecha creación        |
+| updated_at         | timestamptz | No   | Fecha actualización   |
 
 ## Estados
 
@@ -183,6 +183,7 @@ Las reservas canceladas permanecen como histórico técnico y no bloquean una nu
 ### Creación de reservas vía RPC
 
 La creación de reservas no se realiza por `INSERT` directo desde la aplicación, sino mediante la función RPC `create_booking(p_slot_id, p_booking_date)` que valida atómicamente en backend:
+
 - Usuario activo (`profiles.active = true`).
 - Máximo 3 reservas activas por usuario.
 - Máximo 1 reserva por día por usuario.
@@ -203,7 +204,7 @@ Si las validaciones son correctas, cambia el estado a `cancelled_by_user`.
 
 ### Mantenimiento y Usuario Técnico
 
-`user_id` es siempre `NOT NULL`. Para las reservas de estado `maintenance` u operaciones técnicas del administrador hechas en Supabase, se asociará el ID de un usuario técnico permanente con alias `"Sistema"`.
+`user_id` es siempre `NOT NULL`. Para las reservas de estado `maintenance` u operaciones técnicas del administrador hechas en Supabase, se asociará el ID de un usuario técnico permanente con alias `"AdminJdH"`.
 
 ---
 
@@ -213,12 +214,12 @@ Notificaciones visibles para todos los vecinos.
 
 ## Campos
 
-| Campo | Tipo | Nulo | Descripción |
-|---------|---------|---------|---------|
-| id | uuid | No | ID de notificación |
-| message | text | No | Texto descriptivo |
-| event_date | date | No | Fecha asociada del evento |
-| created_at | timestamptz | No | Fecha creación |
+| Campo      | Tipo        | Nulo | Descripción               |
+| ---------- | ----------- | ---- | ------------------------- |
+| id         | uuid        | No   | ID de notificación        |
+| message    | text        | No   | Texto descriptivo         |
+| event_date | date        | No   | Fecha asociada del evento |
+| created_at | timestamptz | No   | Fecha creación            |
 
 ## Características y Permisos RLS
 
@@ -275,7 +276,7 @@ Ejemplos:
 - Altas de usuarios.
 - Bajas de usuarios.
 - Desactivación de usuarios.
-- Mantenimiento (asignando el usuario técnico "Sistema").
+- Mantenimiento (asignando el usuario técnico "AdminJdH").
 - Creación de notificaciones manuales.
 
 ## Sin histórico complejo

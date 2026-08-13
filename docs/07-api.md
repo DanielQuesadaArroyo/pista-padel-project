@@ -225,7 +225,7 @@ Llamada a la función RPC de Supabase:
 ```ts
 supabase.rpc('create_booking', {
   p_slot_id: slotId,
-  p_booking_date: bookingDate
+  p_booking_date: bookingDate,
 })
 ```
 
@@ -249,7 +249,7 @@ Llamada a la función RPC de Supabase:
 
 ```ts
 supabase.rpc('cancel_booking', {
-  p_booking_id: bookingId
+  p_booking_id: bookingId,
 })
 ```
 
@@ -303,7 +303,7 @@ Insertada directamente por la aplicación tras realizar o cancelar una reserva.
 ```ts
 supabase.from('notifications').insert({
   message: '...',
-  event_date: 'YYYY-MM-DD'
+  event_date: 'YYYY-MM-DD',
 })
 ```
 
@@ -373,7 +373,7 @@ Ejemplos:
 - Alta de usuarios.
 - Baja de usuarios.
 - Desactivación de usuarios.
-- Mantenimiento (asociado al usuario técnico permanente "Sistema").
+- Mantenimiento (asociado al usuario técnico permanente "AdminJdH").
 - Creación manual de notificaciones.
 
 ---
