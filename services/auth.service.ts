@@ -12,11 +12,11 @@ export function useAuthService() {
     if (error) throw error
   }
 
-  async function getSession() {
-    const { data, error } = await supabase.auth.getSession()
-    if (error) throw error
-    return data.session
+  async function getUser() {
+    const { data, error } = await supabase.auth.getUser()
+    if (error) return null
+    return data.user
   }
 
-  return { getSession, signIn, signOut }
+  return { getUser, signIn, signOut }
 }

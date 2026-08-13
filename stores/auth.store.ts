@@ -1,4 +1,4 @@
-import type { Session } from '@supabase/supabase-js'
+import type { User } from '@supabase/supabase-js'
 import { useAuthService } from '~/services/auth.service'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -7,27 +7,27 @@ export const useAuthStore = defineStore('auth', () => {
   const isReady = ref(false)
   const isAuthenticated = computed(() => userId.value !== null)
 
-  function setSession(session: Session | null) {
-    userId.value = session?.user.id ?? null
-    email.value = session?.user.email ?? null
+  function setUser(user: User | null) {
+    userId.value = user?.id ?? null
+    email.value = user?.email ?? null
   }
 
   async function restoreSession() {
-    const session = await useAuthService().getSession()
-    setSession(session)
+    const user = await useAuthService().getUser()
+    setUser(user)
     isReady.value = true
-    return session
+    return user
   }
 
   async function signIn(emailAddress: string, password: string) {
-    const { session } = await useAuthService().signIn(emailAddress, password)
-    setSession(session)
+    await useAuthService().signIn(emailAddress, password)
+    await restoreSession()
   }
 
   async function signOut() {
     await useAuthService().signOut()
-    setSession(null)
+    setUser(null)
   }
 
-  return { email, isAuthenticated, isReady, restoreSession, setSession, signIn, signOut, userId }
+  return { email, isAuthenticated, isReady, restoreSession, setUser, signIn, signOut, userId }
 })

@@ -38,14 +38,19 @@ export default defineNuxtPlugin(async () => {
   await loadAuthenticatedState()
 
   supabase.auth.onAuthStateChange((_event, session) => {
-    authStore.setSession(session)
-    if (session?.user.id) {
-      void loadAuthenticatedState()
+    setTimeout(() => {
+      void refreshAuthenticationState(session !== null)
+    }, 0)
+  })
+
+  async function refreshAuthenticationState(hasSession: boolean) {
+    if (hasSession && await authStore.restoreSession()) {
+      await loadAuthenticatedState()
       return
     }
 
     profileStore.clear()
     reservationsStore.stopRealtime()
     notificationsStore.stopRealtime()
-  })
+  }
 })
