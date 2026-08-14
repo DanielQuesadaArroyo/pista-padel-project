@@ -30,7 +30,7 @@ export { requestIdleCallback, cancelIdleCallback } from '#app/compat/idle-callba
 export { setInterval } from '#app/compat/interval';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';
 export { defineLazyHydrationComponent } from '#app/composables/lazy-hydration';
-export { getSeason, getFirstBookableDate, getVisibleDates } from '../utils/dates';
+export { getSeason, getFirstBookableDate, getVisibleDates, formatDate, formatTime } from '../utils/dates';
 export { useAuthStore } from '../stores/auth.store';
 export { useNotificationsStore } from '../stores/notifications.store';
 export { useProfileStore } from '../stores/profile.store';

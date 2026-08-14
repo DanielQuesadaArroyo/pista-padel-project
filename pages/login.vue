@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ layout: 'login' })
+
 const route = useRoute()
 const authStore = useAuthStore()
 const profileStore = useProfileStore()
@@ -6,8 +8,7 @@ const profileStore = useProfileStore()
 const email = ref('')
 const password = ref('')
 const isSubmitting = ref(false)
-const errorMessage = ref<string | null>(null)
-const showForgotPasswordMessage = ref(false)
+const snackbarMessage = ref<string | null>(null)
 const disabledMessage = computed(() => route.query.disabled === '1'
   ? 'Su acceso ha sido deshabilitado. Contacte con el presidente de la comunidad.'
   : null)
@@ -15,7 +16,7 @@ const disabledMessage = computed(() => route.query.disabled === '1'
 async function signIn() {
   if (isSubmitting.value) return
 
-  errorMessage.value = null
+  snackbarMessage.value = null
   isSubmitting.value = true
 
   try {
@@ -33,7 +34,7 @@ async function signIn() {
 
     await navigateTo('/notifications')
   } catch {
-    errorMessage.value = 'No se ha podido iniciar sesión. Revise sus datos e inténtelo de nuevo.'
+    snackbarMessage.value = 'No se ha podido iniciar sesión. Revise sus datos e inténtelo de nuevo.'
   } finally {
     isSubmitting.value = false
   }
@@ -46,7 +47,6 @@ async function signIn() {
 
     <form class="login-form" @submit.prevent="signIn">
       <p v-if="disabledMessage" class="message" role="alert">{{ disabledMessage }}</p>
-      <p v-if="errorMessage" class="message" role="alert">{{ errorMessage }}</p>
 
       <h2>Bienvenido de nuevo</h2>
       <p class="subtitle">Ingresa a tu cuenta de comunidad</p>
@@ -61,16 +61,13 @@ async function signIn() {
         {{ isSubmitting ? 'Iniciando sesión…' : 'Iniciar sesión' }}
       </button>
 
-      <button class="forgot-password" type="button" @click="showForgotPasswordMessage = true">
+      <button class="forgot-password" type="button" @click="snackbarMessage = 'Contacte con el presidente de la comunidad para recuperar su acceso.'">
         ¿Olvidaste tu contraseña?
       </button>
-
-      <p v-if="showForgotPasswordMessage" class="message" role="status">
-        Contacte con el presidente de la comunidad para recuperar su acceso.
-      </p>
     </form>
 
     <p class="footer">Acceso exclusivo para miembros registrados de Jardines de Hércules Fase II.</p>
+    <ToastMessage v-if="snackbarMessage" :key="snackbarMessage" :message="snackbarMessage" tone="error" @close="snackbarMessage = null" />
   </main>
 </template>
 

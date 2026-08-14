@@ -14,6 +14,16 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 
+export const AliasForm: typeof import("../components/AliasForm.vue")['default']
+export const ConfirmCancelModal: typeof import("../components/ConfirmCancelModal.vue")['default']
+export const LoadingIndicator: typeof import("../components/LoadingIndicator.vue")['default']
+export const MyReservationsList: typeof import("../components/MyReservationsList.vue")['default']
+export const NotificationList: typeof import("../components/NotificationList.vue")['default']
+export const ReservationCalendar: typeof import("../components/ReservationCalendar.vue")['default']
+export const ReservationSlot: typeof import("../components/ReservationSlot.vue")['default']
+export const SideMenu: typeof import("../components/SideMenu.vue")['default']
+export const StaticContentView: typeof import("../components/StaticContentView.vue")['default']
+export const ToastMessage: typeof import("../components/ToastMessage.vue")['default']
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
 export const NuxtErrorBoundary: typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']
@@ -37,6 +47,16 @@ export const Head: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Html']
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
+export const LazyAliasForm: LazyComponent<typeof import("../components/AliasForm.vue")['default']>
+export const LazyConfirmCancelModal: LazyComponent<typeof import("../components/ConfirmCancelModal.vue")['default']>
+export const LazyLoadingIndicator: LazyComponent<typeof import("../components/LoadingIndicator.vue")['default']>
+export const LazyMyReservationsList: LazyComponent<typeof import("../components/MyReservationsList.vue")['default']>
+export const LazyNotificationList: LazyComponent<typeof import("../components/NotificationList.vue")['default']>
+export const LazyReservationCalendar: LazyComponent<typeof import("../components/ReservationCalendar.vue")['default']>
+export const LazyReservationSlot: LazyComponent<typeof import("../components/ReservationSlot.vue")['default']>
+export const LazySideMenu: LazyComponent<typeof import("../components/SideMenu.vue")['default']>
+export const LazyStaticContentView: LazyComponent<typeof import("../components/StaticContentView.vue")['default']>
+export const LazyToastMessage: LazyComponent<typeof import("../components/ToastMessage.vue")['default']>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
 export const LazyNuxtErrorBoundary: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']>

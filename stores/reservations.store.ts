@@ -1,6 +1,7 @@
 import type { RealtimeChannel } from '@supabase/supabase-js'
-import type { Booking } from '~/types/models'
+import type { Booking, Slot } from '~/types/models'
 import { useReservationsService } from '~/services/reservations.service'
+import { formatDate, formatTime } from '~/utils/dates'
 
 export const useReservationsStore = defineStore('reservations', () => {
   const calendarReservations = ref<Booking[]>([])
@@ -20,14 +21,16 @@ export const useReservationsStore = defineStore('reservations', () => {
     await Promise.all([loadVisibleReservations(dates[0], dates.at(-1)!), loadMyReservations(userId)])
   }
 
-  async function createBooking(slotId: number, bookingDate: string, userId: string, dates: string[]) {
-    const bookingId = await useReservationsService().createBooking(slotId, bookingDate)
+  async function createBooking(slot: Slot, bookingDate: string, userId: string, dates: string[], alias: string) {
+    const bookingId = await useReservationsService().createBooking(slot.id, bookingDate)
+    await useNotificationsStore().create(`${alias} ha reservado la pista el ${formatDate(bookingDate)} de ${formatTime(slot.startTime)} a ${formatTime(slot.endTime)}.`, bookingDate, dates)
     await refresh(userId, dates)
     return bookingId
   }
 
-  async function cancelBooking(bookingId: string, userId: string, dates: string[]) {
-    await useReservationsService().cancelBooking(bookingId)
+  async function cancelBooking(booking: Booking, slot: Slot, userId: string, dates: string[], alias: string) {
+    await useReservationsService().cancelBooking(booking.id)
+    await useNotificationsStore().create(`${alias} ha anulado su reserva del ${formatDate(booking.bookingDate)} de ${formatTime(slot.startTime)} a ${formatTime(slot.endTime)}.`, booking.bookingDate, dates)
     await refresh(userId, dates)
   }
 

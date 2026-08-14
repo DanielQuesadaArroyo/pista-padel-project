@@ -30,3 +30,11 @@ export function getVisibleDates(settings: Settings, now = new Date()): string[] 
   const firstDate = getFirstBookableDate(settings, now)
   return Array.from({ length: 7 }, (_, index) => addDays(firstDate, index))
 }
+
+export function formatDate(date: string, options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' }): string {
+  return new Intl.DateTimeFormat('es-ES', { ...options, timeZone: TIME_ZONE }).format(new Date(`${date}T12:00:00Z`))
+}
+
+export function formatTime(time: string): string {
+  return time.slice(0, 5)
+}

@@ -1,3 +1,9 @@
 <script setup lang="ts">
-await navigateTo('/login')
+definePageMeta({ layout: false })
+
+await navigateTo('/notifications')
 </script>
+
+<template>
+  <span />
+</template>

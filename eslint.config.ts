@@ -27,8 +27,8 @@ export default defineConfigWithVueTs(
   vueTsConfigs.recommended,
 
   {
-    name: 'nuxt/pages',
-    files: ['pages/**/*.vue'],
+    name: 'nuxt/routed-components',
+    files: ['pages/**/*.vue', 'layouts/**/*.vue'],
     rules: {
       'vue/multi-word-component-names': 'off',
     },

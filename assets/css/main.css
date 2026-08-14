@@ -1,0 +1,6 @@
+:root { font-family: Arial, Helvetica, sans-serif; color: #252729; background: #fff; font-synthesis: none; }
+* { box-sizing: border-box; }
+html, body, #__nuxt { min-height: 100%; }
+body { min-width: 20rem; margin: 0; }
+button, input { font: inherit; }
+button { cursor: pointer; }
