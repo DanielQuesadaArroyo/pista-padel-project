@@ -120,9 +120,29 @@ Después actualizará exclusivamente su estado a `cancelled_by_user` y devolver�
 
 **Entregable:** aplicación validada para despliegue.
 
+### Estado de la verificación manual
+
+- Usuario deshabilitado: comprobado manualmente con `prueba1@prueba1.com`; la sesión se cierra y el acceso queda bloqueado correctamente.
+- Realtime y diseño responsive en navegador: comprobados manualmente de forma satisfactoria.
+- Las comprobaciones automatizadas de las RPC, RLS, TypeScript y lint se ejecutaron correctamente.
+- Quedan por completar el build limpio y la verificación manual del rollover de verano/invierno antes del despliegue.
+
+## Fase 7 — Pruebas automatizadas
+
+- Incorporar Vitest y el script `npm test` sin sustituir los controles existentes de tipo y lint.
+- Crear pruebas unitarias para `utils/dates.ts`: fecha de Madrid, ventana de siete días, temporada y rollover de invierno/verano.
+- Crear pruebas unitarias de las validaciones de alias y de los mapeos de errores que se muestran al usuario.
+- Probar servicios y stores con el cliente de Supabase simulado: carga, errores, cierre de sesión y actualización del estado.
+- Probar los componentes críticos con Vue Test Utils: modal de cancelación, snackbar y estados principales del calendario.
+- Mantener las reglas críticas de reservas, RLS y concurrencia en pruebas de integración contra un proyecto Supabase de pruebas aislado; nunca contra datos reales de la comunidad.
+- Añadir los scripts de ejecución y la documentación necesaria para que las pruebas se puedan repetir localmente y en integración continua en el futuro.
+
+**Entregable:** suite automatizada reproducible, sin datos reales ni secretos, que cubra la lógica de frontend y los flujos críticos de Supabase en un entorno de pruebas separado.
+
 ## Archivos previstos
 
 - `supabase/migrations/<timestamp>_database_adjustments.sql` (solo si la validación detecta ajustes necesarios; nunca para recrear las tablas existentes)
 - `nuxt.config.ts`, `package.json` y configuración TypeScript de Nuxt
 - `types/`, `utils/`, `services/`, `stores/`, `middleware/`, `layouts/`, `components/` y `pages/`
 - Pruebas de RPC, servicios y flujos críticos de reserva/cancelación
+- Configuración de Vitest y pruebas unitarias e integración de la Fase 7

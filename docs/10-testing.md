@@ -18,6 +18,13 @@ La prioridad será validar:
 - Integridad de datos.
 - Experiencia de usuario.
 
+## Automatización
+
+- Las utilidades, validaciones, servicios, stores y componentes críticos se cubrirán con pruebas unitarias usando Vitest.
+- Las RPC, RLS y la concurrencia se comprobarán con pruebas de integración en un proyecto Supabase de pruebas aislado.
+- Las pruebas no usarán credenciales, reservas ni notificaciones reales de la comunidad.
+- `npm test` ejecutará la suite automatizada; `npm run type-check` y `npm run lint` seguirán siendo comprobaciones obligatorias e independientes.
+
 ---
 
 # Pruebas de Autenticación

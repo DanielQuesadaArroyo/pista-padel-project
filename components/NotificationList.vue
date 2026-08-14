@@ -22,10 +22,8 @@ function createdLabel(timestamp: string) {
       :key="notification.id"
       :class="{ cancellation: isCancellation(notification) }"
     >
-      <strong>{{ isCancellation(notification) ? 'Anulación' : 'Nueva reserva' }}</strong
-      ><time
-        ><b>{{ createdLabel(notification.createdAt) }}</b></time
-      >
+      <strong>{{ isCancellation(notification) ? 'Anulación' : 'Nueva reserva' }}</strong>
+      <time>{{ createdLabel(notification.createdAt) }}</time>
       <p>{{ notification.message }}</p>
     </li>
   </ul>
