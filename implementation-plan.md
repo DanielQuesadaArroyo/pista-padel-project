@@ -143,7 +143,7 @@ Después actualizará exclusivamente su estado a `cancelled_by_user` y devolver�
 
 - Vitest, Vue Test Utils y `happy-dom` están configurados; `npm test` ejecuta la suite y `npm run test:watch` la mantiene en observación.
 - La suite local cubre cálculos de fechas, rollover, validación de alias, mapeadores, store de autenticación y los componentes de alias, cancelación y snackbar.
-- Las pruebas de integración de RPC, RLS y concurrencia requieren un proyecto Supabase de pruebas separado. No se configurarán contra el proyecto real ni sus cuentas de la comunidad.
+- Las pruebas de integración de RPC, RLS y concurrencia se ejecutan con `npm run test:integration` contra Supabase local. El lanzador crea una clave temporal desde Docker y la suite crea y elimina sus propios datos; nunca usa el proyecto real ni sus cuentas de la comunidad.
 
 ## Archivos previstos
 

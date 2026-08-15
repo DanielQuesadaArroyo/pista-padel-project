@@ -15,6 +15,7 @@ node_modules/
 
 # Supabase CLI / Local development
 .supabase/
+supabase/.temp/
 
 # Logs
 *.log

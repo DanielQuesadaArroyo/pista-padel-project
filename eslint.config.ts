@@ -21,6 +21,8 @@ export default defineConfigWithVueTs(
     '**/dist/**',
     '**/dist-ssr/**',
     '**/coverage/**',
+    '**/supabase/.temp/**',
+    '**/supabase/.branches/**',
   ]),
 
   ...pluginVue.configs['flat/essential'],

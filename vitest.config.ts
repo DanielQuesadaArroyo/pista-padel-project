@@ -11,6 +11,7 @@ export default defineConfig({
   },
   test: {
     environment: 'happy-dom',
+    exclude: process.env.RUN_INTEGRATION_TESTS === 'true' ? [] : ['tests/integration/**'],
     include: ['tests/**/*.spec.ts'],
     setupFiles: ['tests/setup.ts'],
   },

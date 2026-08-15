@@ -109,7 +109,7 @@ describe.sequential('Supabase local: RPC, RLS y concurrencia', () => {
     const profiles = users.map((user, index) => ({
       id: user.id,
       alias: `T${runId}${index}`,
-      staircase: 'T',
+      staircase: `T${runId.slice(-6)}`,
       floor: '1',
       door: String(index + 1),
       active: true,
