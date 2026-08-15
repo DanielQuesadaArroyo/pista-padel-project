@@ -139,6 +139,12 @@ Después actualizará exclusivamente su estado a `cancelled_by_user` y devolver�
 
 **Entregable:** suite automatizada reproducible, sin datos reales ni secretos, que cubra la lógica de frontend y los flujos críticos de Supabase en un entorno de pruebas separado.
 
+### Estado de implementación
+
+- Vitest, Vue Test Utils y `happy-dom` están configurados; `npm test` ejecuta la suite y `npm run test:watch` la mantiene en observación.
+- La suite local cubre cálculos de fechas, rollover, validación de alias, mapeadores, store de autenticación y los componentes de alias, cancelación y snackbar.
+- Las pruebas de integración de RPC, RLS y concurrencia requieren un proyecto Supabase de pruebas separado. No se configurarán contra el proyecto real ni sus cuentas de la comunidad.
+
 ## Archivos previstos
 
 - `supabase/migrations/<timestamp>_database_adjustments.sql` (solo si la validación detecta ajustes necesarios; nunca para recrear las tablas existentes)
