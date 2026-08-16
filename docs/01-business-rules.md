@@ -127,6 +127,9 @@ Cada usuario podrá tener:
 
 - Máximo 3 reservas activas.
 
+Una reserva deja de considerarse activa cuando la hora local de Madrid alcanza
+`slots.end_time + 1 minuto`, aunque su estado aún no haya sido regularizado.
+
 ### Máximo de reservas por día
 
 Cada usuario podrá tener:
@@ -161,9 +164,13 @@ La función valida atómicamente que la reserva existe, pertenece al usuario aut
 
 ## Estados visuales del calendario
 
-### Gris
+### Azul claro
 
 Slot libre y reservable.
+
+### Gris
+
+Slot expirado y no reservable.
 
 ### Negro
 
@@ -185,6 +192,8 @@ Reserva propia.
 ### Contenido
 
 Solo se mostrarán reservas activas.
+
+Las reservas finalizadas pasan a `completed` y no se muestran.
 
 No existe histórico.
 

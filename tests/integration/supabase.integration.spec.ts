@@ -36,6 +36,7 @@ let anonymous: SupabaseClient
 let summerSlot: TestSlot
 let winterSlot: TestSlot
 let today: string
+let bookingDate: string
 
 function getMadridDate(): string {
   const parts = new Intl.DateTimeFormat('en-GB', {
@@ -46,6 +47,12 @@ function getMadridDate(): string {
   }).formatToParts(new Date())
   const part = (type: string) => parts.find((value) => value.type === type)?.value
   return `${part('year')}-${part('month')}-${part('day')}`
+}
+
+function addDays(date: string, days: number): string {
+  const value = new Date(`${date}T12:00:00Z`)
+  value.setUTCDate(value.getUTCDate() + days)
+  return value.toISOString().slice(0, 10)
 }
 
 async function createTestUser(label: string): Promise<TestUser> {
@@ -73,6 +80,7 @@ describe.sequential('Supabase local: RPC, RLS y concurrencia', () => {
     admin = createClient(supabaseUrl, serviceRoleKey, options)
     anonymous = createClient(supabaseUrl, anonKey, options)
     today = getMadridDate()
+    bookingDate = addDays(today, 1)
     users.push(await createTestUser('one'), await createTestUser('two'))
 
     const { data: settings, error: settingsError } = await admin.from('settings').select('id').limit(1)
@@ -88,23 +96,14 @@ describe.sequential('Supabase local: RPC, RLS y concurrencia', () => {
       createdSettingsId = data.id
     }
 
-    const { data: existingSlots, error: slotsError } = await admin.from('slots').select('id,season')
+    const { data: slots, error: slotsError } = await admin.from('slots').insert([
+      { season: 'summer', start_time: '15:01', end_time: '15:02' },
+      { season: 'winter', start_time: '15:01', end_time: '15:02' },
+    ]).select('id,season')
     if (slotsError) throw slotsError
-    const slots = [...existingSlots] as TestSlot[]
-    for (const season of ['summer', 'winter']) {
-      if (!slots.some((slot) => slot.season === season)) {
-        const { data, error } = await admin.from('slots').insert({
-          season,
-          start_time: '10:00',
-          end_time: '11:30',
-        }).select('id,season').single()
-        if (error) throw error
-        slots.push(data as TestSlot)
-        createdSlotIds.push(data.id)
-      }
-    }
-    summerSlot = slots.find((slot) => slot.season === 'summer')!
-    winterSlot = slots.find((slot) => slot.season === 'winter')!
+    createdSlotIds.push(...slots.map((slot) => slot.id))
+    summerSlot = slots.find((slot) => slot.season === 'summer') as TestSlot
+    winterSlot = slots.find((slot) => slot.season === 'winter') as TestSlot
 
     const profiles = users.map((user, index) => ({
       id: user.id,
@@ -127,8 +126,49 @@ describe.sequential('Supabase local: RPC, RLS y concurrencia', () => {
   })
 
   it('denies anonymous access to the booking RPC', async () => {
-    const { error } = await anonymous.rpc('create_booking', { p_booking_date: today, p_slot_id: summerSlot.id })
+    const { error } = await anonymous.rpc('create_booking', { p_booking_date: bookingDate, p_slot_id: summerSlot.id })
     expect(error?.code).toBe('42501')
+  })
+
+  it('completes only expired active bookings and requires authentication', async () => {
+    const rows = [
+      { user_id: users[0].id, booking_date: addDays(today, -1), slot_id: summerSlot.id, status: 'active' },
+      { user_id: users[0].id, booking_date: addDays(today, -2), slot_id: summerSlot.id, status: 'cancelled_by_user' },
+      { user_id: users[0].id, booking_date: addDays(today, -3), slot_id: summerSlot.id, status: 'maintenance' },
+      { user_id: users[0].id, booking_date: addDays(today, 2), slot_id: summerSlot.id, status: 'active' },
+    ]
+    const { data: inserted, error: insertError } = await admin.from('bookings').insert(rows).select('id,status')
+    expect(insertError).toBeNull()
+
+    const { error: anonymousError } = await anonymous.rpc('complete_expired_bookings')
+    expect(anonymousError?.code).toBe('42501')
+    const { error: completionError } = await first.rpc('complete_expired_bookings')
+    expect(completionError).toBeNull()
+
+    const ids = inserted!.map((booking) => booking.id)
+    const { data: completed } = await admin.from('bookings').select('id,status').in('id', ids)
+    expect(completed?.map((booking) => booking.status).sort()).toEqual([
+      'active', 'cancelled_by_user', 'completed', 'maintenance',
+    ])
+    await admin.from('bookings').delete().in('id', ids)
+  })
+
+  it('does not count expired active bookings against new reservations', async () => {
+    const expiredRows = [-4, -5, -6].map((days) => ({
+      user_id: users[0].id,
+      booking_date: addDays(today, days),
+      slot_id: summerSlot.id,
+      status: 'active',
+    }))
+    const { data: inserted, error: insertError } = await admin.from('bookings').insert(expiredRows).select('id')
+    expect(insertError).toBeNull()
+
+    const { data: bookingId, error } = await first.rpc('create_booking', {
+      p_booking_date: bookingDate,
+      p_slot_id: summerSlot.id,
+    })
+    expect(error).toBeNull()
+    await admin.from('bookings').delete().in('id', [...inserted!.map((booking) => booking.id), bookingId])
   })
 
   it('enforces RLS for direct bookings, protected profile fields and foreign profiles', async () => {
@@ -149,10 +189,10 @@ describe.sequential('Supabase local: RPC, RLS y concurrencia', () => {
   })
 
   it('rejects an incompatible season and protects cancellation ownership', async () => {
-    const { error: seasonError } = await first.rpc('create_booking', { p_booking_date: today, p_slot_id: winterSlot.id })
+    const { error: seasonError } = await first.rpc('create_booking', { p_booking_date: bookingDate, p_slot_id: winterSlot.id })
     expect(seasonError).not.toBeNull()
 
-    const { data: bookingId, error: bookingError } = await first.rpc('create_booking', { p_booking_date: today, p_slot_id: summerSlot.id })
+    const { data: bookingId, error: bookingError } = await first.rpc('create_booking', { p_booking_date: bookingDate, p_slot_id: summerSlot.id })
     expect(bookingError).toBeNull()
 
     const { error: foreignCancelError } = await second.rpc('cancel_booking', { p_booking_id: bookingId })
@@ -163,14 +203,14 @@ describe.sequential('Supabase local: RPC, RLS y concurrencia', () => {
   })
 
   it('frees cancelled slots and allows only one concurrent booking', async () => {
-    const { data: bookingId, error: createError } = await second.rpc('create_booking', { p_booking_date: today, p_slot_id: summerSlot.id })
+    const { data: bookingId, error: createError } = await second.rpc('create_booking', { p_booking_date: bookingDate, p_slot_id: summerSlot.id })
     expect(createError).toBeNull()
     const { error: cancelError } = await second.rpc('cancel_booking', { p_booking_id: bookingId })
     expect(cancelError).toBeNull()
 
     const attempts = await Promise.all([
-      first.rpc('create_booking', { p_booking_date: today, p_slot_id: summerSlot.id }),
-      second.rpc('create_booking', { p_booking_date: today, p_slot_id: summerSlot.id }),
+      first.rpc('create_booking', { p_booking_date: bookingDate, p_slot_id: summerSlot.id }),
+      second.rpc('create_booking', { p_booking_date: bookingDate, p_slot_id: summerSlot.id }),
     ])
     const successfulAttempt = attempts.find((attempt) => !attempt.error)
     expect(attempts.filter((attempt) => !attempt.error)).toHaveLength(1)

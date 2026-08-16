@@ -160,6 +160,7 @@ Reservas de pista.
 
 ```text
 active
+completed
 cancelled_by_user
 cancelled_by_admin
 maintenance
@@ -180,6 +181,9 @@ Solo puede existir una ocupación vigente por fecha y franja. La restricción se
 
 Las reservas canceladas permanecen como histórico técnico y no bloquean una nueva reserva de la misma franja.
 
+Las reservas `completed` también permanecen hasta su eliminación manual y no
+bloquean la franja ni cuentan para las reglas de reservas activas.
+
 ### Creación de reservas vía RPC
 
 La creación de reservas no se realiza por `INSERT` directo desde la aplicación, sino mediante la función RPC `create_booking(p_slot_id, p_booking_date)` que valida atómicamente en backend:
@@ -191,6 +195,17 @@ La creación de reservas no se realiza por `INSERT` directo desde la aplicación
 - Fecha dentro de la ventana reservable de siete días y conforme al rollover de `Europe/Madrid`.
 - Slot perteneciente a la temporada aplicable a la fecha de reserva.
 - Disponibilidad del slot.
+- Slot no expirado según `Europe/Madrid`: hora actual anterior a
+  `end_time + 1 minuto`.
+
+Las validaciones sobre reservas activas ignoran las que ya hayan alcanzado
+`end_time + 1 minuto`, aunque todavía conserven `status = 'active'`.
+
+### Finalización de reservas vía RPC
+
+`complete_expired_bookings()` cambia de `active` a `completed` las reservas
+cuya fecha y `slots.end_time + 1 minuto` ya se hayan alcanzado en
+`Europe/Madrid`. No modifica reservas futuras, canceladas ni mantenimiento.
 
 ### Cancelación de reservas vía RPC
 

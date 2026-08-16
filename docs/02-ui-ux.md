@@ -14,7 +14,8 @@
 
 ### Reservas
 
-- Gris: slot libre.
+- Azul claro: slot libre y reservable.
+- Gris: slot expirado y no reservable.
 - Negro: slot no disponible (ocupado o mantenimiento).
 - Rojo: reserva propia.
 
@@ -80,13 +81,14 @@ Características:
 
 Estados:
 
-- Gris → libre.
+- Azul claro → libre y reservable.
+- Gris → expirado y no reservable.
 - Negro → ocupado o mantenimiento.
 - Rojo → reserva propia.
 
 Reserva:
 
-- Pulsar slot gris.
+- Pulsar slot azul claro.
 - Reserva inmediata.
 - Sin confirmación previa.
 

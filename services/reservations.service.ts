@@ -26,5 +26,11 @@ export function useReservationsService() {
     if (error) throw error
   }
 
-  return { cancelBooking, createBooking, getMyActiveBookings, getVisibleBookings }
+  async function completeExpiredBookings() {
+    const { data, error } = await supabase.rpc('complete_expired_bookings')
+    if (error) throw error
+    return data
+  }
+
+  return { cancelBooking, completeExpiredBookings, createBooking, getMyActiveBookings, getVisibleBookings }
 }

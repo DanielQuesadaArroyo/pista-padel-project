@@ -119,6 +119,9 @@
       "#unhead/composables": [
         "../node_modules/nuxt/dist/head/runtime/composables/v3"
       ],
+      "#nuxt-icon-server-bundle": [
+        "./nuxt-icon-server-bundle"
+      ],
       "#supabase/server": [
         "../node_modules/@nuxtjs/supabase/dist/runtime/server/services"
       ],
@@ -151,6 +154,7 @@
     "../node_modules/nuxt/node_modules",
     "../node_modules/@pinia/nuxt/node_modules",
     "../node_modules/@nuxtjs/supabase/node_modules",
+    "../node_modules/@nuxt/icon/node_modules",
     "../node_modules/@nuxt/devtools/node_modules",
     "../node_modules/@nuxt/telemetry/node_modules",
     "../dist"

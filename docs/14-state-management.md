@@ -117,6 +117,8 @@ myReservations
 - Crear reservas.
 - Cancelar reservas.
 - Actualización Realtime.
+- Completar reservas expiradas y refrescar ambos listados en el siguiente
+  instante temporal relevante.
 
 ---
 

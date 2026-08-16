@@ -106,7 +106,7 @@ Después actualizará exclusivamente su estado a `cancelled_by_user` y devolver�
 - Un slot libre crea directamente la reserva mediante RPC; un slot propio abre la modal de confirmación.
 - Las dos entradas de cancelación usarán la misma `ConfirmCancelModal` y el mismo método del store.
 - Tras una RPC correcta, la app insertará la notificación con el alias actual, fecha y franja devueltos o identificados por el servicio.
-- Respetar los diseños: gris para libre, negro para ocupado o mantenimiento y rojo para reserva propia; prioridad móvil.
+- Respetar la semántica definitiva: azul claro para libre, gris para expirado, negro para ocupado o mantenimiento y rojo para reserva propia; prioridad móvil.
 
 **Entregable:** todas las pantallas definidas en la documentación, sin funcionalidades fuera de alcance.
 

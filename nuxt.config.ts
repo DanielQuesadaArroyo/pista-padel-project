@@ -4,9 +4,11 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
-  modules: ['@pinia/nuxt', '@nuxtjs/supabase'],
+  modules: ['@pinia/nuxt', '@nuxtjs/supabase', '@nuxt/icon'],
   supabase: {
-    redirect: false, // Ajusta según si quieres redirección automática por Auth
+    url: process.env.NUXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL,
+    key: process.env.NUXT_PUBLIC_SUPABASE_KEY || process.env.SUPABASE_KEY,
+    redirect: false,
   },
   typescript: {
     strict: true,

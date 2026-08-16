@@ -122,7 +122,7 @@
         "./imports"
       ],
       "#app-manifest": [
-        "./manifest/meta/20b2d2d4-b00e-4195-b5c5-33e39a603a3d.json"
+        "../node_modules/mocked-exports/lib/proxy.d.mts"
       ],
       "#components": [
         "./components"
@@ -176,6 +176,6 @@
     "../.data",
     "../node_modules/runtime/server",
     "../node_modules/dist/runtime/server",
-    "../.output"
+    "dev"
   ]
 }

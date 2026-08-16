@@ -31,7 +31,7 @@ export { setInterval } from '#app/compat/interval';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';
 export { defineLazyHydrationComponent } from '#app/composables/lazy-hydration';
 export { RESERVED_ALIASES, normalizeAlias, validateAlias } from '../utils/alias';
-export { getSeason, getFirstBookableDate, getVisibleDates, formatDate, formatTime } from '../utils/dates';
+export { getSeason, getFirstBookableDate, getVisibleDates, isSlotExpired, getNextTemporalEvent, formatDate, formatTime } from '../utils/dates';
 export { useAuthStore } from '../stores/auth.store';
 export { useNotificationsStore } from '../stores/notifications.store';
 export { useProfileStore } from '../stores/profile.store';
@@ -42,3 +42,4 @@ export { useSupabaseCookieRedirect } from '../node_modules/@nuxtjs/supabase/dist
 export { useSupabaseSession } from '../node_modules/@nuxtjs/supabase/dist/runtime/composables/useSupabaseSession';
 export { useSupabaseUser } from '../node_modules/@nuxtjs/supabase/dist/runtime/composables/useSupabaseUser';
 export { defineStore, acceptHMRUpdate, usePinia, storeToRefs } from '../node_modules/@pinia/nuxt/dist/runtime/composables';
+export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';

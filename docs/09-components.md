@@ -34,6 +34,10 @@ Menú lateral principal de navegación.
 - Acerca de
 - Salir
 
+La cabecera muestra el alias reactivo de `profileStore`. Las opciones usan una
+única familia Lucide: `bell`, `calendar-days`, `calendar-check`, `user-cog`,
+`file-text`, `info` y `log-out`, en ese orden.
+
 ## Disponibilidad
 
 Visible en todas las páginas autenticadas.
@@ -99,11 +103,9 @@ Representa una franja horaria individual.
 
 ### Libre
 
-Color:
-
-```text
-Gris
-```
+Color azul claro cuando está libre y reservable. Color gris con texto negro
+cuando ha expirado. La expiración temporal prevalece sobre una reserva que aún
+llegue con estado `active`.
 
 Acción:
 

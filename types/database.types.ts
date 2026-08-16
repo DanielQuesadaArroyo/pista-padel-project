@@ -10,6 +10,7 @@ export interface Database {
     Views: Record<string, never>
     Functions: {
       cancel_booking: { Args: { p_booking_id: string }; Returns: boolean }
+      complete_expired_bookings: { Args: Record<string, never>; Returns: number }
       create_booking: { Args: { p_booking_date: string; p_slot_id: number }; Returns: string }
     }
     Enums: Record<string, never>

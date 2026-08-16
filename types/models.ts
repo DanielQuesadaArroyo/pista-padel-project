@@ -1,5 +1,6 @@
 export type BookingStatus =
   | 'active'
+  | 'completed'
   | 'cancelled_by_admin'
   | 'cancelled_by_user'
   | 'maintenance'

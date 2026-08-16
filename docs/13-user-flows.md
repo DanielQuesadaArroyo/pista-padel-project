@@ -136,7 +136,7 @@ Usuario realiza una reserva válida.
 ```text
 Pantalla Reservas
 ↓
-Seleccionar slot gris
+Seleccionar slot azul claro
 ↓
 Llamar RPC create_booking()
 ↓
@@ -456,4 +456,20 @@ Cambio en notifications
 Evento Realtime
 ↓
 Actualizar pantalla Notificaciones
+```
+
+---
+
+# Flujo 21 - Expiración de Reserva
+
+```text
+Alcanzar end_time + 1 minuto en Europe/Madrid
+↓
+Ejecutar complete_expired_bookings()
+↓
+Mostrar slot expirado en gris y no interactivo
+↓
+Actualizar Reservas y Mis reservas
+↓
+Programar el siguiente instante relevante
 ```

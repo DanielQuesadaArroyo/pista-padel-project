@@ -148,9 +148,13 @@ Total:
 
 ## Estados visuales
 
+### Azul claro
+
+Slot libre y reservable.
+
 ### Gris
 
-Slot libre.
+Slot expirado y no interactivo.
 
 ### Negro
 
@@ -164,7 +168,7 @@ Reserva propia.
 
 ## Reserva
 
-Al pulsar un slot gris:
+Al pulsar un slot azul claro:
 
 ```text
 Reserva inmediata
@@ -352,6 +356,8 @@ Menu.png
 5. Normas de uso
 6. Acerca de
 7. Salir
+
+La cabecera muestra reactivamente el alias actual del usuario autenticado.
 
 ---
 

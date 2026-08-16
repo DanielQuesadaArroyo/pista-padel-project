@@ -319,6 +319,16 @@ No existen notificaciones para los próximos días.
 
 # Pruebas de Calendario
 
+## Expiración de slots
+
+### Resultado esperado
+
+- El slot continúa vigente durante su minuto de finalización.
+- Expira exactamente en `end_time + 1 minuto` usando `Europe/Madrid`.
+- El frontend lo muestra gris y no interactivo, incluso si aún llega `active`.
+- La RPC lo cambia a `completed` sin afectar futuras, canceladas o mantenimiento.
+- Las reservas expiradas no consumen límites ni aparecen en Mis reservas.
+
 ## Ventana de 7 días
 
 ### Resultado esperado

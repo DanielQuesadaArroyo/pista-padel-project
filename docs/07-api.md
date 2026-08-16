@@ -236,6 +236,17 @@ supabase.rpc('create_booking', {
 - Máximo 1 reserva por día.
 - Horario (`slot_id`) no repetido.
 - Fecha dentro de la ventana reservable y conforme al rollover de `Europe/Madrid`.
+- Franja no expirada: hora actual anterior a `end_time + 1 minuto`.
+- Las reservas `active` ya expiradas se ignoran en los límites y validaciones.
+
+## Completar reservas expiradas
+
+```ts
+supabase.rpc('complete_expired_bookings')
+```
+
+Cambia a `completed` las reservas `active` que hayan alcanzado
+`slots.end_time + 1 minuto` en `Europe/Madrid`. Requiere autenticación.
 - Slot correspondiente a la temporada de la fecha solicitada.
 - Slot libre.
 

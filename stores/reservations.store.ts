@@ -21,6 +21,10 @@ export const useReservationsStore = defineStore('reservations', () => {
     await Promise.all([loadVisibleReservations(dates[0], dates.at(-1)!), loadMyReservations(userId)])
   }
 
+  async function completeExpiredBookings() {
+    return useReservationsService().completeExpiredBookings()
+  }
+
   async function createBooking(slot: Slot, bookingDate: string, userId: string, dates: string[], alias: string) {
     const bookingId = await useReservationsService().createBooking(slot.id, bookingDate)
     await useNotificationsStore().create(`${alias} ha reservado la pista el ${formatDate(bookingDate)} de ${formatTime(slot.startTime)} a ${formatTime(slot.endTime)}.`, bookingDate, dates)
@@ -49,5 +53,5 @@ export const useReservationsStore = defineStore('reservations', () => {
     channel = null
   }
 
-  return { calendarReservations, cancelBooking, createBooking, loadMyReservations, loadVisibleReservations, myReservations, refresh, startRealtime, stopRealtime }
+  return { calendarReservations, cancelBooking, completeExpiredBookings, createBooking, loadMyReservations, loadVisibleReservations, myReservations, refresh, startRealtime, stopRealtime }
 })

@@ -133,10 +133,22 @@ settings
 Color:
 
 ```text
-Gris
+Azul claro
 ```
 
 Puede reservarse.
+
+## Expirado
+
+Color:
+
+```text
+Gris
+```
+
+No puede reservarse. Para el día actual, expira cuando la hora de Madrid es
+igual o posterior a `end_time + 1 minuto`. Durante el minuto de finalización
+continúa vigente.
 
 ---
 
@@ -191,7 +203,7 @@ No existe confirmación previa.
 ## Flujo
 
 ```text
-Usuario pulsa slot gris
+Usuario pulsa slot azul claro
 ↓
 Llamada a RPC create_booking()
 ↓
@@ -378,6 +390,15 @@ Al confirmar:
 
 Reserva activa.
 
+Solo cuenta como activa mientras no haya alcanzado `end_time + 1 minuto` en
+`Europe/Madrid`.
+
+## completed
+
+Reserva finalizada. No cuenta para límites, horario repetido ni máximo diario,
+y no aparece en Mis reservas. Permanece en base de datos hasta su eliminación
+manual.
+
 ---
 
 ## cancelled_by_user
@@ -403,6 +424,10 @@ Franja bloqueada por mantenimiento.
 ## Contenido
 
 Solo se mostrarán reservas activas.
+
+Un temporizador dirigido al siguiente `end_time + 1 minuto` ejecuta
+`complete_expired_bookings()`, refresca Reservas y Mis reservas, y programa el
+siguiente evento. La misma regla se aplica en `create_booking()` y en la UI.
 
 No existe histórico.
 

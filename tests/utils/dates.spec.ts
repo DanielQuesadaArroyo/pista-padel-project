@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { Settings } from '~/types/models'
-import { formatTime, getFirstBookableDate, getSeason, getVisibleDates } from '~/utils/dates'
+import type { Settings, Slot } from '~/types/models'
+import { formatTime, getFirstBookableDate, getNextTemporalEvent, getSeason, getVisibleDates, isSlotExpired } from '~/utils/dates'
 
 const settings: Settings = {
   id: 1,
@@ -37,5 +37,16 @@ describe('date utilities', () => {
 
   it('formats database time values without seconds', () => {
     expect(formatTime('19:30:00')).toBe('19:30')
+  })
+
+  it('expires a Madrid slot at end_time plus one minute', () => {
+    expect(isSlotExpired('2026-07-20', '14:30:00', new Date('2026-07-20T12:30:59Z'))).toBe(false)
+    expect(isSlotExpired('2026-07-20', '14:30:00', new Date('2026-07-20T12:31:00Z'))).toBe(true)
+    expect(isSlotExpired('2026-07-21', '14:30:00', new Date('2026-07-20T21:00:00Z'))).toBe(false)
+  })
+
+  it('schedules the next slot expiration without polling', () => {
+    const slots: Slot[] = [{ id: 1, season: 'summer', startTime: '13:00:00', endTime: '14:30:00', createdAt: '' }]
+    expect(getNextTemporalEvent(settings, slots, new Date('2026-07-20T12:00:00Z')).toISOString()).toBe('2026-07-20T12:31:00.000Z')
   })
 })

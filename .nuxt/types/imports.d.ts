@@ -34,6 +34,7 @@ declare global {
   const getCurrentInstance: typeof import('vue').getCurrentInstance
   const getCurrentScope: typeof import('vue').getCurrentScope
   const getFirstBookableDate: typeof import('../../utils/dates').getFirstBookableDate
+  const getNextTemporalEvent: typeof import('../../utils/dates').getNextTemporalEvent
   const getRouteRules: typeof import('../../node_modules/nuxt/dist/app/composables/manifest').getRouteRules
   const getSeason: typeof import('../../utils/dates').getSeason
   const getVisibleDates: typeof import('../../utils/dates').getVisibleDates
@@ -48,6 +49,7 @@ declare global {
   const isReadonly: typeof import('vue').isReadonly
   const isRef: typeof import('vue').isRef
   const isShallow: typeof import('vue').isShallow
+  const isSlotExpired: typeof import('../../utils/dates').isSlotExpired
   const isVue2: typeof import('../../node_modules/nuxt/dist/app/compat/vue-demi').isVue2
   const isVue3: typeof import('../../node_modules/nuxt/dist/app/compat/vue-demi').isVue3
   const loadPayload: typeof import('../../node_modules/nuxt/dist/app/composables/payload').loadPayload
@@ -125,6 +127,7 @@ declare global {
   const useNotificationsStore: typeof import('../../stores/notifications.store').useNotificationsStore
   const useNuxtApp: typeof import('../../node_modules/nuxt/dist/app/nuxt').useNuxtApp
   const useNuxtData: typeof import('../../node_modules/nuxt/dist/app/composables/asyncData').useNuxtData
+  const useNuxtDevTools: typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools').useNuxtDevTools
   const usePinia: typeof import('../../node_modules/@pinia/nuxt/dist/runtime/composables').usePinia
   const usePreviewMode: typeof import('../../node_modules/nuxt/dist/app/composables/preview').usePreviewMode
   const useProfileStore: typeof import('../../stores/profile.store').useProfileStore
@@ -252,6 +255,7 @@ declare module 'vue' {
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getFirstBookableDate: UnwrapRef<typeof import('../../utils/dates')['getFirstBookableDate']>
+    readonly getNextTemporalEvent: UnwrapRef<typeof import('../../utils/dates')['getNextTemporalEvent']>
     readonly getRouteRules: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getRouteRules']>
     readonly getSeason: UnwrapRef<typeof import('../../utils/dates')['getSeason']>
     readonly getVisibleDates: UnwrapRef<typeof import('../../utils/dates')['getVisibleDates']>
@@ -266,6 +270,7 @@ declare module 'vue' {
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly isShallow: UnwrapRef<typeof import('vue')['isShallow']>
+    readonly isSlotExpired: UnwrapRef<typeof import('../../utils/dates')['isSlotExpired']>
     readonly isVue2: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/compat/vue-demi')['isVue2']>
     readonly isVue3: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/compat/vue-demi')['isVue3']>
     readonly loadPayload: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/payload')['loadPayload']>
@@ -343,6 +348,7 @@ declare module 'vue' {
     readonly useNotificationsStore: UnwrapRef<typeof import('../../stores/notifications.store')['useNotificationsStore']>
     readonly useNuxtApp: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/nuxt')['useNuxtApp']>
     readonly useNuxtData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useNuxtData']>
+    readonly useNuxtDevTools: UnwrapRef<typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools')['useNuxtDevTools']>
     readonly usePinia: UnwrapRef<typeof import('../../node_modules/@pinia/nuxt/dist/runtime/composables')['usePinia']>
     readonly usePreviewMode: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/preview')['usePreviewMode']>
     readonly useProfileStore: UnwrapRef<typeof import('../../stores/profile.store')['useProfileStore']>
