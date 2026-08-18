@@ -78,12 +78,13 @@ async function signIn() {
   align-content: center;
   gap: 2.5rem;
   padding: 2rem;
-  color: #202124;
+  color: var(--color-text-primary);
+  background: var(--color-background);
 }
 
 h1 {
   margin: 0;
-  color: #2ecc71;
+  color: var(--color-primary-dark);
   font-size: 2rem;
   line-height: 1.1;
   text-align: center;
@@ -93,9 +94,10 @@ h1 {
   display: grid;
   gap: 1rem;
   padding: 2rem;
-  border-radius: 0.75rem;
-  background: #fff;
-  box-shadow: 0 1rem 2rem rgb(0 0 0 / 8%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
 }
 
 h2,
@@ -110,12 +112,12 @@ h2 {
 
 .subtitle,
 .footer {
-  color: #465448;
+  color: var(--color-text-secondary);
 }
 
 label {
   margin-top: 0.5rem;
-  color: #087b3b;
+  color: var(--color-primary-dark);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -124,11 +126,10 @@ label {
 
 input {
   min-height: 3.5rem;
-  border: 0;
-  border-bottom: 2px solid #b6cfbc;
-  border-radius: 0.5rem 0.5rem 0 0;
+  border: 2px solid var(--color-primary-dark);
+  border-radius: var(--radius-control);
   padding: 0 1rem;
-  background: #f1f2f3;
+  background: var(--color-surface);
   color: inherit;
   font: inherit;
 }
@@ -137,8 +138,8 @@ button {
   min-height: 3.75rem;
   margin-top: 0.5rem;
   border: 0;
-  border-radius: 0.75rem;
-  background: #2ecc71;
+  border-radius: var(--radius-control);
+  background: var(--color-primary-dark);
   color: #fff;
   cursor: pointer;
   font: inherit;
@@ -155,13 +156,13 @@ button:disabled {
   margin: 1rem 0 0;
   padding: 0.5rem;
   background: transparent;
-  color: #10b95c;
+  color: var(--color-primary-dark);
   font-size: 0.9rem;
 }
 
 .message {
   margin: 0;
-  color: #a92727;
+  color: var(--color-danger);
   font-size: 0.875rem;
 }
 

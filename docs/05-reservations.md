@@ -446,7 +446,7 @@ La reserva más próxima aparece primero.
 Mensaje:
 
 ```text
-No dispone de reservas activas.
+No tienes reservas. Cuando realices una reserva, aparecerá aquí.
 ```
 
 ---

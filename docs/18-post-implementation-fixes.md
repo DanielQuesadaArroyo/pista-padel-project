@@ -24,7 +24,7 @@ Antes de modificar código:
 
 1.  Leer `AGENTS.md` y `CLAUDE.md`.
 2.  Revisar la documentación relevante de `/docs`.
-3.  Revisar los diseños correspondientes de `/docs/design`.
+3.  Revisar los diseños vigentes de `/docs/redesign`.
 4.  Revisar la implementación actual antes de decidir qué archivos
     modificar.
 
@@ -286,7 +286,8 @@ Todos los iconos deben tener:
 -   Mismo tamaño visual.
 -   Alineación vertical con el texto.
 -   Separación horizontal uniforme.
--   Mismo verde del menú.
+-   Mismo color principal del menú (azul/turquesa desde el rediseño definido en
+    `19-ui-redesign.md`).
 
 Referencia aproximada Tailwind:
 

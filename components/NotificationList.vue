@@ -30,11 +30,11 @@ function createdLabel(timestamp: string) {
 </template>
 <style scoped>
 .empty {
-  color: #526057;
+  color: var(--color-text-secondary);
 }
 .list {
   display: grid;
-  gap: 2rem;
+  gap: 1.25rem;
   margin: 2.5rem 0 0;
   padding: 0;
   list-style: none;
@@ -42,30 +42,34 @@ function createdLabel(timestamp: string) {
 .list li {
   position: relative;
   min-height: 6rem;
-  border: 1px solid #edf0ee;
-  border-left: 0.3rem solid #2ecc71;
-  border-radius: 0.9rem;
-  padding: 1.1rem;
-  box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 3%);
+  border: 1px solid var(--color-border);
+  border-left: 0.35rem solid var(--color-primary);
+  border-radius: var(--radius-card);
+  padding: 1.35rem;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
 }
 .list li.cancellation {
-  border-left-color: #c8191d;
+  border-left-color: var(--color-danger);
 }
 .list strong {
   display: block;
+  color: var(--color-primary-dark);
+  font-size: 1.05rem;
 }
+.list li.cancellation strong { color: var(--color-danger); }
 .list time {
   position: absolute;
   top: 1.2rem;
   right: 1rem;
-  color: #637267;
+  color: var(--color-text-secondary);
   font-size: 0.7rem;
 }
 .list p {
   margin: 0.55rem 0 0;
-  color: #00743a;
+  color: var(--color-text-primary);
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.45;
 }
 </style>

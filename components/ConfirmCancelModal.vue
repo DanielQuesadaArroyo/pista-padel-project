@@ -7,7 +7,7 @@ const emit = defineEmits<{ confirm: []; close: [] }>()
 <template>
   <div class="backdrop" @click.self="emit('close')">
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="cancel-title">
-      <div class="calendar-icon">▣</div>
+      <div class="calendar-icon"><Icon name="lucide:calendar-x" /><Icon class="help-icon" name="lucide:circle-help" /></div>
       <h2 id="cancel-title">
         ¿Quiere cancelar la reserva del
         {{ formatDate(props.booking.bookingDate, { day: 'numeric', month: 'long' }) }} de
@@ -50,17 +50,19 @@ const emit = defineEmits<{ confirm: []; close: [] }>()
   height: 6rem;
   margin: 0 auto 1.5rem;
   border-radius: 50%;
-  background: #ffd4d1;
-  color: #aa1017;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
   font-size: 2rem;
 }
+.help-icon { position: absolute; right: -.5rem; bottom: -.25rem; border-radius: 50%; padding: .25rem; background: #eef1f3; color: var(--color-primary-dark); font-size: 1.75rem; }
+.calendar-icon { position: relative; }
 .modal h2 {
   margin: 0;
   font-size: 1.45rem;
   line-height: 1.25;
 }
 .modal p {
-  color: #465448;
+  color: var(--color-text-secondary);
   line-height: 1.45;
 }
 .modal button {
@@ -74,9 +76,9 @@ const emit = defineEmits<{ confirm: []; close: [] }>()
   font-weight: 700;
 }
 .cancel {
-  background: #c8191d;
+  background: var(--color-danger);
 }
 .continue {
-  background: #2ecc71;
+  background: var(--color-primary-dark);
 }
 </style>

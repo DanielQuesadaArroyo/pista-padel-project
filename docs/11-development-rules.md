@@ -324,7 +324,7 @@ La implementación deberá respetar obligatoriamente:
 La implementación deberá utilizar como referencia visual oficial los diseños ubicados en:
 
 ```text
-/docs/design
+/docs/redesign
 ```
 
 Cualquier diferencia entre implementación y diseño deberá justificarse explícitamente.

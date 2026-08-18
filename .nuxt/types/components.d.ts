@@ -15,6 +15,7 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 
 interface _GlobalComponents {
   AliasForm: typeof import("../../components/AliasForm.vue")['default']
+  AppHeader: typeof import("../../components/AppHeader.vue")['default']
   ConfirmCancelModal: typeof import("../../components/ConfirmCancelModal.vue")['default']
   LoadingIndicator: typeof import("../../components/LoadingIndicator.vue")['default']
   MyReservationsList: typeof import("../../components/MyReservationsList.vue")['default']
@@ -49,6 +50,7 @@ interface _GlobalComponents {
   Body: typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Body']
   NuxtIsland: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island")['default']
   LazyAliasForm: LazyComponent<typeof import("../../components/AliasForm.vue")['default']>
+  LazyAppHeader: LazyComponent<typeof import("../../components/AppHeader.vue")['default']>
   LazyConfirmCancelModal: LazyComponent<typeof import("../../components/ConfirmCancelModal.vue")['default']>
   LazyLoadingIndicator: LazyComponent<typeof import("../../components/LoadingIndicator.vue")['default']>
   LazyMyReservationsList: LazyComponent<typeof import("../../components/MyReservationsList.vue")['default']>

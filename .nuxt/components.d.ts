@@ -15,6 +15,7 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 
 
 export const AliasForm: typeof import("../components/AliasForm.vue")['default']
+export const AppHeader: typeof import("../components/AppHeader.vue")['default']
 export const ConfirmCancelModal: typeof import("../components/ConfirmCancelModal.vue")['default']
 export const LoadingIndicator: typeof import("../components/LoadingIndicator.vue")['default']
 export const MyReservationsList: typeof import("../components/MyReservationsList.vue")['default']
@@ -49,6 +50,7 @@ export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const LazyAliasForm: LazyComponent<typeof import("../components/AliasForm.vue")['default']>
+export const LazyAppHeader: LazyComponent<typeof import("../components/AppHeader.vue")['default']>
 export const LazyConfirmCancelModal: LazyComponent<typeof import("../components/ConfirmCancelModal.vue")['default']>
 export const LazyLoadingIndicator: LazyComponent<typeof import("../components/LoadingIndicator.vue")['default']>
 export const LazyMyReservationsList: LazyComponent<typeof import("../components/MyReservationsList.vue")['default']>

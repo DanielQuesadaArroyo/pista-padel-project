@@ -1,4 +1,5 @@
 import { getNextTemporalEvent } from '~/utils/dates'
+import { logger } from '~/utils/logger'
 
 export default defineNuxtPlugin(async () => {
   const authStore = useAuthStore()
@@ -18,14 +19,19 @@ export default defineNuxtPlugin(async () => {
     stopTemporalTimer()
     if (!authStore.userId || !settingsStore.settings || settingsStore.slots.length === 0) return
     const nextEvent = getNextTemporalEvent(settingsStore.settings, settingsStore.slots)
+    logger.debug('Siguiente evento temporal programado', { operation: 'temporal.schedule', nextEvent: nextEvent.toISOString() })
     temporalTimer = setTimeout(() => void handleTemporalEvent(), nextEvent.getTime() - Date.now())
   }
 
   async function handleTemporalEvent() {
     if (!authStore.userId) return
+    logger.debug('Temporizador temporal ejecutado', { operation: 'temporal.execute' })
     const previousSeason = settingsStore.currentSeason
+    const previousFirstDate = settingsStore.visibleDates[0]
     await reservationsStore.completeExpiredBookings().catch(() => undefined)
     settingsStore.refreshTime()
+    const isRollover = settingsStore.visibleDates[0] !== previousFirstDate
+    if (isRollover) logger.info('Rollover diario ejecutado', { season: settingsStore.currentSeason })
     if (settingsStore.currentSeason && settingsStore.currentSeason !== previousSeason) {
       await settingsStore.loadSlots(settingsStore.currentSeason)
     }
@@ -41,6 +47,7 @@ export default defineNuxtPlugin(async () => {
   }
 
   async function signOutDisabledUser() {
+    logger.warn('Usuario deshabilitado detectado', { userId: authStore.userId })
     profileStore.clear()
     reservationsStore.stopRealtime()
     notificationsStore.stopRealtime()

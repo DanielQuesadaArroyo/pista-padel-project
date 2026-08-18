@@ -1,6 +1,7 @@
 import type { RealtimeChannel } from '@supabase/supabase-js'
 import type { Profile } from '~/types/models'
 import { useProfileService } from '~/services/profile.service'
+import { logger } from '~/utils/logger'
 
 export const useProfileStore = defineStore('profile', () => {
   const profile = ref<Profile | null>(null)
@@ -9,9 +10,14 @@ export const useProfileStore = defineStore('profile', () => {
   const isActive = computed(() => profile.value?.active === true)
 
   async function load(userId: string) {
-    const currentProfile = await useProfileService().getCurrentProfile(userId)
-    profile.value = currentProfile
-    return currentProfile
+    try {
+      const currentProfile = await useProfileService().getCurrentProfile(userId)
+      profile.value = currentProfile
+      return currentProfile
+    } catch (error) {
+      logger.error('Error cargando el perfil', { userId, error })
+      throw error
+    }
   }
 
   async function updateAlias(alias: string) {
@@ -28,13 +34,14 @@ export const useProfileStore = defineStore('profile', () => {
         const updatedProfile = await load(userId)
         if (!updatedProfile?.active) onDisabled()
       })
-      .subscribe()
+      .subscribe((status) => logger.debug('Estado Realtime de perfil', { operation: 'profiles.subscribe', status, userId }))
   }
 
   function stopRealtime() {
     if (!channel) return
     void useSupabaseClient().removeChannel(channel)
     channel = null
+    logger.debug('Canal Realtime de perfil cerrado', { userId: profile.value?.id })
   }
 
   function clear() {

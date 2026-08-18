@@ -1,6 +1,7 @@
 import type { Season, Settings, Slot } from '~/types/models'
 import { getSeason, getVisibleDates } from '~/utils/dates'
 import { useSettingsService } from '~/services/settings.service'
+import { logger } from '~/utils/logger'
 
 export const useSettingsStore = defineStore('settings', () => {
   const settings = ref<Settings | null>(null)
@@ -11,18 +12,24 @@ export const useSettingsStore = defineStore('settings', () => {
   const visibleDates = computed(() => settings.value ? getVisibleDates(settings.value, now.value) : [])
 
   async function loadSettings() {
-    settings.value = await useSettingsService().getSettings()
-    return settings.value
+    try { settings.value = await useSettingsService().getSettings(); return settings.value }
+    catch (error) { logger.error('Error cargando configuración', { error }); throw error }
   }
 
   async function loadSlots(season: Season) {
-    slots.value = await useSettingsService().getSlots(season)
+    try { slots.value = await useSettingsService().getSlots(season) }
+    catch (error) { logger.error('Error cargando slots', { season, error }); throw error }
   }
 
   async function loadInitialData() {
-    const loadedSettings = await useSettingsService().getSettings()
-    settings.value = loadedSettings
-    await loadSlots(getSeason(getVisibleDates(loadedSettings, now.value)[0], loadedSettings))
+    try {
+      const loadedSettings = await useSettingsService().getSettings()
+      settings.value = loadedSettings
+      await loadSlots(getSeason(getVisibleDates(loadedSettings, now.value)[0], loadedSettings))
+    } catch (error) {
+      logger.error('Error cargando configuración inicial', { error })
+      throw error
+    }
   }
 
   function refreshTime(value = new Date()) {

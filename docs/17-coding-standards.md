@@ -352,7 +352,7 @@ Nunca exponer:
 Seguir los diseños ubicados en:
 
 ```text
-/docs/design
+/docs/redesign
 ```
 
 ---

@@ -7,7 +7,7 @@ Este documento define las páginas de la aplicación Jardines de Hércules II - 
 Las referencias visuales oficiales se encuentran en:
 
 ```text
-/docs/design
+/docs/redesign
 ```
 
 Los PNGs incluidos en dicha carpeta constituyen la referencia de diseño para la implementación.
@@ -50,6 +50,9 @@ Permitir la autenticación del usuario.
 - Campo contraseña.
 - Botón Iniciar sesión.
 - Enlace ¿Olvidaste tu contraseña?.
+
+La estructura funcional adopta la identidad azul/turquesa. No incluye logo,
+ilustraciones, iconos ni campos adicionales.
 
 ## Comportamiento
 
@@ -123,7 +126,6 @@ No existen notificaciones para los próximos días.
 
 ```text
 Calendario.png
-Calendario-full.png
 ```
 
 ## Objetivo
@@ -164,6 +166,13 @@ Slot ocupado o mantenimiento.
 
 Reserva propia.
 
+## Presentación
+
+Cada día utiliza una tarjeta blanca con icono, día de la semana y fecha. En
+móvil los slots se distribuyen en dos columnas de igual ancho; el tercer slot
+queda en la columna izquierda sin expandirse. Se muestra una leyenda compacta.
+Los chevrons son únicamente decorativos y no añaden acordeones.
+
 ---
 
 ## Reserva
@@ -193,7 +202,7 @@ Mostrar modal cancelar reserva
 ## Referencia
 
 ```text
-My-reservas.png
+My-reservations.png
 ```
 
 ## Objetivo
@@ -217,8 +226,11 @@ La más próxima aparece primero.
 Mostrar:
 
 ```text
-No dispone de reservas activas.
+No tienes reservas. Cuando realices una reserva, aparecerá aquí.
 ```
+
+Las reservas se presentan en tarjetas con fecha, horario, `Pista de Pádel` y
+botón `Cancelar reserva`. No existen contadores ni barras de progreso.
 
 ---
 
@@ -237,7 +249,7 @@ Modal cancelar reserva
 ## Referencia
 
 ```text
-Cambio-Alias.png
+Cambio-alias.png
 ```
 
 ## Objetivo
@@ -248,6 +260,10 @@ Modificar el alias visible del usuario.
 
 - Campo alias.
 - Botón Guardar.
+
+El input comienza vacío, no muestra el alias actual y se acompaña únicamente
+de la ayuda `Máximo 20 caracteres` y las validaciones cuando correspondan. El
+botón se presenta como `Guardar alias`.
 
 ---
 
@@ -359,11 +375,18 @@ Menu.png
 
 La cabecera muestra reactivamente el alias actual del usuario autenticado.
 
+También muestra `Jardines de Hércules Fase II` y `Pista de Pádel`, sin avatar,
+monograma ni alias duplicado. La ruta activa usa el fondo principal suave y la
+opción Salir aparece en rojo.
+
 ---
 
 ## Comportamiento
 
 El menú estará disponible desde todas las páginas autenticadas.
+
+Todas ellas comparten una cabecera blanca reutilizable con botón hamburguesa,
+nombre de pantalla y subtítulo `Pista de Pádel`.
 
 ---
 

@@ -7,7 +7,7 @@ Este documento define los componentes reutilizables de la aplicación Jardines d
 Las referencias visuales oficiales se encuentran en:
 
 ```text
-/Docs/design
+/docs/redesign
 ```
 
 ---
@@ -38,9 +38,20 @@ La cabecera muestra el alias reactivo de `profileStore`. Las opciones usan una
 única familia Lucide: `bell`, `calendar-days`, `calendar-check`, `user-cog`,
 `file-text`, `info` y `log-out`, en ese orden.
 
+Se abre con overlay y animación desde la izquierda. Incluye botón de cierre,
+contexto de la comunidad, estado activo azul suave y Salir en rojo. No incluye
+avatar, monograma ni ilustraciones.
+
 ## Disponibilidad
 
 Visible en todas las páginas autenticadas.
+
+---
+
+# Component: AppHeader
+
+Cabecera blanca reutilizable de las páginas autenticadas. Muestra únicamente
+botón hamburguesa, nombre de pantalla y `Pista de Pádel`.
 
 ---
 
@@ -77,7 +88,6 @@ No existen notificaciones para los próximos días.
 
 ```text
 Calendario.png
-Calendario-full.png
 ```
 
 ## Descripción
@@ -106,6 +116,10 @@ Representa una franja horaria individual.
 Color azul claro cuando está libre y reservable. Color gris con texto negro
 cuando ha expirado. La expiración temporal prevalece sobre una reserva que aún
 llegue con estado `active`.
+
+Los slots se distribuyen por `ReservationCalendar` en dos columnas móviles de
+igual ancho dentro de una tarjeta independiente por día, acompañadas por una
+leyenda compacta.
 
 Acción:
 
@@ -168,12 +182,15 @@ Abrir modal cancelar
 ## Referencia
 
 ```text
-My-reservas.png
+My-reservations.png
 ```
 
 ## Descripción
 
 Listado de reservas activas del usuario.
+
+Usa tarjetas con fecha, horario, pista y botón rojo delineado. No muestra
+contadores ni barras de progreso.
 
 ## Características
 
@@ -184,7 +201,7 @@ Listado de reservas activas del usuario.
 ## Estado vacío
 
 ```text
-No dispone de reservas activas.
+No tienes reservas. Cuando realices una reserva, aparecerá aquí.
 ```
 
 ---
@@ -194,17 +211,20 @@ No dispone de reservas activas.
 ## Referencia
 
 ```text
-Cambio-Alias.png
+Cambio-alias.png
 ```
 
 ## Descripción
 
 Formulario de modificación de alias.
 
+El campo comienza vacío y no expone el alias actual. Incluye ayuda de máximo
+20 caracteres y validación contextual.
+
 ## Elementos
 
 - Campo alias.
-- Botón Guardar.
+- Botón Guardar alias.
 
 ## Validaciones
 

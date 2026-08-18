@@ -336,7 +336,7 @@ debe contener:
 Los diseños oficiales deben almacenarse en:
 
 ```text
-/docs/design
+/docs/redesign
 ```
 
 Ejemplo:
@@ -344,12 +344,11 @@ Ejemplo:
 ```text
 Acerca-de.png
 Calendario.png
-Calendario-full.png
-Cambio-Alias.png
+Cambio-alias.png
 Login.png
 Menu.png
 Modal-Cancelar.png
-My-reservas.png
+My-reservations.png
 Normas-Uso.png
 Notificaciones.png
 ```
@@ -381,5 +380,5 @@ La implementación deberá seguir obligatoriamente los documentos definidos en l
 y los diseños almacenados en:
 
 ```text
-/Docs/design
+/docs/redesign
 ```

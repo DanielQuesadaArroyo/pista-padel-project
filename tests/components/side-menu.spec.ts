@@ -10,6 +10,7 @@ describe('SideMenu', () => {
     const profileStore = reactive({ profile: { alias: 'Vecino152' } })
     vi.stubGlobal('useAuthStore', () => ({ signOut: vi.fn() }))
     vi.stubGlobal('useProfileStore', () => profileStore)
+    vi.stubGlobal('useRoute', () => ({ path: '/reservations' }))
     vi.stubGlobal('navigateTo', vi.fn())
 
     const wrapper = mount(SideMenu, {
@@ -22,20 +23,23 @@ describe('SideMenu', () => {
       },
     })
 
-    expect(wrapper.get('.menu-title').text()).toBe('Vecino152')
+    expect(wrapper.get('.menu-header strong').text()).toBe('Vecino152')
     profileStore.profile.alias = 'NuevoAlias'
     await wrapper.vm.$nextTick()
-    expect(wrapper.get('.menu-title').text()).toBe('NuevoAlias')
+    expect(wrapper.get('.menu-header strong').text()).toBe('NuevoAlias')
     expect(wrapper.findAll('.menu-item').map((item) => item.text())).toEqual([
       'Notificaciones', 'Reservas', 'Mis reservas', 'Cambiar alias', 'Normas de uso', 'Acerca de', 'Salir',
     ])
     expect(wrapper.findAll('a').map((item) => item.attributes('href'))).toEqual([
       '/notifications', '/reservations', '/my-reservations', '/alias', '/rules', '/about',
     ])
-    expect(wrapper.findAll('.icon-stub').map((item) => item.attributes('data-name'))).toEqual([
+    expect(wrapper.findAll('.menu-item .icon-stub').map((item) => item.attributes('data-name'))).toEqual([
       'lucide:bell', 'lucide:calendar-days', 'lucide:calendar-check', 'lucide:user-cog',
       'lucide:file-text', 'lucide:info', 'lucide:log-out',
     ])
+    expect(wrapper.get('a[href="/reservations"]').classes()).toContain('active')
+    expect(wrapper.get('.sign-out').classes()).toContain('sign-out')
+    expect(wrapper.find('.avatar').exists()).toBe(false)
     expect(wrapper.text()).not.toContain('JH152')
   })
 })

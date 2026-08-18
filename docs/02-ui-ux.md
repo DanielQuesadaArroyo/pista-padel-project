@@ -7,6 +7,24 @@
 - Navegación clara.
 - Acciones mínimas para reservar.
 - Interfaz optimizada para usuarios no técnicos.
+- Identidad azul/turquesa luminosa sobre fondo claro.
+- Tarjetas blancas, sombras discretas y bordes suaves.
+
+Las referencias visuales vigentes se encuentran en `/docs/redesign`. Las
+imágenes anteriores de `/docs/design` dejan de ser la referencia visual activa.
+
+## Sistema visual
+
+- Principal: `#1596A5`.
+- Principal oscuro: `#107582`.
+- Principal suave: `#E4F5F7`.
+- Fondo: `#F8FAFB`.
+- Superficie: blanco.
+- Texto principal: `#202529`.
+- Texto secundario: `#56636A`.
+- Peligro: `#C62828`.
+
+Los colores se centralizan en variables CSS compartidas.
 
 ---
 
@@ -41,7 +59,7 @@ El menú lateral mostrará:
 
 Elementos:
 
-- Logo / título de la comunidad.
+- Título de la comunidad.
 - Campo email.
 - Campo contraseña.
 - Botón Iniciar sesión.
@@ -63,6 +81,9 @@ Características:
 - Más recientes primero.
 - Sin estados leído/no leído.
 - Scroll vertical.
+- Nueva reserva con acento azul/turquesa.
+- Anulación con acento rojo.
+- Sin iconos dentro de las tarjetas.
 
 Si no existen notificaciones:
 
@@ -78,6 +99,10 @@ Características:
 - Calendario limitado a 7 días.
 - Día actual + 6 días.
 - Sin navegación a semanas futuras.
+- Tarjeta blanca independiente por día.
+- Cabecera de día con icono, día de la semana y fecha.
+- Slots en dos columnas en móvil, todos con el mismo ancho.
+- Leyenda compacta de estados.
 
 Estados:
 
@@ -110,8 +135,8 @@ Texto:
 
 Botones:
 
-- Confirmar
-- Cancelar
+- Anular reserva, rojo: confirma la cancelación.
+- Continuar, azul/turquesa: cierra la modal sin cancelar.
 
 ---
 
@@ -130,7 +155,9 @@ Cada reserva permite:
 
 Estado vacío:
 
-"No dispone de reservas activas."
+"No tienes reservas. Cuando realices una reserva, aparecerá aquí."
+
+No se muestran contadores, barras de progreso ni información redundante.
 
 ---
 
@@ -139,7 +166,9 @@ Estado vacío:
 Elementos:
 
 - Campo alias.
-- Botón Guardar.
+- Ayuda "Máximo 20 caracteres".
+- Botón Guardar alias.
+- El campo comienza vacío y no muestra el alias actual.
 
 Validaciones:
 
@@ -167,11 +196,8 @@ Diseño de lectura simple.
 
 Contenido estático.
 
-Información sobre:
-
-- Comunidad.
-- Aplicación.
-- Versión.
+Mantiene exclusivamente el contenido estático existente, sin contacto,
+versiones ni secciones nuevas.
 
 Scroll vertical.
 
@@ -189,3 +215,15 @@ Debe funcionar correctamente en:
 - Navegadores de escritorio.
 
 No se requieren diseños específicos para escritorio.
+
+## Cabecera autenticada
+
+Todas las páginas autenticadas comparten cabecera blanca con botón de menú,
+nombre de pantalla y subtítulo `Pista de Pádel`. No incluye avatar ni acciones
+adicionales.
+
+## Menú lateral
+
+Se desliza desde la izquierda sobre un overlay y muestra alias dinámico,
+comunidad y `Pista de Pádel`. La ruta activa usa fondo azul muy claro. `Salir`
+se presenta en rojo y separado del resto.

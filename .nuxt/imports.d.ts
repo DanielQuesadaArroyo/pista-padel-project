@@ -32,6 +32,7 @@ export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composab
 export { defineLazyHydrationComponent } from '#app/composables/lazy-hydration';
 export { RESERVED_ALIASES, normalizeAlias, validateAlias } from '../utils/alias';
 export { getSeason, getFirstBookableDate, getVisibleDates, isSlotExpired, getNextTemporalEvent, formatDate, formatTime } from '../utils/dates';
+export { createLogger, logger, LogContext, LogLevel } from '../utils/logger';
 export { useAuthStore } from '../stores/auth.store';
 export { useNotificationsStore } from '../stores/notifications.store';
 export { useProfileStore } from '../stores/profile.store';

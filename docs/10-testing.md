@@ -416,6 +416,27 @@ Validar:
 - Tablet.
 - Navegador escritorio.
 
+Comprobar además la cabecera compartida sin avatar, menú lateral sin navegación
+inferior, calendario móvil de dos columnas, tarjetas adaptables y controles
+táctiles.
+
+# Pruebas del rediseño
+
+- Alias, orden, rutas, estado activo y Salir rojo en el menú.
+- Sin avatar, monograma, bottom navigation ni elementos informativos nuevos.
+- Slots con estructura de dos columnas y leyenda completa.
+- Notificaciones de reserva azules y anulaciones rojas, sin iconos.
+- Tarjetas y estado vacío de Mis reservas sin contadores ni progreso.
+- Alias actual no visible en el formulario.
+- Modal con acción destructiva roja y Continuar azul/turquesa.
+- Login conserva campos, acciones y textos funcionales.
+
+# Pruebas de logging
+
+- Los logs `debug` se pueden desactivar en producción.
+- El contexto sensible se redacta antes de emitirse.
+- Los tests funcionales no dependen del texto exacto de los logs.
+
 ---
 
 # Pruebas de Rendimiento
