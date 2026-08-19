@@ -419,7 +419,7 @@ Validar:
 Comprobar además la cabecera compartida sin avatar, menú lateral sin navegación
 inferior, calendario móvil 3 + 2 + 2, tarjetas compactas adaptables y controles
 táctiles. Validar especialmente a 360, 390 y 430 px que los horarios no se
-cortan ni cambian de línea.
+cortan ni cambian de línea con slots de 38-40 px de altura.
 
 # Pruebas del rediseño
 

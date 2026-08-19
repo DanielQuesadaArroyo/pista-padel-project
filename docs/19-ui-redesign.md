@@ -292,7 +292,7 @@ Reglas:
 - Los dos slots de cada fila posterior deben tener el mismo ancho entre ellos.
 - En móvil usar la distribución 3 + 2 + 2 sin wrap de los horarios.
 - La separación entre la primera y la segunda fila representa la pausa entre mañana y tarde.
-- Los slots tendrán una altura aproximada de 44-48 px y espacios verticales reducidos, manteniendo una superficie táctil cómoda.
+- Los slots tendrán una altura aproximada de 38-40 px y espacios verticales reducidos, manteniendo una superficie táctil razonable.
 - La card expandida tendrá una altura orientativa de 190-210 px cuando el ancho disponible lo permita.
 - En escritorio/tablet se puede adaptar de forma responsive respetando la lógica visual.
 

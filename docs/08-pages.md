@@ -172,7 +172,8 @@ Cada día utiliza una tarjeta blanca compacta con icono y día/fecha en una úni
 línea. En móvil los slots se distribuyen en tres filas: tres columnas iguales
 para las franjas de mañana y dos columnas iguales en cada una de las dos filas
 posteriores (3 + 2 + 2), respetando los horarios de verano o invierno. Se
-muestra una leyenda compacta.
+muestra una leyenda compacta. Los slots tienen una altura visual aproximada de
+38-40 px, conservan el texto legible y no permiten saltos de línea en el horario.
 
 Todas las cards comienzan expandidas. Al pulsar su cabecera o chevron, cada card
 oculta o vuelve a mostrar sus slots de forma independiente; no existe
