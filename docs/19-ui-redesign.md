@@ -257,43 +257,43 @@ Cada día debe mostrarse dentro de una tarjeta blanca independiente.
 Cabecera de la tarjeta:
 
 - Icono de calendario en círculo/fondo azul muy claro.
-- Día de la semana.
-- Fecha debajo.
-- Puede existir un chevron visual si aparece en la referencia, pero no introducir comportamiento de acordeón si no existe actualmente.
+- Día de la semana y fecha completa en una única línea.
+- Chevron que refleja el estado expandido o colapsado.
+- Padding vertical reducido para mantener la tarjeta compacta.
 
 Ejemplo:
 
 ```text
-Domingo
-16 de agosto de 2026
+Domingo, 16 de agosto de 2026
 ```
+
+Todas las tarjetas comienzan expandidas. Al pulsar la cabecera o el chevron se
+ocultan o muestran completamente sus slots. El estado es independiente por día:
+no existe comportamiento accordion.
 
 ## Distribución de slots en móvil
 
 Para verano:
 
 ```text
-Fila 1:
-10:00-11:30 | 11:30-13:00
+Fila 1 (mañana):
+10:00-11:30 | 11:30-13:00 | 13:00-14:30
 
-Fila 2:
-13:00-14:30 | [vacío]
-
-Fila 3:
+Fila 2 (tarde):
 18:00-19:00 | 19:00-20:00
 
-Fila 4:
+Fila 3 (noche):
 20:00-21:30 | 21:30-23:00
 ```
 
 Reglas:
 
-- Todos los slots deben tener exactamente el mismo ancho.
-- `13:00-14:30` ocupa solo la columna izquierda.
-- La columna derecha queda vacía.
-- No expandir `13:00-14:30` a ancho completo.
-- No expandir `21:30-23:00` a ancho completo.
-- En móvil usar 2 columnas.
+- Los tres slots de la primera fila deben tener el mismo ancho entre ellos.
+- Los dos slots de cada fila posterior deben tener el mismo ancho entre ellos.
+- En móvil usar la distribución 3 + 2 + 2 sin wrap de los horarios.
+- La separación entre la primera y la segunda fila representa la pausa entre mañana y tarde.
+- Los slots tendrán una altura aproximada de 44-48 px y espacios verticales reducidos, manteniendo una superficie táctil cómoda.
+- La card expandida tendrá una altura orientativa de 190-210 px cuando el ancho disponible lo permita.
 - En escritorio/tablet se puede adaptar de forma responsive respetando la lógica visual.
 
 Aplicar la distribución equivalente a los slots de invierno.
@@ -736,10 +736,11 @@ Debe funcionar correctamente en:
 ## Móvil
 
 - Menú lateral oculto inicialmente.
-- Slots en 2 columnas.
+- Slots en distribución 3 + 2 + 2.
 - Sin navegación inferior.
 - Tarjetas con márgenes laterales adecuados.
 - Inputs y botones cómodos para interacción táctil.
+- Horarios sin cortes ni wrap a 360, 390 y 430 px.
 
 ## Escritorio
 
@@ -1033,7 +1034,9 @@ Actualizar o añadir tests para comprobar como mínimo:
 
 - Estados visuales correctos.
 - Slots en estructura esperada.
-- Slot `13:00-14:30` no ocupa ancho completo.
+- Distribución móvil 3 + 2 + 2.
+- Fecha completa en una línea.
+- Cards expandidas por defecto y colapsables de forma independiente.
 - Sin navegación inferior.
 - Sin avatar en cabecera.
 

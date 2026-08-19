@@ -168,10 +168,15 @@ Reserva propia.
 
 ## Presentación
 
-Cada día utiliza una tarjeta blanca con icono, día de la semana y fecha. En
-móvil los slots se distribuyen en dos columnas de igual ancho; el tercer slot
-queda en la columna izquierda sin expandirse. Se muestra una leyenda compacta.
-Los chevrons son únicamente decorativos y no añaden acordeones.
+Cada día utiliza una tarjeta blanca compacta con icono y día/fecha en una única
+línea. En móvil los slots se distribuyen en tres filas: tres columnas iguales
+para las franjas de mañana y dos columnas iguales en cada una de las dos filas
+posteriores (3 + 2 + 2), respetando los horarios de verano o invierno. Se
+muestra una leyenda compacta.
+
+Todas las cards comienzan expandidas. Al pulsar su cabecera o chevron, cada card
+oculta o vuelve a mostrar sus slots de forma independiente; no existe
+comportamiento accordion. El chevron refleja el estado actual.
 
 ---
 

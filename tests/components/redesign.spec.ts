@@ -20,7 +20,7 @@ describe('redesign structure', () => {
     expect(wrapper.findAll('button')).toHaveLength(1)
   })
 
-  it('keeps seven slots in a two-column calendar structure and includes the legend', () => {
+  it('keeps seven slots in the compact calendar structure and includes the legend', () => {
     const slots = Array.from({ length: 7 }, (_, index) => ({ ...slot, id: index + 1 }))
     const wrapper = mount(ReservationCalendar, {
       props: { dates: ['2026-08-18'], slots, bookings: [], userId: 'user-id', pendingSlotId: null, now: new Date('2026-08-17T10:00:00Z') },
@@ -30,6 +30,25 @@ describe('redesign structure', () => {
     expect(wrapper.find('.slots').exists()).toBe(true)
     expect(wrapper.get('.legend').text()).toContain('No disponible (pasado)')
     expect(wrapper.find('.bottom-navigation').exists()).toBe(false)
+  })
+
+  it('collapses each day independently and starts with every day expanded', async () => {
+    const wrapper = mount(ReservationCalendar, {
+      props: { dates: ['2026-08-18', '2026-08-19'], slots: [slot], bookings: [], userId: 'user-id', pendingSlotId: null, now: new Date('2026-08-17T10:00:00Z') },
+      global: { stubs: { Icon: iconStub, ReservationSlot: { template: '<button class="reservation-slot-stub" />' } } },
+    })
+    const headers = wrapper.findAll('.day-header')
+    expect(wrapper.findAll('.slots')).toHaveLength(2)
+    expect(headers.map((header) => header.attributes('aria-expanded'))).toEqual(['true', 'true'])
+    expect(headers[0].text()).toContain('martes, 18 de agosto de 2026')
+
+    await headers[0].trigger('click')
+    expect(wrapper.findAll('.slots')).toHaveLength(1)
+    expect(headers[0].attributes('aria-expanded')).toBe('false')
+    expect(headers[1].attributes('aria-expanded')).toBe('true')
+
+    await headers[0].trigger('click')
+    expect(wrapper.findAll('.slots')).toHaveLength(2)
   })
 
   it('styles booking notifications as turquoise and cancellations as red without icons', () => {

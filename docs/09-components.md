@@ -100,6 +100,8 @@ Componente principal para visualizar y gestionar reservas.
 - Día actual + 6 días.
 - Horarios dinámicos según temporada.
 - Actualización Realtime.
+- Cabecera compacta con fecha completa en una sola línea.
+- Cards expandidas por defecto y colapsables de forma independiente.
 
 ---
 
@@ -117,9 +119,11 @@ Color azul claro cuando está libre y reservable. Color gris con texto negro
 cuando ha expirado. La expiración temporal prevalece sobre una reserva que aún
 llegue con estado `active`.
 
-Los slots se distribuyen por `ReservationCalendar` en dos columnas móviles de
-igual ancho dentro de una tarjeta independiente por día, acompañadas por una
-leyenda compacta.
+Los slots tienen una altura aproximada de 44 px y se distribuyen por
+`ReservationCalendar` en móvil como 3 + 2 + 2: tres columnas iguales para la
+mañana y dos columnas iguales en cada una de las dos filas posteriores. La
+distribución conserva los siete horarios existentes de la temporada activa y
+la pausa visual entre mañana y tarde.
 
 Acción:
 

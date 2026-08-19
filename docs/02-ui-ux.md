@@ -100,8 +100,9 @@ Características:
 - Día actual + 6 días.
 - Sin navegación a semanas futuras.
 - Tarjeta blanca independiente por día.
-- Cabecera de día con icono, día de la semana y fecha.
-- Slots en dos columnas en móvil, todos con el mismo ancho.
+- Cabecera compacta con icono y día/fecha en una única línea.
+- Cards expandidas por defecto y colapsables de forma independiente desde su cabecera; no funcionan como accordion.
+- Slots compactos en móvil distribuidos en tres columnas por la mañana y dos columnas en cada una de las dos filas posteriores (3 + 2 + 2), respetando los horarios de cada temporada.
 - Leyenda compacta de estados.
 
 Estados:

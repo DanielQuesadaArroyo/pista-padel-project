@@ -417,14 +417,16 @@ Validar:
 - Navegador escritorio.
 
 Comprobar además la cabecera compartida sin avatar, menú lateral sin navegación
-inferior, calendario móvil de dos columnas, tarjetas adaptables y controles
-táctiles.
+inferior, calendario móvil 3 + 2 + 2, tarjetas compactas adaptables y controles
+táctiles. Validar especialmente a 360, 390 y 430 px que los horarios no se
+cortan ni cambian de línea.
 
 # Pruebas del rediseño
 
 - Alias, orden, rutas, estado activo y Salir rojo en el menú.
 - Sin avatar, monograma, bottom navigation ni elementos informativos nuevos.
-- Slots con estructura de dos columnas y leyenda completa.
+- Slots con estructura 3 + 2 + 2 y leyenda completa.
+- Fecha completa en una línea y colapsado independiente, expandido por defecto.
 - Notificaciones de reserva azules y anulaciones rojas, sin iconos.
 - Tarjetas y estado vacío de Mis reservas sin contadores ni progreso.
 - Alias actual no visible en el formulario.
