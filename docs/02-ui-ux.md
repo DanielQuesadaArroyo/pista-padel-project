@@ -102,7 +102,7 @@ Características:
 - Tarjeta blanca independiente por día.
 - Cabecera compacta con icono y día/fecha en una única línea.
 - Cards expandidas por defecto y colapsables de forma independiente desde su cabecera; no funcionan como accordion.
-- Slots compactos de aproximadamente 38-40 px de altura en móvil, distribuidos en tres columnas por la mañana y dos columnas en cada una de las dos filas posteriores (3 + 2 + 2), respetando los horarios de cada temporada.
+- Slots compactos con `min-height: 2.2rem` (aproximadamente 35 px) en móvil, distribuidos en tres columnas por la mañana y dos columnas en cada una de las dos filas posteriores (3 + 2 + 2), respetando los horarios de cada temporada.
 - Leyenda compacta de estados.
 
 Estados:

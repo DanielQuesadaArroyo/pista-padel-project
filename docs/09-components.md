@@ -119,7 +119,7 @@ Color azul claro cuando está libre y reservable. Color gris con texto negro
 cuando ha expirado. La expiración temporal prevalece sobre una reserva que aún
 llegue con estado `active`.
 
-Los slots tienen una altura aproximada de 38-40 px y se distribuyen por
+Los slots usan `min-height: 2.2rem` (aproximadamente 35 px) y se distribuyen por
 `ReservationCalendar` en móvil como 3 + 2 + 2: tres columnas iguales para la
 mañana y dos columnas iguales en cada una de las dos filas posteriores. La
 distribución conserva los siete horarios existentes de la temporada activa y
